@@ -2,7 +2,7 @@
 #Programm for Mercator Ocean by Carmelo Sammarco
 #####################################################################
 
-#< ads4mo - Interactive terminal session to download with advanced download services >
+#< FTPsubsetMO - Interactive terminal session to download from FTP and subset >
 #Copyright (C) <2018>  <Carmelo Sammarco - sammarcocarmelo@gmail.com>
 
 #This program is free software: you can redistribute it and/or modify
