@@ -3,7 +3,7 @@
 #####################################################################
 
 #< FTPsubsetMO - Interactive terminal session to download from FTP and subset >
-#Copyright (C) <2018>  <Carmelo Sammarco - sammarcocarmelo@gmail.com>
+#Copyright (C) <2019>  <Carmelo Sammarco - sammarcocarmelo@gmail.com>
 
 #This program is free software: you can redistribute it and/or modify
 #it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@ import getpass
 
 def FTPds():
 
-    print("<FTPsubsetMO>  Copyright (C) <2018>  <Carmelo Sammarco>")
+    print("<FTPsubsetMO>  Copyright (C) <2019>  <Carmelo Sammarco>")
     print("This program comes with ABSOLUTELY NO WARRANTY")
     print("This is free software, and you are welcome to redistribute it under the GPLv3 conditions.")
 
