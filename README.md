@@ -13,7 +13,7 @@ Many thanks to visit this page and try this software.
 Python module able to download files over FTP protocol and then able to subset them using a bounding box and variable selection.
 
 <p align="center">
-  <img width="" height="380" src="DATA/FILE.gif">
+  <img width="" height="380" src="DATA/FILE">
 </p>
 
 ## Be aware that:
