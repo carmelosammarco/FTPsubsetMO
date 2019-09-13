@@ -24,9 +24,27 @@ The tool is in development so it can be possible find bugs, errors and imprecisi
 
 There are not dependencies because are just used standard python packages.
 
-## Installation and module usage
+## Installation for Unix users (Linux distros and Mac-OSX systems):
 
-It is possible to install and then use in both UNIX and Windows operative systems following the below steps:
+As first things please install [cdo - climate data operator](https://code.mpimet.mpg.de/projects/cdo). It is required to run few functions contained in the python module. You can use the following command:
+
+```
+sudo apt-get install cdo
+```
+
+Also please consider to install [Anaconda](https://www.anaconda.com) 3.* version (Be aware that to use this software is suggested python ~=3.6). Once the Anaconda bash file (.sh) is downloaded, you can execute it in the terminal using the following command:
+
+```
+bash file_installation_Anaconda_downloaded.sh
+```
+
+ Furthermore, an update of pip, setuptools and wheels is suggested. You can do it executing the following command:
+
+```
+python -m pip install --upgrade pip setuptools wheel
+```
+
+After that run the software installation with:
 
 ```
 pip install FTPsubsetMO
@@ -41,6 +59,5 @@ Once the module is imported we can call the interactive download process typing;
 ```
 FTPds()
 ```
-
 At this point the interactive terminal session is going to start. 
 
