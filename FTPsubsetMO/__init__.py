@@ -31,39 +31,89 @@ def FTPds():
     print("This program comes with ABSOLUTELY NO WARRANTY")
     print("This is free software, and you are welcome to redistribute it under the GPLv3 conditions.")
 
-
     cmems_user = getpass.getpass("Please enter your USERNAME: ")
     cmems_pass = getpass.getpass("Please enter your PASSWORD: ")
 
     typo = input("Please enter which type of DU --> | NRT | MY |: ")
-    pathfiles = input("Please enter the FTP path from /Core/... to the folder where you want to download the file: ")
-    filesel = input("Please enter the file name that you wish to Download and then Subset : ")
+    pathfiles = input("Please enter the FTP path from /Core/... to the year-folder where you want to download the file: ")
+    dselection = input("Please enter the the type of download --> | SINGLE | ALL |: ")
+    #filesel = input("Please enter the file name that you wish to Download and then Subset : ")
 
     print(" ")
-    print("Download in progress.. Please wait!")
+    print("Now time to set the parameters for the subsetting...")
     print(" ")
 
-    if typo == "NRT" :
+    lon1 = input("Please to insert the West limit: ")
+    lon2 = input("Please to insert the East limit: ")
+    lat1 = input("Please to insert the Nord limit: ")
+    lat2 = input("Please to insert the Sud limit: ")
+    variables = input("Please to insert the variables to extract (if more than one please to use [var1,var2,var3...]): ")
+
+
+
+    #For Near-Real-Time Server
+
+    if typo == "NRT" and dselection == "ALL" :
+
+        print(" ")
+        print("Download in progress.. Please wait!")
+        print(" ")
         
         ftp = FTP('nrt.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
 
         #ftp.cwd('/Core/GLOBAL_ANALYSIS_FORECAST_PHY_001_024/global-analysis-forecast-phy-001-024/2019/01/')
 
         ftp.cwd(pathfiles)
+        #ftp.retrlines('LIST')
+        
+        filenames = ftp.nlst()
+        for filename in filenames:
+            ftp.retrbinary('RETR' + " " + filename, open(filename, 'wb').write)
 
+        #ftp.retrbinary('RETR' + " " + filesel, open(filesel, 'wb').write)
+
+            print(" ")
+            print("The file was downloaded! Now it is time to subset!")
+            print(" ")
+
+            fout = "Subset_" + filename
+
+            print(" ")
+            print("The Subsetting process is starting... ")
+            print(" ")
+
+            command = "cdo -sellonlatbox," + lon1 + "," + lon2 + "," + lat1 + "," + lat2 + " " + "-select,name=" + variables + " " + filename + " " + fout
+            print(command)
+            os.system(command)
+
+            os.remove(filename)
+
+            print(" ")
+            print("The subsetting process is completed!")
+            print(" ")
+
+        ftp.quit()
+
+    if typo == "NRT" and dselection == "SINGLE" :
+
+        filesel = input("Please enter the file name that you wish to Download and then Subset : ")
+
+        print(" ")
+        print("Download in progress.. Please wait!")
+        print(" ")
+
+        ftp = FTP('nrt.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
+
+        #ftp.cwd('/Core/GLOBAL_ANALYSIS_FORECAST_PHY_001_024/global-analysis-forecast-phy-001-024/2019/01/')
+
+        ftp.cwd(pathfiles)
         #ftp.retrlines('LIST')
 
         ftp.retrbinary('RETR' + " " + filesel, open(filesel, 'wb').write)
 
         print(" ")
-        print("The file was downloaded! Now it is time to set the parameter for the subsetting")
+        print("The file was downloaded! Now it is time to subset!")
         print(" ")
-
-        lon1 = input("Please to insert the West limit: ")
-        lon2 = input("Please to insert the East limit: ")
-        lat1 = input("Please to insert the Nord limit: ")
-        lat2 = input("Please to insert the Sud limit: ")
-        var1 = input("Please to insert the variable to extract: ")
 
         fout = "Subset_" + filesel
 
@@ -71,7 +121,7 @@ def FTPds():
         print("The Subsetting process is starting... ")
         print(" ")
 
-        command = "cdo -sellonlatbox," + lon1 + "," + lon2 + "," + lat1 + "," + lat2 + " " + "-select,name=" + var1 + " " + filesel + " " + fout
+        command = "cdo -sellonlatbox," + lon1 + "," + lon2 + "," + lat1 + "," + lat2 + " " + "-select,name=" + variables + " " + filesel + " " + fout
         print(command)
         os.system(command)
 
@@ -84,27 +134,70 @@ def FTPds():
         ftp.quit()
 
 
-    if typo == "MY" :
+    #For Multi-year Server
+
+
+    if typo == "MY" and dselection == "ALL" :
+
+        print(" ")
+        print("Download in progress.. Please wait!")
+        print(" ")
         
         ftp = FTP('my.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
 
         #ftp.cwd('/Core/GLOBAL_ANALYSIS_FORECAST_PHY_001_024/global-analysis-forecast-phy-001-024/2019/01/')
 
         ftp.cwd(pathfiles)
+        #ftp.retrlines('LIST')
+        
+        filenames = ftp.nlst()
+        for filename in filenames:
+            ftp.retrbinary('RETR' + " " + filename, open(filename, 'wb').write)
 
+        #ftp.retrbinary('RETR' + " " + filesel, open(filesel, 'wb').write)
+
+            print(" ")
+            print("The file was downloaded! Now it is time to subset!")
+            print(" ")
+
+            fout = "Subset_" + filename
+
+            print(" ")
+            print("The Subsetting process is starting... ")
+            print(" ")
+
+            command = "cdo -sellonlatbox," + lon1 + "," + lon2 + "," + lat1 + "," + lat2 + " " + "-select,name=" + variables + " " + filename + " " + fout
+            print(command)
+            os.system(command)
+
+            os.remove(filename)
+
+            print(" ")
+            print("The subsetting process is completed!")
+            print(" ")
+
+        ftp.quit()
+
+    if typo == "MY" and dselection == "SINGLE" :
+
+        filesel = input("Please enter the file name that you wish to Download and then Subset : ")
+
+        print(" ")
+        print("Download in progress.. Please wait!")
+        print(" ")
+        
+        ftp = FTP('my.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
+
+        #ftp.cwd('/Core/GLOBAL_ANALYSIS_FORECAST_PHY_001_024/global-analysis-forecast-phy-001-024/2019/01/')
+
+        ftp.cwd(pathfiles)
         #ftp.retrlines('LIST')
 
         ftp.retrbinary('RETR' + " " + filesel, open(filesel, 'wb').write)
 
         print(" ")
-        print("The file was downloaded! Now it is time to set the parameter for the subsetting")
+        print("The file was downloaded! Now it is time to subset!")
         print(" ")
-
-        lon1 = input("Please to insert the West limit: ")
-        lon2 = input("Please to insert the East limit: ")
-        lat1 = input("Please to insert the Nord limit: ")
-        lat2 = input("Please to insert the Sud limit: ")
-        var1 = input("Please to insert the variable to extract: ")
 
         fout = "Subset_" + filesel
 
@@ -112,7 +205,7 @@ def FTPds():
         print("The Subsetting process is starting... ")
         print(" ")
 
-        command = "cdo -sellonlatbox," + lon1 + "," + lon2 + "," + lat1 + "," + lat2 + " " + "-select,name=" + var1 + " " + filesel + " " + fout
+        command = "cdo -sellonlatbox," + lon1 + "," + lon2 + "," + lat1 + "," + lat2 + " " + "-select,name=" + variables + " " + filesel + " " + fout
         print(command)
         os.system(command)
 
