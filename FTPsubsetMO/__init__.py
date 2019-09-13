@@ -35,8 +35,8 @@ def FTPds():
     cmems_pass = getpass.getpass("Please enter your PASSWORD: ")
 
     typo = input("Please enter which type of DU --> | NRT | MY |: ")
-    pathfiles = input("Please enter the FTP path from /Core/... to the year-folder where you want to download the file: ")
-    dselection = input("Please enter the the type of download --> | SINGLE | ALL |: ")
+    pathfiles = input("Please enter the FTP path from /Core/... to the year-folder where you want to download the file/files: ")
+    dselection = input("Please enter the the type of download --> | FILE | ALLDIR |: ")
     #filesel = input("Please enter the file name that you wish to Download and then Subset : ")
 
     print(" ")
@@ -47,13 +47,13 @@ def FTPds():
     lon2 = input("Please to insert the East limit: ")
     lat1 = input("Please to insert the Nord limit: ")
     lat2 = input("Please to insert the Sud limit: ")
-    variables = input("Please to insert the variables to extract (if more than one please to use [var1,var2,var3...]): ")
+    variables = input("Please to insert the variables to extract (if more than one please to use [var1,var2,var3...] expression): ")
 
 
 
     #For Near-Real-Time Server
 
-    if typo == "NRT" and dselection == "ALL" :
+    if typo == "NRT" and dselection == "ALLDIR" :
 
         print(" ")
         print("Download in progress.. Please wait!")
@@ -94,7 +94,7 @@ def FTPds():
 
         ftp.quit()
 
-    if typo == "NRT" and dselection == "SINGLE" :
+    if typo == "NRT" and dselection == "FILE" :
 
         filesel = input("Please enter the file name that you wish to Download and then Subset : ")
 
@@ -137,7 +137,7 @@ def FTPds():
     #For Multi-year Server
 
 
-    if typo == "MY" and dselection == "ALL" :
+    if typo == "MY" and dselection == "ALLDIR" :
 
         print(" ")
         print("Download in progress.. Please wait!")
@@ -178,7 +178,7 @@ def FTPds():
 
         ftp.quit()
 
-    if typo == "MY" and dselection == "SINGLE" :
+    if typo == "MY" and dselection == "FILE" :
 
         filesel = input("Please enter the file name that you wish to Download and then Subset : ")
 
