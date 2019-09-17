@@ -34,10 +34,9 @@ def FTPds():
     cmems_user = getpass.getpass("Please enter your USERNAME: ")
     cmems_pass = getpass.getpass("Please enter your PASSWORD: ")
 
-    typo = input("Please enter which type of DU --> | NRT | MY |: ")
-    pathfiles = input("Please enter the FTP path from /Core/... to the year-folder where you want to download the file/files: ")
-    dselection = input("Please enter the the type of download --> | FILE | ALLDIR |: ")
-    #filesel = input("Please enter the file name that you wish to Download and then Subset : ")
+    typo = input("Please enter the FTP server to use which is based on the product chosen --> | NRT | MY |: ")
+    pathfiles = input("Please enter the FTP path from /Core/... to the folder where you want to download the file/files: ")
+    dselection = input("Please enter the the type of download  --> | FILE | ALLDIR |: ")
 
     print(" ")
     print("Now time to set the parameters for the subsetting...")
@@ -47,7 +46,7 @@ def FTPds():
     lon2 = input("Please to insert the East limit: ")
     lat1 = input("Please to insert the Nord limit: ")
     lat2 = input("Please to insert the Sud limit: ")
-    variables = input("Please to insert the variables to extract (if more than one please to use [var1,var2,var3...] expression): ")
+    variables = input("Please to insert the variables to extract (if more than one please divide them using a comma [var1,var2,var3...]): ")
 
 
 
@@ -61,16 +60,12 @@ def FTPds():
         
         ftp = FTP('nrt.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
 
-        #ftp.cwd('/Core/GLOBAL_ANALYSIS_FORECAST_PHY_001_024/global-analysis-forecast-phy-001-024/2019/01/')
-
         ftp.cwd(pathfiles)
         #ftp.retrlines('LIST')
         
         filenames = ftp.nlst()
         for filename in filenames:
             ftp.retrbinary('RETR' + " " + filename, open(filename, 'wb').write)
-
-        #ftp.retrbinary('RETR' + " " + filesel, open(filesel, 'wb').write)
 
             print(" ")
             print("The file was downloaded! Now it is time to subset!")
@@ -104,8 +99,6 @@ def FTPds():
 
         ftp = FTP('nrt.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
 
-        #ftp.cwd('/Core/GLOBAL_ANALYSIS_FORECAST_PHY_001_024/global-analysis-forecast-phy-001-024/2019/01/')
-
         ftp.cwd(pathfiles)
         #ftp.retrlines('LIST')
 
@@ -136,7 +129,6 @@ def FTPds():
 
     #For Multi-year Server
 
-
     if typo == "MY" and dselection == "ALLDIR" :
 
         print(" ")
@@ -145,16 +137,12 @@ def FTPds():
         
         ftp = FTP('my.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
 
-        #ftp.cwd('/Core/GLOBAL_ANALYSIS_FORECAST_PHY_001_024/global-analysis-forecast-phy-001-024/2019/01/')
-
         ftp.cwd(pathfiles)
         #ftp.retrlines('LIST')
         
         filenames = ftp.nlst()
         for filename in filenames:
             ftp.retrbinary('RETR' + " " + filename, open(filename, 'wb').write)
-
-        #ftp.retrbinary('RETR' + " " + filesel, open(filesel, 'wb').write)
 
             print(" ")
             print("The file was downloaded! Now it is time to subset!")
@@ -188,8 +176,6 @@ def FTPds():
         
         ftp = FTP('my.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
 
-        #ftp.cwd('/Core/GLOBAL_ANALYSIS_FORECAST_PHY_001_024/global-analysis-forecast-phy-001-024/2019/01/')
-
         ftp.cwd(pathfiles)
         #ftp.retrlines('LIST')
 
@@ -212,7 +198,7 @@ def FTPds():
         os.remove(filesel)
 
         print(" ")
-        print("The subsetting process is completed!")
+        print("The subsetting process is completed... downloading next file!")
         print(" ")
 
         ftp.quit()

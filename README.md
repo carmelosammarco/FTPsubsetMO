@@ -22,7 +22,10 @@ The tool is in development so it can be possible find bugs, errors and imprecisi
 
 ## Dependencies:
 
-There are not dependencies because are just used standard python packages.
+The dependencies required is listed below:
+
+- [x] cdo>=1.4.0
+- [x] ftputil>=3.4
 
 ## Installation for Unix users (Linux distros and Mac-OSX systems):
 
@@ -54,10 +57,20 @@ we can import the module as:
 ```
 from FTPsubsetMO import FTPds
 ```
-Once the module is imported we can call the interactive download process typing;
+Once the module is imported we can call the interactive download process typing:
 
 ```
 FTPds()
 ```
-At this point the interactive terminal session is going to start. 
+At this point the interactive terminal session  start and it is going to ask in the following order:
+
+- CMEMS Login credentials (Username and Password)
+- Which server to use (if multiyear [MY] or Near real time [NRT] )
+- The FTP path from /Core.. to where we want to download the file(s)
+- Select the type of download to use (download a single file [SINGLE] or all the files inside the directory [ALLDIR])
+- The geograpic bounding box that you wish to extract
+- The variables that you wish to extract
+
+
+
 

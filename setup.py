@@ -15,7 +15,9 @@ setup(name='FTPsubsetMO',
       python_requires='>=3',
 
       install_requires=[
-        'ftputil>=3.4'
+        'ftputil>=3.4',
+        'cdo>=1.4.0'
+
 
       ],
 
