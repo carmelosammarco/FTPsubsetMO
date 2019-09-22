@@ -44,8 +44,8 @@ def FTPds():
 
     lon1 = input("Please to insert the West limit: ")
     lon2 = input("Please to insert the East limit: ")
-    lat1 = input("Please to insert the Nord limit: ")
-    lat2 = input("Please to insert the Sud limit: ")
+    lat1 = input("Please to insert the Sud limit: ")
+    lat2 = input("Please to insert the North limit: ")
     variables = input("Please to insert the variables to extract (if more than one please divide them using a comma [var1,var2,var3...]): ")
 
 
