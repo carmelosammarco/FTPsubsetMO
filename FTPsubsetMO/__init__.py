@@ -22,6 +22,7 @@
 #########################
 # IMPORT MODULES NEEDED #
 #########################
+import pkg_resources
 
 from ftplib import FTP
 import xarray as xr
@@ -97,9 +98,11 @@ outpath = str(os.getcwd()) + "/"
 # Few important points  before the start of the options #
 #########################################################
 
+filejason =  pkg_resources.resource_filename('FTPsubsetMO', 'DATA/CMEMS_Database.json')
+
 Database = {}
 
-with open ("CMEMS_Database.json", "r") as config_file:
+with open (filejason, "r") as config_file:
     Database = json.load(config_file)
     for key in Database.keys():  
         if pathfiles in key:
