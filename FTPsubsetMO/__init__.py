@@ -158,1917 +158,1917 @@ n2 = lat2
 
 #Start Daily dataset options.....
 
+def FTPsub():
+    ###################################
+    # NRT/MY DAILY BBOX               #
+    ###################################
+    if typo == "NRT" and bbox == "YES" and Vs == "NO" and structure == "D" and DL == "NO":
 
-###################################
-# NRT/MY DAILY BBOX               #
-###################################
-if typo == "NRT" and bbox == "YES" and Vs == "NO" and structure == "D" and DL == "NO":
+        print(" ")
+        print("Connection to the FTP server...")
+        
+        ftp = FTP('nrt.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
 
-    print(" ")
-    print("Connection to the FTP server...")
-    
-    ftp = FTP('nrt.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
+        print("Connection exstabilished and download files in progress..")
+        print(" ")
+        
+        for day in days :
 
-    print("Connection exstabilished and download files in progress..")
-    print(" ")
-    
-    for day in days :
+            a = day.strftime('%Y')
+            m = day.strftime('%m')
+            g = day.strftime('%d')
 
-        a = day.strftime('%Y')
-        m = day.strftime('%m')
-        g = day.strftime('%d')
+            path = os.path.join(outpath, str(a))
 
-        path = os.path.join(outpath, str(a))
+            if not os.path.exists(path):
+                os.mkdir(path)
 
-        if not os.path.exists(path):
-            os.mkdir(path)
+            outpath1 = outpath + str(a)
+        
+            path2 = os.path.join(outpath1, str(m))
 
-        outpath1 = outpath + str(a)
-    
-        path2 = os.path.join(outpath1, str(m))
+            if not os.path.exists(path2):
+                os.mkdir(path2)
 
-        if not os.path.exists(path2):
-            os.mkdir(path2)
-
-        if ID == "BACK":
-            look = day.strftime(Toidentify+'%Y%m%d')
-        else:
-            look = day.strftime('%Y%m%d'+ Toidentify)
-
-        ftp.cwd(pathfiles + str(a) + "/" + str(m))
-
-        filenames = ftp.nlst()
-
-        files = pd.Series(filenames)
-
-        for file_name in files[files.str.contains(look)]:
-
-            os.chdir(outpath1 + "/" + str(m))
-            outputfile = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
-
-            if os.path.isfile(outputfile):
-                print ("File: " + "Subset_" + file_name + " --> File already processed")
+            if ID == "BACK":
+                look = day.strftime(Toidentify+'%Y%m%d')
             else:
-                ftp.retrbinary('RETR' + " " + file_name, open(file_name, 'wb').write)
+                look = day.strftime('%Y%m%d'+ Toidentify)
 
-                print("File: " + file_name + " --> Download completed")
+            ftp.cwd(pathfiles + str(a) + "/" + str(m))
 
-                if Crossing == "NO":
+            filenames = ftp.nlst()
 
-                    data = outpath1 + "/" + str(m) + "/" + file_name
-                    out1 = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
-                    
-                    DS = xr.open_dataset(data)
-                
-                    DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
-                    DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
-                    DS.close()
+            files = pd.Series(filenames)
 
-                    os.remove(data)
+            for file_name in files[files.str.contains(look)]:
 
-                    print("File: " + "Subset_" + file_name + " --> Subset completed")
-                    print(" ")
-                
+                os.chdir(outpath1 + "/" + str(m))
+                outputfile = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
+
+                if os.path.isfile(outputfile):
+                    print ("File: " + "Subset_" + file_name + " --> File already processed")
                 else:
+                    ftp.retrbinary('RETR' + " " + file_name, open(file_name, 'wb').write)
 
-                    data = outpath1 + "/" + str(m) + "/" + file_name
-                    out1 = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
+                    print("File: " + file_name + " --> Download completed")
 
-                    box1 = outpath1 + "/" + str(m) + "/" + "Box1_" + file_name
-                    box2 = outpath1 + "/" + str(m) + "/" + "Box2_" + file_name
+                    if Crossing == "NO":
+
+                        data = outpath1 + "/" + str(m) + "/" + file_name
+                        out1 = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
+                        
+                        DS = xr.open_dataset(data)
                     
-                    DS = xr.open_dataset(data)
+                        DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
+                        DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
+                        DS.close()
+
+                        os.remove(data)
+
+                        print("File: " + "Subset_" + file_name + " --> Subset completed")
+                        print(" ")
+                    
+                    else:
+
+                        data = outpath1 + "/" + str(m) + "/" + file_name
+                        out1 = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
+
+                        box1 = outpath1 + "/" + str(m) + "/" + "Box1_" + file_name
+                        box2 = outpath1 + "/" + str(m) + "/" + "Box2_" + file_name
+                        
+                        DS = xr.open_dataset(data)
+                    
+                        DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+                        DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4')
+
+                        DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
+                        DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4')
+
+                        DSbbox = xr.merge([DSbbox1,DSbbox2])
+                        DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
+
+                        DS.close()
+
+                        os.remove(data)
+                        os.remove(box1)
+                        os.remove(box2)
+
+                        print("File: " + "Subset_" + file_name + " --> Subset completed")
+                        print(" ")
+
+
+        ftp.quit()
+
+    #######
+
+    elif typo == "MY" and bbox == "YES" and Vs == "NO" and structure == "D" and DL == "NO" :
+
+        print(" ")
+        print("Connection to the FTP server...")
+        
+        ftp = FTP('my.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
+
+        print("Connection exstabilished and download files in progress..")
+        print(" ")
+        
+        for day in days :
+
+            a = day.strftime('%Y')
+            m = day.strftime('%m')
+            g = day.strftime('%d')
+
+            path = os.path.join(outpath, str(a))
+
+            if not os.path.exists(path):
+                os.mkdir(path)
                 
-                    DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
-                    DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4')
+            outpath1 = outpath + str(a)
+        
+            path2 = os.path.join(outpath1, str(m))
 
-                    DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
-                    DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4')
+            if not os.path.exists(path2):
+                os.mkdir(path2)
 
-                    DSbbox = xr.merge([DSbbox1,DSbbox2])
-                    DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
+            if ID == "BACK":
+                look = day.strftime(Toidentify+'%Y%m%d')
+            else:
+                look = day.strftime('%Y%m%d'+ Toidentify)
 
-                    DS.close()
+            ftp.cwd(pathfiles + str(a) + "/" + str(m))
 
-                    os.remove(data)
-                    os.remove(box1)
-                    os.remove(box2)
+            filenames = ftp.nlst()
 
-                    print("File: " + "Subset_" + file_name + " --> Subset completed")
-                    print(" ")
+            files = pd.Series(filenames)
 
+            for file_name in files[files.str.contains(look)]:
 
-    ftp.quit()
+                os.chdir(outpath1 + "/" + str(m))
+                outputfile = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
 
-#######
-
-elif typo == "MY" and bbox == "YES" and Vs == "NO" and structure == "D" and DL == "NO" :
-
-    print(" ")
-    print("Connection to the FTP server...")
-    
-    ftp = FTP('my.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
-
-    print("Connection exstabilished and download files in progress..")
-    print(" ")
-    
-    for day in days :
-
-        a = day.strftime('%Y')
-        m = day.strftime('%m')
-        g = day.strftime('%d')
-
-        path = os.path.join(outpath, str(a))
-
-        if not os.path.exists(path):
-            os.mkdir(path)
+                if os.path.isfile(outputfile):
+                    print ("File: " + "Subset_" + file_name + " --> File already processed")
+                else:
             
-        outpath1 = outpath + str(a)
-    
-        path2 = os.path.join(outpath1, str(m))
+                    ftp.retrbinary('RETR' + " " + file_name, open(file_name, 'wb').write)
 
-        if not os.path.exists(path2):
-            os.mkdir(path2)
+                    print("File: " + file_name + " --> Download completed")
 
-        if ID == "BACK":
-            look = day.strftime(Toidentify+'%Y%m%d')
-        else:
-            look = day.strftime('%Y%m%d'+ Toidentify)
+                    if Crossing == "NO":
 
-        ftp.cwd(pathfiles + str(a) + "/" + str(m))
+                        data = outpath1 + "/" + str(m) + "/" + file_name
+                        out1 = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
+                        
+                        DS = xr.open_dataset(data)
+                    
+                        DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
+                        DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
+                        DS.close()
 
-        filenames = ftp.nlst()
+                        os.remove(data)
 
-        files = pd.Series(filenames)
+                        print("File: " + "Subset_" + file_name + " --> Subset completed")
+                        print(" ")
 
-        for file_name in files[files.str.contains(look)]:
+                    else:
 
-            os.chdir(outpath1 + "/" + str(m))
-            outputfile = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
+                        data = outpath1 + "/" + str(m) + "/" + file_name
+                        out1 = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
 
-            if os.path.isfile(outputfile):
-                print ("File: " + "Subset_" + file_name + " --> File already processed")
-            else:
+                        box1 = outpath1 + "/" + str(m) + "/" + "Box1_" + file_name
+                        box2 = outpath1 + "/" + str(m) + "/" + "Box2_" + file_name
+                        
+                        DS = xr.open_dataset(data)
+                    
+                        DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+                        DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4')
+
+                        DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
+                        DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4')
+
+                        DSbbox = xr.merge([DSbbox1,DSbbox2])
+                        DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
+
+                        DS.close()
+
+                        os.remove(data)
+                        os.remove(box1)
+                        os.remove(box2)
+
+                        print("File: " + "Subset_" + file_name + " --> Subset completed")
+                        print(" ")
+
+        ftp.quit()
+
+
+
+    ###########################
+    # NRT/MY DAILY BBOX + VAR # 
+    ###########################
+    elif typo == "NRT" and bbox == "YES" and Vs == "YES" and structure == "D" and DL == "NO" :
+
+        print(" ")
+        print("Connection to the FTP server...")
         
-                ftp.retrbinary('RETR' + " " + file_name, open(file_name, 'wb').write)
+        ftp = FTP('nrt.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
 
-                print("File: " + file_name + " --> Download completed")
+        print("Connection exstabilished and download files in progress..")
+        print(" ")
 
-                if Crossing == "NO":
+        for day in days :
 
-                    data = outpath1 + "/" + str(m) + "/" + file_name
-                    out1 = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
-                    
-                    DS = xr.open_dataset(data)
+            a = day.strftime('%Y')
+            m = day.strftime('%m')
+            g = day.strftime('%d')
+
+            path = os.path.join(outpath, str(a))
+
+            if not os.path.exists(path):
+                os.mkdir(path)
                 
-                    DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
-                    DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
-                    DS.close()
+            outpath1 = outpath + str(a)
+        
+            path2 = os.path.join(outpath1, str(m))
 
-                    os.remove(data)
+            if not os.path.exists(path2):
+                os.mkdir(path2)
 
-                    print("File: " + "Subset_" + file_name + " --> Subset completed")
-                    print(" ")
+            if ID == "BACK":
+                look = day.strftime(Toidentify+'%Y%m%d')
+            else:
+                look = day.strftime('%Y%m%d'+ Toidentify)
 
+            ftp.cwd(pathfiles + str(a) + "/" + str(m))
+
+            filenames = ftp.nlst()
+
+            files = pd.Series(filenames)
+
+            for file_name in files[files.str.contains(look)]:
+
+                os.chdir(outpath1 + "/" + str(m))
+                outputfile = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
+
+                if os.path.isfile(outputfile):
+                    print ("File: " + "Subset_" + file_name + " --> File already processed")
                 else:
-
-                    data = outpath1 + "/" + str(m) + "/" + file_name
-                    out1 = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
-
-                    box1 = outpath1 + "/" + str(m) + "/" + "Box1_" + file_name
-                    box2 = outpath1 + "/" + str(m) + "/" + "Box2_" + file_name
-                    
-                    DS = xr.open_dataset(data)
-                
-                    DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
-                    DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4')
-
-                    DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
-                    DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4')
-
-                    DSbbox = xr.merge([DSbbox1,DSbbox2])
-                    DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
-
-                    DS.close()
-
-                    os.remove(data)
-                    os.remove(box1)
-                    os.remove(box2)
-
-                    print("File: " + "Subset_" + file_name + " --> Subset completed")
-                    print(" ")
-
-    ftp.quit()
-
-
-
-###########################
-# NRT/MY DAILY BBOX + VAR # 
-###########################
-elif typo == "NRT" and bbox == "YES" and Vs == "YES" and structure == "D" and DL == "NO" :
-
-    print(" ")
-    print("Connection to the FTP server...")
-    
-    ftp = FTP('nrt.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
-
-    print("Connection exstabilished and download files in progress..")
-    print(" ")
-
-    for day in days :
-
-        a = day.strftime('%Y')
-        m = day.strftime('%m')
-        g = day.strftime('%d')
-
-        path = os.path.join(outpath, str(a))
-
-        if not os.path.exists(path):
-            os.mkdir(path)
             
-        outpath1 = outpath + str(a)
-    
-        path2 = os.path.join(outpath1, str(m))
+                    ftp.retrbinary('RETR' + " " + file_name, open(file_name, 'wb').write)
 
-        if not os.path.exists(path2):
-            os.mkdir(path2)
+                    print("File: " + file_name + " --> Download completed")
 
-        if ID == "BACK":
-            look = day.strftime(Toidentify+'%Y%m%d')
-        else:
-            look = day.strftime('%Y%m%d'+ Toidentify)
+                    if Crossing == "NO":
 
-        ftp.cwd(pathfiles + str(a) + "/" + str(m))
+                        data = outpath1 + "/" + str(m) + "/" + file_name
+                        out1 = outpath1 + "/" + str(m) + "/" + "SubsetBbox_" + file_name
+                        out2 = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
+                        
+                        DS = xr.open_dataset(data)
+                    
+                        DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
+                        DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
+                        DS.close()
 
-        filenames = ftp.nlst()
+                        DS1 = xr.open_dataset(out1)
 
-        files = pd.Series(filenames)
+                        DS1Var = DS1[variables]
+                        DS1Var.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                        DS1.close()
 
-        for file_name in files[files.str.contains(look)]:
+                        os.remove(data)
+                        os.remove(out1)
 
-            os.chdir(outpath1 + "/" + str(m))
-            outputfile = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
+                        print("File: " + "Subset_" + file_name + " --> Subset completed")
+                        print(" ")
 
-            if os.path.isfile(outputfile):
-                print ("File: " + "Subset_" + file_name + " --> File already processed")
-            else:
+                    else:
+
+                        data = outpath1 + "/" + str(m) + "/" + file_name
+                        out1 = outpath1 + "/" + str(m) + "/" + "SubsetBbox_" + file_name
+                        out2 = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
+
+                        box1 = outpath1 + "/" + str(m) + "/" + "Box1_" + file_name
+                        box2 = outpath1 + "/" + str(m) + "/" + "Box2_" + file_name
+                        
+                        DS = xr.open_dataset(data)
+                    
+                        DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+                        DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4')
+
+                        DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
+                        DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4')
+
+                        DSbbox = xr.merge([DSbbox1,DSbbox2])
+                        DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
+                        DS.close()
+
+                        DS1 = xr.open_dataset(out1)
+
+                        DS1Var = DS1[variables]
+                        DS1Var.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                        DS1.close()
+
+                        os.remove(data)
+                        os.remove(out1)
+                        os.remove(box1)
+                        os.remove(box2)
+
+                        print("File: " + "Subset_" + file_name + " --> Subset completed")
+                        print(" ")
+
+        ftp.quit()
+
+    #######
+
+    elif typo == "MY" and bbox == "YES" and Vs == "YES" and structure == "D" and DL == "NO" :
+
+        print(" ")
+        print("Connection to the FTP server...")
         
-                ftp.retrbinary('RETR' + " " + file_name, open(file_name, 'wb').write)
+        ftp = FTP('my.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
 
-                print("File: " + file_name + " --> Download completed")
+        print("Connection exstabilished and download files in progress..")
+        print(" ")
+        
+        for day in days :
 
-                if Crossing == "NO":
+            a = day.strftime('%Y')
+            m = day.strftime('%m')
+            g = day.strftime('%d')
 
-                    data = outpath1 + "/" + str(m) + "/" + file_name
-                    out1 = outpath1 + "/" + str(m) + "/" + "SubsetBbox_" + file_name
-                    out2 = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
-                    
-                    DS = xr.open_dataset(data)
+            path = os.path.join(outpath, str(a))
+
+            if not os.path.exists(path):
+                os.mkdir(path)
                 
-                    DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
-                    DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
-                    DS.close()
+            outpath1 = outpath + str(a)
+        
+            path2 = os.path.join(outpath1, str(m))
 
-                    DS1 = xr.open_dataset(out1)
+            if not os.path.exists(path2):
+                os.mkdir(path2)
 
-                    DS1Var = DS1[variables]
-                    DS1Var.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                    DS1.close()
+            if ID == "BACK":
+                look = day.strftime(Toidentify+'%Y%m%d')
+            else:
+                look = day.strftime('%Y%m%d'+ Toidentify)
 
-                    os.remove(data)
-                    os.remove(out1)
+            ftp.cwd(pathfiles + str(a) + "/" + str(m))
 
-                    print("File: " + "Subset_" + file_name + " --> Subset completed")
-                    print(" ")
+            filenames = ftp.nlst()
 
+            files = pd.Series(filenames)
+
+            for file_name in files[files.str.contains(look)]:
+
+                os.chdir(outpath1 + "/" + str(m))
+                outputfile = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
+
+                if os.path.isfile(outputfile):
+                    print ("File: " + "Subset_" + file_name + " --> File already processed")
                 else:
-
-                    data = outpath1 + "/" + str(m) + "/" + file_name
-                    out1 = outpath1 + "/" + str(m) + "/" + "SubsetBbox_" + file_name
-                    out2 = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
-
-                    box1 = outpath1 + "/" + str(m) + "/" + "Box1_" + file_name
-                    box2 = outpath1 + "/" + str(m) + "/" + "Box2_" + file_name
-                    
-                    DS = xr.open_dataset(data)
-                
-                    DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
-                    DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4')
-
-                    DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
-                    DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4')
-
-                    DSbbox = xr.merge([DSbbox1,DSbbox2])
-                    DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
-                    DS.close()
-
-                    DS1 = xr.open_dataset(out1)
-
-                    DS1Var = DS1[variables]
-                    DS1Var.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                    DS1.close()
-
-                    os.remove(data)
-                    os.remove(out1)
-                    os.remove(box1)
-                    os.remove(box2)
-
-                    print("File: " + "Subset_" + file_name + " --> Subset completed")
-                    print(" ")
-
-    ftp.quit()
-
-#######
-
-elif typo == "MY" and bbox == "YES" and Vs == "YES" and structure == "D" and DL == "NO" :
-
-    print(" ")
-    print("Connection to the FTP server...")
-    
-    ftp = FTP('my.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
-
-    print("Connection exstabilished and download files in progress..")
-    print(" ")
-    
-    for day in days :
-
-        a = day.strftime('%Y')
-        m = day.strftime('%m')
-        g = day.strftime('%d')
-
-        path = os.path.join(outpath, str(a))
-
-        if not os.path.exists(path):
-            os.mkdir(path)
             
-        outpath1 = outpath + str(a)
-    
-        path2 = os.path.join(outpath1, str(m))
+                    ftp.retrbinary('RETR' + " " + file_name, open(file_name, 'wb').write)
 
-        if not os.path.exists(path2):
-            os.mkdir(path2)
+                    print("File: " + file_name + " --> Download completed")
 
-        if ID == "BACK":
-            look = day.strftime(Toidentify+'%Y%m%d')
-        else:
-            look = day.strftime('%Y%m%d'+ Toidentify)
+                    if Crossing == "NO":
 
-        ftp.cwd(pathfiles + str(a) + "/" + str(m))
+                        data = outpath1 + "/" + str(m) + "/" + file_name
+                        out1 = outpath1 + "/" + str(m) + "/" + "SubsetBbox_" + file_name
+                        out2 = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
+                        
+                        DS = xr.open_dataset(data)
+                    
+                        DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
+                        DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
+                        DS.close()
 
-        filenames = ftp.nlst()
+                        DS1 = xr.open_dataset(out1)
 
-        files = pd.Series(filenames)
+                        DS1Var = DS1[variables]
+                        DS1Var.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                        DS1.close()
 
-        for file_name in files[files.str.contains(look)]:
+                        os.remove(data)
+                        os.remove(out1)
 
-            os.chdir(outpath1 + "/" + str(m))
-            outputfile = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
+                        print("File: " + "Subset_" + file_name + " --> Subset completed")
+                        print(" ")
 
-            if os.path.isfile(outputfile):
-                print ("File: " + "Subset_" + file_name + " --> File already processed")
-            else:
+                    else:
+
+                        data = outpath1 + "/" + str(m) + "/" + file_name
+                        out1 = outpath1 + "/" + str(m) + "/" + "SubsetBbox_" + file_name
+                        out2 = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
+                        
+                        box1 = outpath1 + "/" + str(m) + "/" + "Box1_" + file_name
+                        box2 = outpath1 + "/" + str(m) + "/" + "Box2_" + file_name
+                        
+                        DS = xr.open_dataset(data)
+                    
+                        DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+                        DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4')
+
+                        DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
+                        DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4')
+
+                        DSbbox = xr.merge([DSbbox1,DSbbox2])
+                        DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
+                        DS.close()
+
+
+                        DS1 = xr.open_dataset(out1)
+
+                        DS1Var = DS1[variables]
+                        DS1Var.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                        DS1.close()
+
+                        os.remove(data)
+                        os.remove(out1)
+                        os.remove(box1)
+                        os.remove(box2)
+
+                        print("File: " + "Subset_" + file_name + " --> Subset completed")
+                        print(" ")
+
+        ftp.quit()
+
+
+
+    ###################################
+    # NRT/MY DAILY BBOX + DEPTH       #
+    ###################################
+    elif typo == "NRT" and bbox == "YES" and Vs == "NO" and structure == "D" and DL == "YES" :
+
+        print(" ")
+        print("Connection to the FTP server...")
         
-                ftp.retrbinary('RETR' + " " + file_name, open(file_name, 'wb').write)
+        ftp = FTP('nrt.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
 
-                print("File: " + file_name + " --> Download completed")
+        print("Connection exstabilished and download files in progress..")
+        print(" ")
+        
+        for day in days :
 
-                if Crossing == "NO":
+            a = day.strftime('%Y')
+            m = day.strftime('%m')
+            g = day.strftime('%d')
 
-                    data = outpath1 + "/" + str(m) + "/" + file_name
-                    out1 = outpath1 + "/" + str(m) + "/" + "SubsetBbox_" + file_name
-                    out2 = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
-                    
-                    DS = xr.open_dataset(data)
+            path = os.path.join(outpath, str(a))
+
+            if not os.path.exists(path):
+                os.mkdir(path)
                 
-                    DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
-                    DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
-                    DS.close()
+            outpath1 = outpath + str(a)
+        
+            path2 = os.path.join(outpath1, str(m))
 
-                    DS1 = xr.open_dataset(out1)
+            if not os.path.exists(path2):
+                os.mkdir(path2)
 
-                    DS1Var = DS1[variables]
-                    DS1Var.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                    DS1.close()
+            if ID == "BACK":
+                look = day.strftime(Toidentify+'%Y%m%d')
+            else:
+                look = day.strftime('%Y%m%d'+ Toidentify)
 
-                    os.remove(data)
-                    os.remove(out1)
+            ftp.cwd(pathfiles + str(a) + "/" + str(m))
 
-                    print("File: " + "Subset_" + file_name + " --> Subset completed")
-                    print(" ")
+            filenames = ftp.nlst()
 
+            files = pd.Series(filenames)
+
+            for file_name in files[files.str.contains(look)]:
+
+                os.chdir(outpath1 + "/" + str(m))
+                outputfile = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
+
+                if os.path.isfile(outputfile):
+                    print ("File: " + "Subset_" + file_name + " --> File already processed")
                 else:
-
-                    data = outpath1 + "/" + str(m) + "/" + file_name
-                    out1 = outpath1 + "/" + str(m) + "/" + "SubsetBbox_" + file_name
-                    out2 = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
-                    
-                    box1 = outpath1 + "/" + str(m) + "/" + "Box1_" + file_name
-                    box2 = outpath1 + "/" + str(m) + "/" + "Box2_" + file_name
-                    
-                    DS = xr.open_dataset(data)
-                
-                    DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
-                    DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4')
-
-                    DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
-                    DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4')
-
-                    DSbbox = xr.merge([DSbbox1,DSbbox2])
-                    DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
-                    DS.close()
-
-
-                    DS1 = xr.open_dataset(out1)
-
-                    DS1Var = DS1[variables]
-                    DS1Var.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                    DS1.close()
-
-                    os.remove(data)
-                    os.remove(out1)
-                    os.remove(box1)
-                    os.remove(box2)
-
-                    print("File: " + "Subset_" + file_name + " --> Subset completed")
-                    print(" ")
-
-    ftp.quit()
-
-
-
-###################################
-# NRT/MY DAILY BBOX + DEPTH       #
-###################################
-elif typo == "NRT" and bbox == "YES" and Vs == "NO" and structure == "D" and DL == "YES" :
-
-    print(" ")
-    print("Connection to the FTP server...")
-    
-    ftp = FTP('nrt.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
-
-    print("Connection exstabilished and download files in progress..")
-    print(" ")
-    
-    for day in days :
-
-        a = day.strftime('%Y')
-        m = day.strftime('%m')
-        g = day.strftime('%d')
-
-        path = os.path.join(outpath, str(a))
-
-        if not os.path.exists(path):
-            os.mkdir(path)
             
-        outpath1 = outpath + str(a)
-    
-        path2 = os.path.join(outpath1, str(m))
+                    ftp.retrbinary('RETR' + " " + file_name, open(file_name, 'wb').write)
 
-        if not os.path.exists(path2):
-            os.mkdir(path2)
+                    print("File: " + file_name + " --> Download completed")
 
-        if ID == "BACK":
-            look = day.strftime(Toidentify+'%Y%m%d')
-        else:
-            look = day.strftime('%Y%m%d'+ Toidentify)
+                    if Crossing == "NO":
 
-        ftp.cwd(pathfiles + str(a) + "/" + str(m))
+                        data = outpath1 + "/" + str(m) + "/" + file_name
+                        out1 = outpath1 + "/" + str(m) + "/" + "SubsetBbox_" + file_name
+                        out2 = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
+                        
+                        DS = xr.open_dataset(data)
+                    
+                        DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
+                        DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
+                        DS.close()
 
-        filenames = ftp.nlst()
+                        DS1 = xr.open_dataset(out1)
 
-        files = pd.Series(filenames)
+                        if RangeD == "SINGLE" :
+                            DSdepth = DS1.sel(depth=int(depth), method="nearest")
+                            DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                            DS1.close()
+                        else:
+                            DSdepth = DS1.sel(depth=slice(float(d1),float(d2)))
+                            DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                            DS1.close()
 
-        for file_name in files[files.str.contains(look)]:
+                        os.remove(data)
+                        os.remove(out1)
 
-            os.chdir(outpath1 + "/" + str(m))
-            outputfile = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
+                        print("File: " + "Subset_" + file_name + " --> Subset completed")
+                        print(" ")
 
-            if os.path.isfile(outputfile):
-                print ("File: " + "Subset_" + file_name + " --> File already processed")
-            else:
+                    else:
+
+                        data = outpath1 + "/" + str(m) + "/" + file_name
+                        out1 = outpath1 + "/" + str(m) + "/" + "SubsetBbox_" + file_name
+                        out2 = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
+                        
+                        box1 = outpath1 + "/" + str(m) + "/" + "Box1_" + file_name
+                        box2 = outpath1 + "/" + str(m) + "/" + "Box2_" + file_name
+                        
+                        DS = xr.open_dataset(data)
+                    
+                        DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+                        DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4')
+
+                        DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
+                        DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4')
+
+                        DSbbox = xr.merge([DSbbox1,DSbbox2])
+                        DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
+                        DS.close()
+
+                        DS1 = xr.open_dataset(out1)
+
+                        if RangeD == "SINGLE" :
+                            DSdepth = DS1.sel(depth=int(depth), method="nearest")
+                            DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                            DS1.close()
+                        else:
+                            DSdepth = DS1.sel(depth=slice(float(d1),float(d2)))
+                            DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                            DS1.close()
+
+                        os.remove(data)
+                        os.remove(out1)
+                        os.remove(box1)
+                        os.remove(box2)
+
+                        print("File: " + "Subset_" + file_name + " --> Subset completed")
+                        print(" ")
+
+        ftp.quit()
+
+    #######
+
+    elif typo == "MY" and bbox == "YES" and Vs == "NO" and structure == "D" and DL == "YES" :
+
+        print(" ")
+        print("Connection to the FTP server...")
         
-                ftp.retrbinary('RETR' + " " + file_name, open(file_name, 'wb').write)
+        ftp = FTP('my.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
 
-                print("File: " + file_name + " --> Download completed")
+        print("Connection exstabilished and download files in progress..")
+        print(" ")
+        
+        for day in days :
 
-                if Crossing == "NO":
+            a = day.strftime('%Y')
+            m = day.strftime('%m')
+            g = day.strftime('%d')
 
-                    data = outpath1 + "/" + str(m) + "/" + file_name
-                    out1 = outpath1 + "/" + str(m) + "/" + "SubsetBbox_" + file_name
-                    out2 = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
-                    
-                    DS = xr.open_dataset(data)
+            path = os.path.join(outpath, str(a))
+
+            if not os.path.exists(path):
+                os.mkdir(path)
                 
-                    DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
-                    DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
-                    DS.close()
+            outpath1 = outpath + str(a)
+        
+            path2 = os.path.join(outpath1, str(m))
 
-                    DS1 = xr.open_dataset(out1)
+            if not os.path.exists(path2):
+                os.mkdir(path2)
 
-                    if RangeD == "SINGLE" :
-                        DSdepth = DS1.sel(depth=int(depth), method="nearest")
-                        DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                        DS1.close()
-                    else:
-                        DSdepth = DS1.sel(depth=slice(float(d1),float(d2)))
-                        DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                        DS1.close()
+            if ID == "BACK":
+                look = day.strftime(Toidentify+'%Y%m%d')
+            else:
+                look = day.strftime('%Y%m%d'+ Toidentify)
 
-                    os.remove(data)
-                    os.remove(out1)
+            ftp.cwd(pathfiles + str(a) + "/" + str(m))
 
-                    print("File: " + "Subset_" + file_name + " --> Subset completed")
-                    print(" ")
+            filenames = ftp.nlst()
 
+            files = pd.Series(filenames)
+
+            for file_name in files[files.str.contains(look)]:
+
+                os.chdir(outpath1 + "/" + str(m))
+                outputfile = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
+
+                if os.path.isfile(outputfile):
+                    print ("File: " + "Subset_" + file_name + " --> File already processed")
                 else:
-
-                    data = outpath1 + "/" + str(m) + "/" + file_name
-                    out1 = outpath1 + "/" + str(m) + "/" + "SubsetBbox_" + file_name
-                    out2 = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
-                    
-                    box1 = outpath1 + "/" + str(m) + "/" + "Box1_" + file_name
-                    box2 = outpath1 + "/" + str(m) + "/" + "Box2_" + file_name
-                    
-                    DS = xr.open_dataset(data)
-                
-                    DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
-                    DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4')
-
-                    DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
-                    DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4')
-
-                    DSbbox = xr.merge([DSbbox1,DSbbox2])
-                    DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
-                    DS.close()
-
-                    DS1 = xr.open_dataset(out1)
-
-                    if RangeD == "SINGLE" :
-                        DSdepth = DS1.sel(depth=int(depth), method="nearest")
-                        DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                        DS1.close()
-                    else:
-                        DSdepth = DS1.sel(depth=slice(float(d1),float(d2)))
-                        DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                        DS1.close()
-
-                    os.remove(data)
-                    os.remove(out1)
-                    os.remove(box1)
-                    os.remove(box2)
-
-                    print("File: " + "Subset_" + file_name + " --> Subset completed")
-                    print(" ")
-
-    ftp.quit()
-
-#######
-
-elif typo == "MY" and bbox == "YES" and Vs == "NO" and structure == "D" and DL == "YES" :
-
-    print(" ")
-    print("Connection to the FTP server...")
-    
-    ftp = FTP('my.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
-
-    print("Connection exstabilished and download files in progress..")
-    print(" ")
-    
-    for day in days :
-
-        a = day.strftime('%Y')
-        m = day.strftime('%m')
-        g = day.strftime('%d')
-
-        path = os.path.join(outpath, str(a))
-
-        if not os.path.exists(path):
-            os.mkdir(path)
             
-        outpath1 = outpath + str(a)
-    
-        path2 = os.path.join(outpath1, str(m))
+                    ftp.retrbinary('RETR' + " " + file_name, open(file_name, 'wb').write)
 
-        if not os.path.exists(path2):
-            os.mkdir(path2)
+                    print("File: " + file_name + " --> Download completed")
 
-        if ID == "BACK":
-            look = day.strftime(Toidentify+'%Y%m%d')
-        else:
-            look = day.strftime('%Y%m%d'+ Toidentify)
+                    if Crossing == "NO":
 
-        ftp.cwd(pathfiles + str(a) + "/" + str(m))
+                        data = outpath1 + "/" + str(m) + "/" + file_name
+                        out1 = outpath1 + "/" + str(m) + "/" + "SubsetBbox_" + file_name
+                        out2 = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
+                        
+                        DS = xr.open_dataset(data)
+                    
+                        DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
+                        DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
+                        DS.close()
 
-        filenames = ftp.nlst()
+                        DS1 = xr.open_dataset(out1)
 
-        files = pd.Series(filenames)
+                        if RangeD == "SINGLE" :
+                            DSdepth = DS1.sel(depth=int(depth), method="nearest")
+                            DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                            DS1.close()
+                        else:
+                            DSdepth = DS1.sel(depth=slice(float(d1),float(d2)))
+                            DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                            DS1.close()
 
-        for file_name in files[files.str.contains(look)]:
+                        os.remove(data)
+                        os.remove(out1)
 
-            os.chdir(outpath1 + "/" + str(m))
-            outputfile = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
+                        print("File: " + "Subset_" + file_name + " --> Subset completed")
+                        print(" ")
 
-            if os.path.isfile(outputfile):
-                print ("File: " + "Subset_" + file_name + " --> File already processed")
-            else:
+                    else:
+
+                        data = outpath1 + "/" + str(m) + "/" + file_name
+                        out1 = outpath1 + "/" + str(m) + "/" + "SubsetBbox_" + file_name
+                        out2 = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
+                        
+                        box1 = outpath1 + "/" + str(m) + "/" + "Box1_" + file_name
+                        box2 = outpath1 + "/" + str(m) + "/" + "Box2_" + file_name
+                        
+                        DS = xr.open_dataset(data)
+                    
+                        DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+                        DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4')
+
+                        DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
+                        DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4')
+
+                        DSbbox = xr.merge([DSbbox1,DSbbox2])
+                        DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
+                        DS.close()
+
+                        DS1 = xr.open_dataset(out1)
+
+                        if RangeD == "SINGLE" :
+                            DSdepth = DS1.sel(depth=int(depth), method="nearest")
+                            DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                            DS1.close()
+                        else:
+                            DSdepth = DS1.sel(depth=slice(float(d1),float(d2)))
+                            DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                            DS1.close()
+
+                        os.remove(data)
+                        os.remove(out1)
+                        os.remove(box1)
+                        os.remove(box2)
+
+                        print("File: " + "Subset_" + file_name + " --> Subset completed")
+                        print(" ")
+
+        ftp.quit()
+
+
+
+    ###################################
+    # NRT/MY DAILY BBOX + VAR + DEPTH #
+    ###################################
+    elif typo == "NRT" and bbox == "YES" and Vs == "YES" and structure == "D" and DL == "YES" :
+
+        print(" ")
+        print("Connection to the FTP server...")
         
-                ftp.retrbinary('RETR' + " " + file_name, open(file_name, 'wb').write)
+        ftp = FTP('nrt.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
 
-                print("File: " + file_name + " --> Download completed")
+        print("Connection exstabilished and download files in progress..")
+        print(" ")
+        
+        for day in days :
 
-                if Crossing == "NO":
+            a = day.strftime('%Y')
+            m = day.strftime('%m')
+            g = day.strftime('%d')
 
-                    data = outpath1 + "/" + str(m) + "/" + file_name
-                    out1 = outpath1 + "/" + str(m) + "/" + "SubsetBbox_" + file_name
-                    out2 = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
-                    
-                    DS = xr.open_dataset(data)
+            path = os.path.join(outpath, str(a))
+
+            if not os.path.exists(path):
+                os.mkdir(path)
                 
-                    DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
-                    DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
-                    DS.close()
+            outpath1 = outpath + str(a)
+        
+            path2 = os.path.join(outpath1, str(m))
 
-                    DS1 = xr.open_dataset(out1)
+            if not os.path.exists(path2):
+                os.mkdir(path2)
 
-                    if RangeD == "SINGLE" :
-                        DSdepth = DS1.sel(depth=int(depth), method="nearest")
-                        DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                        DS1.close()
-                    else:
-                        DSdepth = DS1.sel(depth=slice(float(d1),float(d2)))
-                        DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                        DS1.close()
+            if ID == "BACK":
+                look = day.strftime(Toidentify+'%Y%m%d')
+            else:
+                look = day.strftime('%Y%m%d'+ Toidentify)
 
-                    os.remove(data)
-                    os.remove(out1)
+            ftp.cwd(pathfiles + str(a) + "/" + str(m))
 
-                    print("File: " + "Subset_" + file_name + " --> Subset completed")
-                    print(" ")
+            filenames = ftp.nlst()
 
+            files = pd.Series(filenames)
+
+            for file_name in files[files.str.contains(look)]:
+
+                os.chdir(outpath1 + "/" + str(m))
+                outputfile = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
+
+                if os.path.isfile(outputfile):
+                    print ("File: " + "Subset_" + file_name + " --> File already processed")
                 else:
-
-                    data = outpath1 + "/" + str(m) + "/" + file_name
-                    out1 = outpath1 + "/" + str(m) + "/" + "SubsetBbox_" + file_name
-                    out2 = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
-                    
-                    box1 = outpath1 + "/" + str(m) + "/" + "Box1_" + file_name
-                    box2 = outpath1 + "/" + str(m) + "/" + "Box2_" + file_name
-                    
-                    DS = xr.open_dataset(data)
-                
-                    DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
-                    DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4')
-
-                    DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
-                    DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4')
-
-                    DSbbox = xr.merge([DSbbox1,DSbbox2])
-                    DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
-                    DS.close()
-
-                    DS1 = xr.open_dataset(out1)
-
-                    if RangeD == "SINGLE" :
-                        DSdepth = DS1.sel(depth=int(depth), method="nearest")
-                        DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                        DS1.close()
-                    else:
-                        DSdepth = DS1.sel(depth=slice(float(d1),float(d2)))
-                        DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                        DS1.close()
-
-                    os.remove(data)
-                    os.remove(out1)
-                    os.remove(box1)
-                    os.remove(box2)
-
-                    print("File: " + "Subset_" + file_name + " --> Subset completed")
-                    print(" ")
-
-    ftp.quit()
-
-
-
-###################################
-# NRT/MY DAILY BBOX + VAR + DEPTH #
-###################################
-elif typo == "NRT" and bbox == "YES" and Vs == "YES" and structure == "D" and DL == "YES" :
-
-    print(" ")
-    print("Connection to the FTP server...")
-    
-    ftp = FTP('nrt.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
-
-    print("Connection exstabilished and download files in progress..")
-    print(" ")
-    
-    for day in days :
-
-        a = day.strftime('%Y')
-        m = day.strftime('%m')
-        g = day.strftime('%d')
-
-        path = os.path.join(outpath, str(a))
-
-        if not os.path.exists(path):
-            os.mkdir(path)
             
-        outpath1 = outpath + str(a)
-    
-        path2 = os.path.join(outpath1, str(m))
+                    ftp.retrbinary('RETR' + " " + file_name, open(file_name, 'wb').write)
 
-        if not os.path.exists(path2):
-            os.mkdir(path2)
+                    print("File: " + file_name + " --> Download completed")
 
-        if ID == "BACK":
-            look = day.strftime(Toidentify+'%Y%m%d')
-        else:
-            look = day.strftime('%Y%m%d'+ Toidentify)
+                    if Crossing == "NO":
 
-        ftp.cwd(pathfiles + str(a) + "/" + str(m))
+                        data = outpath1 + "/" + str(m) + "/" + file_name
+                        out1 = outpath1 + "/" + str(m) + "/" + "SubsetBbox_" + file_name
+                        out2 = outpath1 + "/" + str(m) + "/" + "SubsetDepth_" + file_name
+                        out3 = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
+                        
+                        DS = xr.open_dataset(data)
+                    
+                        DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
+                        DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
+                        DS.close()
 
-        filenames = ftp.nlst()
+                        DS1 = xr.open_dataset(out1)
 
-        files = pd.Series(filenames)
+                        if RangeD == "SINGLE" :
+                            DSdepth = DS1.sel(depth=int(depth), method="nearest")
+                            DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                            DS1.close()
+                        else:
+                            DSdepth = DS1.sel(depth=slice(float(d1),float(d2)))
+                            DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                            DS1.close()
 
-        for file_name in files[files.str.contains(look)]:
+                        DS2 = xr.open_dataset(out2)
 
-            os.chdir(outpath1 + "/" + str(m))
-            outputfile = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
+                        DS2Var = DS2[variables]
+                        DS2Var.to_netcdf(path=out3, mode='w', format= 'NETCDF4')
+                        DS2.close()
 
-            if os.path.isfile(outputfile):
-                print ("File: " + "Subset_" + file_name + " --> File already processed")
-            else:
+                        os.remove(data)
+                        os.remove(out1)
+                        os.remove(out2)
+
+                        print("File: " + "Subset_" + file_name + " --> Subset completed")
+                        print(" ")
+
+                    else:
+
+                        data = outpath1 + "/" + str(m) + "/" + file_name
+                        out1 = outpath1 + "/" + str(m) + "/" + "SubsetBbox_" + file_name
+                        out2 = outpath1 + "/" + str(m) + "/" + "SubsetDepth_" + file_name
+                        out3 = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
+                        
+                        box1 = outpath1 + "/" + str(m) + "/" + "Box1_" + file_name
+                        box2 = outpath1 + "/" + str(m) + "/" + "Box2_" + file_name
+                        
+                        DS = xr.open_dataset(data)
+                    
+                        DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+                        DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4')
+
+                        DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
+                        DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4')
+
+                        DSbbox = xr.merge([DSbbox1,DSbbox2])
+                        DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
+                        DS.close()
+
+                        DS1 = xr.open_dataset(out1)
+
+                        if RangeD == "SINGLE" :
+                            DSdepth = DS1.sel(depth=int(depth), method="nearest")
+                            DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                            DS1.close()
+                        else:
+                            DSdepth = DS1.sel(depth=slice(float(d1),float(d2)))
+                            DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                            DS1.close()
+
+                        DS2 = xr.open_dataset(out2)
+
+                        DS2Var = DS2[variables]
+                        DS2Var.to_netcdf(path=out3, mode='w', format= 'NETCDF4')
+                        DS2.close()
+
+                        os.remove(data)
+                        os.remove(out1)
+                        os.remove(out2)
+                        os.remove(box1)
+                        os.remove(box2)
+
+                        print("File: " + "Subset_" + file_name + " --> Subset completed")
+                        print(" ")
+
+
+        ftp.quit()
+
+    #######
+
+    elif typo == "MY" and bbox == "YES" and Vs == "YES" and structure == "D" and DL == "YES" :
+
+        print(" ")
+        print("Connection to the FTP server...")
         
-                ftp.retrbinary('RETR' + " " + file_name, open(file_name, 'wb').write)
+        ftp = FTP('my.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
 
-                print("File: " + file_name + " --> Download completed")
+        print("Connection exstabilished and download files in progress..")
+        print(" ")
+        
+        for day in days :
 
-                if Crossing == "NO":
+            a = day.strftime('%Y')
+            m = day.strftime('%m')
+            g = day.strftime('%d')
 
-                    data = outpath1 + "/" + str(m) + "/" + file_name
-                    out1 = outpath1 + "/" + str(m) + "/" + "SubsetBbox_" + file_name
-                    out2 = outpath1 + "/" + str(m) + "/" + "SubsetDepth_" + file_name
-                    out3 = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
-                    
-                    DS = xr.open_dataset(data)
+            path = os.path.join(outpath, str(a))
+
+            if not os.path.exists(path):
+                os.mkdir(path)
                 
-                    DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
-                    DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
-                    DS.close()
+            outpath1 = outpath + str(a)
+        
+            path2 = os.path.join(outpath1, str(m))
 
-                    DS1 = xr.open_dataset(out1)
+            if not os.path.exists(path2):
+                os.mkdir(path2)
 
-                    if RangeD == "SINGLE" :
-                        DSdepth = DS1.sel(depth=int(depth), method="nearest")
-                        DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                        DS1.close()
-                    else:
-                        DSdepth = DS1.sel(depth=slice(float(d1),float(d2)))
-                        DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                        DS1.close()
+            if ID == "BACK":
+                look = day.strftime(Toidentify+'%Y%m%d')
+            else:
+                look = day.strftime('%Y%m%d'+ Toidentify)
 
-                    DS2 = xr.open_dataset(out2)
+            ftp.cwd(pathfiles + str(a) + "/" + str(m))
 
-                    DS2Var = DS2[variables]
-                    DS2Var.to_netcdf(path=out3, mode='w', format= 'NETCDF4')
-                    DS2.close()
+            filenames = ftp.nlst()
 
-                    os.remove(data)
-                    os.remove(out1)
-                    os.remove(out2)
+            files = pd.Series(filenames)
 
-                    print("File: " + "Subset_" + file_name + " --> Subset completed")
-                    print(" ")
+            for file_name in files[files.str.contains(look)]:
 
+                os.chdir(outpath1 + "/" + str(m))
+                outputfile = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
+
+                if os.path.isfile(outputfile):
+                    print ("File: " + "Subset_" + file_name + " --> File already processed")
                 else:
-
-                    data = outpath1 + "/" + str(m) + "/" + file_name
-                    out1 = outpath1 + "/" + str(m) + "/" + "SubsetBbox_" + file_name
-                    out2 = outpath1 + "/" + str(m) + "/" + "SubsetDepth_" + file_name
-                    out3 = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
-                    
-                    box1 = outpath1 + "/" + str(m) + "/" + "Box1_" + file_name
-                    box2 = outpath1 + "/" + str(m) + "/" + "Box2_" + file_name
-                    
-                    DS = xr.open_dataset(data)
-                
-                    DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
-                    DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4')
-
-                    DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
-                    DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4')
-
-                    DSbbox = xr.merge([DSbbox1,DSbbox2])
-                    DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
-                    DS.close()
-
-                    DS1 = xr.open_dataset(out1)
-
-                    if RangeD == "SINGLE" :
-                        DSdepth = DS1.sel(depth=int(depth), method="nearest")
-                        DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                        DS1.close()
-                    else:
-                        DSdepth = DS1.sel(depth=slice(float(d1),float(d2)))
-                        DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                        DS1.close()
-
-                    DS2 = xr.open_dataset(out2)
-
-                    DS2Var = DS2[variables]
-                    DS2Var.to_netcdf(path=out3, mode='w', format= 'NETCDF4')
-                    DS2.close()
-
-                    os.remove(data)
-                    os.remove(out1)
-                    os.remove(out2)
-                    os.remove(box1)
-                    os.remove(box2)
-
-                    print("File: " + "Subset_" + file_name + " --> Subset completed")
-                    print(" ")
-
-
-    ftp.quit()
-
-#######
-
-elif typo == "MY" and bbox == "YES" and Vs == "YES" and structure == "D" and DL == "YES" :
-
-    print(" ")
-    print("Connection to the FTP server...")
-    
-    ftp = FTP('my.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
-
-    print("Connection exstabilished and download files in progress..")
-    print(" ")
-    
-    for day in days :
-
-        a = day.strftime('%Y')
-        m = day.strftime('%m')
-        g = day.strftime('%d')
-
-        path = os.path.join(outpath, str(a))
-
-        if not os.path.exists(path):
-            os.mkdir(path)
             
-        outpath1 = outpath + str(a)
-    
-        path2 = os.path.join(outpath1, str(m))
+                    ftp.retrbinary('RETR' + " " + file_name, open(file_name, 'wb').write)
 
-        if not os.path.exists(path2):
-            os.mkdir(path2)
+                    print("File: " + file_name + " --> Download completed")
 
-        if ID == "BACK":
-            look = day.strftime(Toidentify+'%Y%m%d')
-        else:
-            look = day.strftime('%Y%m%d'+ Toidentify)
+                    if Crossing == "NO":
 
-        ftp.cwd(pathfiles + str(a) + "/" + str(m))
+                        data = outpath1 + "/" + str(m) + "/" + file_name
+                        out1 = outpath1 + "/" + str(m) + "/" + "SubsetBbox_" + file_name
+                        out2 = outpath1 + "/" + str(m) + "/" + "SubsetDepth_" + file_name
+                        out3 = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
+                        
+                        DS = xr.open_dataset(data)
+                    
+                        DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
+                        DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
+                        DS.close()
 
-        filenames = ftp.nlst()
+                        DS1 = xr.open_dataset(out1)
 
-        files = pd.Series(filenames)
+                        if RangeD == "SINGLE" :
+                            DSdepth = DS1.sel(depth=int(depth), method="nearest")
+                            DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                            DS1.close()
+                        else:
+                            DSdepth = DS1.sel(depth=slice(float(d1),float(d2)))
+                            DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                            DS1.close()
 
-        for file_name in files[files.str.contains(look)]:
+                        DS2 = xr.open_dataset(out2)
 
-            os.chdir(outpath1 + "/" + str(m))
-            outputfile = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
+                        DS2Var = DS2[variables]
+                        DS2Var.to_netcdf(path=out3, mode='w', format= 'NETCDF4')
+                        DS2.close()
 
-            if os.path.isfile(outputfile):
-                print ("File: " + "Subset_" + file_name + " --> File already processed")
-            else:
+                        os.remove(data)
+                        os.remove(out1)
+                        os.remove(out2)
+
+                        print("File: " + "Subset_" + file_name + " --> Subset completed")
+                        print(" ")
+
+                    else:
+
+                        data = outpath1 + "/" + str(m) + "/" + file_name
+                        out1 = outpath1 + "/" + str(m) + "/" + "SubsetBbox_" + file_name
+                        out2 = outpath1 + "/" + str(m) + "/" + "SubsetDepth_" + file_name
+                        out3 = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
+                        
+                        box1 = outpath1 + "/" + str(m) + "/" + "Box1_" + file_name
+                        box2 = outpath1 + "/" + str(m) + "/" + "Box2_" + file_name
+                        
+                        DS = xr.open_dataset(data)
+                    
+                        DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+                        DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4')
+
+                        DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
+                        DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4')
+
+                        DSbbox = xr.merge([DSbbox1,DSbbox2])
+                        DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
+                        DS.close()
+
+                        DS1 = xr.open_dataset(out1)
+
+                        if RangeD == "SINGLE" :
+                            DSdepth = DS1.sel(depth=int(depth), method="nearest")
+                            DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                            DS1.close()
+                        else:
+                            DSdepth = DS1.sel(depth=slice(float(d1),float(d2)))
+                            DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                            DS1.close()
+
+                        DS2 = xr.open_dataset(out2)
+
+                        DS2Var = DS2[variables]
+                        DS2Var.to_netcdf(path=out3, mode='w', format= 'NETCDF4')
+                        DS2.close()
+
+                        os.remove(data)
+                        os.remove(out1)
+                        os.remove(out2)
+                        os.remove(box1)
+                        os.remove(box2)
+
+                        print("File: " + "Subset_" + file_name + " --> Subset completed")
+                        print(" ")
+
+
+        ftp.quit()
+
+
+    #End Daily dataset options
+
+    ########################################################
+    ########################################################
+    ########################################################
+
+    #Start Monthly dataset options.....
+
+    #####################################
+    # NRT/MY MONTHLY BBOX               #
+    #####################################
+    elif typo == "NRT" and bbox == "YES" and Vs == "NO" and structure == "M" and DL == "NO" :
+
+        print(" ")
+        print("Connection to the FTP server...")
         
-                ftp.retrbinary('RETR' + " " + file_name, open(file_name, 'wb').write)
+        ftp = FTP('nrt.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
 
-                print("File: " + file_name + " --> Download completed")
+        print("Connection exstabilished and download files in progress..")
+        print(" ")
+        
+        for mon in months :
 
-                if Crossing == "NO":
+            a = mon.strftime('%Y')
+            m = mon.strftime('%m')
 
-                    data = outpath1 + "/" + str(m) + "/" + file_name
-                    out1 = outpath1 + "/" + str(m) + "/" + "SubsetBbox_" + file_name
-                    out2 = outpath1 + "/" + str(m) + "/" + "SubsetDepth_" + file_name
-                    out3 = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
-                    
-                    DS = xr.open_dataset(data)
+            path = os.path.join(outpath, str(a))
+
+            if not os.path.exists(path):
+                os.mkdir(path)
                 
-                    DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
-                    DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
-                    DS.close()
+            outpath1 = outpath + str(a)
 
-                    DS1 = xr.open_dataset(out1)
+            if ID == "BACK":
+                look = mon.strftime(Toidentify+'%Y%m%d')
+            else:
+                look = mon.strftime('%Y%m%d'+ Toidentify)
 
-                    if RangeD == "SINGLE" :
-                        DSdepth = DS1.sel(depth=int(depth), method="nearest")
-                        DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                        DS1.close()
-                    else:
-                        DSdepth = DS1.sel(depth=slice(float(d1),float(d2)))
-                        DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                        DS1.close()
+            ftp.cwd(pathfiles + str(a))
 
-                    DS2 = xr.open_dataset(out2)
+            filenames = ftp.nlst()
 
-                    DS2Var = DS2[variables]
-                    DS2Var.to_netcdf(path=out3, mode='w', format= 'NETCDF4')
-                    DS2.close()
+            files = pd.Series(filenames)
 
-                    os.remove(data)
-                    os.remove(out1)
-                    os.remove(out2)
+            for file_name in files[files.str.contains(look)]:
 
-                    print("File: " + "Subset_" + file_name + " --> Subset completed")
-                    print(" ")
+                os.chdir(outpath1)
+                outputfile = outpath1 + "/"  + "Subset_" + file_name
 
+                if os.path.isfile(outputfile):
+                    print ("File: " + "Subset_" + file_name + " --> File already processed")
                 else:
-
-                    data = outpath1 + "/" + str(m) + "/" + file_name
-                    out1 = outpath1 + "/" + str(m) + "/" + "SubsetBbox_" + file_name
-                    out2 = outpath1 + "/" + str(m) + "/" + "SubsetDepth_" + file_name
-                    out3 = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
-                    
-                    box1 = outpath1 + "/" + str(m) + "/" + "Box1_" + file_name
-                    box2 = outpath1 + "/" + str(m) + "/" + "Box2_" + file_name
-                    
-                    DS = xr.open_dataset(data)
-                
-                    DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
-                    DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4')
-
-                    DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
-                    DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4')
-
-                    DSbbox = xr.merge([DSbbox1,DSbbox2])
-                    DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
-                    DS.close()
-
-                    DS1 = xr.open_dataset(out1)
-
-                    if RangeD == "SINGLE" :
-                        DSdepth = DS1.sel(depth=int(depth), method="nearest")
-                        DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                        DS1.close()
-                    else:
-                        DSdepth = DS1.sel(depth=slice(float(d1),float(d2)))
-                        DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                        DS1.close()
-
-                    DS2 = xr.open_dataset(out2)
-
-                    DS2Var = DS2[variables]
-                    DS2Var.to_netcdf(path=out3, mode='w', format= 'NETCDF4')
-                    DS2.close()
-
-                    os.remove(data)
-                    os.remove(out1)
-                    os.remove(out2)
-                    os.remove(box1)
-                    os.remove(box2)
-
-                    print("File: " + "Subset_" + file_name + " --> Subset completed")
-                    print(" ")
-
-
-    ftp.quit()
-
-
-#End Daily dataset options
-
-########################################################
-########################################################
-########################################################
-
-#Start Monthly dataset options.....
-
-#####################################
-# NRT/MY MONTHLY BBOX               #
-#####################################
-elif typo == "NRT" and bbox == "YES" and Vs == "NO" and structure == "M" and DL == "NO" :
-
-    print(" ")
-    print("Connection to the FTP server...")
-    
-    ftp = FTP('nrt.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
-
-    print("Connection exstabilished and download files in progress..")
-    print(" ")
-    
-    for mon in months :
-
-        a = mon.strftime('%Y')
-        m = mon.strftime('%m')
-
-        path = os.path.join(outpath, str(a))
-
-        if not os.path.exists(path):
-            os.mkdir(path)
             
-        outpath1 = outpath + str(a)
+                    ftp.retrbinary('RETR' + " " + file_name, open(file_name, 'wb').write)
 
-        if ID == "BACK":
-            look = mon.strftime(Toidentify+'%Y%m%d')
-        else:
-            look = mon.strftime('%Y%m%d'+ Toidentify)
+                    print("File: " + file_name + " --> Download completed")
 
-        ftp.cwd(pathfiles + str(a))
+                    if Crossing == "NO":
 
-        filenames = ftp.nlst()
+                        data = outpath1  + "/" + file_name
+                        out1 = outpath1 + "/" + "Subset_" + file_name
+                        
+                        DS = xr.open_dataset(data)
+                    
+                        DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
+                        DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
+                        DS.close()
 
-        files = pd.Series(filenames)
+                        os.remove(data)
 
-        for file_name in files[files.str.contains(look)]:
+                        print("File: " + "Subset_" + file_name + " --> Subset completed")
+                        print(" ")
+                    
+                    else:
 
-            os.chdir(outpath1)
-            outputfile = outpath1 + "/"  + "Subset_" + file_name
+                        data = outpath1  + "/" + file_name
+                        out1 = outpath1 + "/" + "Subset_" + file_name
+                        
+                        box1 = outpath1 + "/" + str(m) + "/" + "Box1_" + file_name
+                        box2 = outpath1 + "/" + str(m) + "/" + "Box2_" + file_name
+                        
+                        DS = xr.open_dataset(data)
+                    
+                        DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+                        DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4')
 
-            if os.path.isfile(outputfile):
-                print ("File: " + "Subset_" + file_name + " --> File already processed")
-            else:
+                        DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
+                        DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4')
+
+                        DSbbox = xr.merge([DSbbox1,DSbbox2])
+                        DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
+                        DS.close()
+
+                        os.remove(data)
+                        os.remove(box1)
+                        os.remove(box2)
+
+                        print("File: " + "Subset_" + file_name + " --> Subset completed")
+                        print(" ")
+
+        ftp.quit()
+
+    ##########
+
+    elif typo == "MY" and bbox == "YES" and Vs == "NO" and structure == "M" and DL == "NO" :
+
+        print(" ")
+        print("Connection to the FTP server...")
         
-                ftp.retrbinary('RETR' + " " + file_name, open(file_name, 'wb').write)
+        ftp = FTP('my.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
 
-                print("File: " + file_name + " --> Download completed")
-
-                if Crossing == "NO":
-
-                    data = outpath1  + "/" + file_name
-                    out1 = outpath1 + "/" + "Subset_" + file_name
-                    
-                    DS = xr.open_dataset(data)
-                
-                    DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
-                    DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
-                    DS.close()
-
-                    os.remove(data)
-
-                    print("File: " + "Subset_" + file_name + " --> Subset completed")
-                    print(" ")
-                
-                else:
-
-                    data = outpath1  + "/" + file_name
-                    out1 = outpath1 + "/" + "Subset_" + file_name
-                    
-                    box1 = outpath1 + "/" + str(m) + "/" + "Box1_" + file_name
-                    box2 = outpath1 + "/" + str(m) + "/" + "Box2_" + file_name
-                    
-                    DS = xr.open_dataset(data)
-                
-                    DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
-                    DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4')
-
-                    DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
-                    DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4')
-
-                    DSbbox = xr.merge([DSbbox1,DSbbox2])
-                    DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
-                    DS.close()
-
-                    os.remove(data)
-                    os.remove(box1)
-                    os.remove(box2)
-
-                    print("File: " + "Subset_" + file_name + " --> Subset completed")
-                    print(" ")
-
-    ftp.quit()
-
-##########
-
-elif typo == "MY" and bbox == "YES" and Vs == "NO" and structure == "M" and DL == "NO" :
-
-    print(" ")
-    print("Connection to the FTP server...")
-    
-    ftp = FTP('my.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
-
-    print("Connection exstabilished and download files in progress..")
-    print(" ")
-    
-    for mon in months :
-
-        a = mon.strftime('%Y')
-        m = mon.strftime('%m')
-
-        path = os.path.join(outpath, str(a))
-
-        if not os.path.exists(path):
-            os.mkdir(path)
-
-        outpath1 = outpath + str(a)
-
-        if ID == "BACK":
-            look = mon.strftime(Toidentify+'%Y%m')
-        else:
-            look = mon.strftime('%Y%m'+ Toidentify)
-
-        ftp.cwd(pathfiles + str(a))
-
-        filenames = ftp.nlst()
-
-        files = pd.Series(filenames)
-
-        for file_name in files[files.str.contains(look)]:
-
-            os.chdir(outpath1)
-            outputfile = outpath1 + "/"  + "Subset_" + file_name
-
-            if os.path.isfile(outputfile):
-                print ("File: " + "Subset_" + file_name + " --> File already processed")
-            else:
+        print("Connection exstabilished and download files in progress..")
+        print(" ")
         
-                ftp.retrbinary('RETR' + " " + file_name, open(file_name, 'wb').write)
+        for mon in months :
 
-                print("File: " + file_name + " --> Download completed")
+            a = mon.strftime('%Y')
+            m = mon.strftime('%m')
 
-                if Crossing == "NO":
+            path = os.path.join(outpath, str(a))
 
-                    data = outpath1  + "/" + file_name
-                    out1 = outpath1 + "/" + "Subset_" + file_name
-                    
-                    DS = xr.open_dataset(data)
-                
-                    DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
-                    DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
-                    DS.close()
+            if not os.path.exists(path):
+                os.mkdir(path)
 
-                    os.remove(data)
+            outpath1 = outpath + str(a)
 
-                    print("File: " + "Subset_" + file_name + " --> Subset completed")
-                    print(" ")
+            if ID == "BACK":
+                look = mon.strftime(Toidentify+'%Y%m')
+            else:
+                look = mon.strftime('%Y%m'+ Toidentify)
 
+            ftp.cwd(pathfiles + str(a))
+
+            filenames = ftp.nlst()
+
+            files = pd.Series(filenames)
+
+            for file_name in files[files.str.contains(look)]:
+
+                os.chdir(outpath1)
+                outputfile = outpath1 + "/"  + "Subset_" + file_name
+
+                if os.path.isfile(outputfile):
+                    print ("File: " + "Subset_" + file_name + " --> File already processed")
                 else:
-
-                    data = outpath1  + "/" + file_name
-                    out1 = outpath1 + "/" + "Subset_" + file_name
-                    
-                    box1 = outpath1 + "/" + str(m) + "/" + "Box1_" + file_name
-                    box2 = outpath1 + "/" + str(m) + "/" + "Box2_" + file_name
-                    
-                    DS = xr.open_dataset(data)
-                
-                    DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
-                    DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4')
-
-                    DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
-                    DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4')
-
-                    DSbbox = xr.merge([DSbbox1,DSbbox2])
-                    DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
-                    DS.close()
-
-                    os.remove(data)
-                    os.remove(box1)
-                    os.remove(box2)
-
-                    print("File: " + "Subset_" + file_name + " --> Subset completed")
-                    print(" ")
-
-
-    ftp.quit()
-
-
-
-#############################
-# NRT/MY MONTHLY BBOX + VAR #
-#############################
-elif typo == "NRT" and bbox == "YES" and Vs == "YES" and structure == "M" and DL == "NO" :
-
-    print(" ")
-    print("Connection to the FTP server...")
-    
-    ftp = FTP('nrt.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
-
-    print("Connection exstabilished and download files in progress..")
-    print(" ")
-    
-    for mon in months :
-
-        a = mon.strftime('%Y')
-        m = mon.strftime('%m')
-
-        path = os.path.join(outpath, str(a))
-
-        if not os.path.exists(path):
-            os.mkdir(path)
             
-        outpath1 = outpath + str(a)
+                    ftp.retrbinary('RETR' + " " + file_name, open(file_name, 'wb').write)
 
-        if ID == "BACK":
-            look = mon.strftime(Toidentify+'%Y%m')
-        else:
-            look = mon.strftime('%Y%m'+ Toidentify)
+                    print("File: " + file_name + " --> Download completed")
 
-        ftp.cwd(pathfiles + str(a))
+                    if Crossing == "NO":
 
-        filenames = ftp.nlst()
+                        data = outpath1  + "/" + file_name
+                        out1 = outpath1 + "/" + "Subset_" + file_name
+                        
+                        DS = xr.open_dataset(data)
+                    
+                        DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
+                        DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
+                        DS.close()
 
-        files = pd.Series(filenames)
+                        os.remove(data)
 
-        for file_name in files[files.str.contains(look)]:
+                        print("File: " + "Subset_" + file_name + " --> Subset completed")
+                        print(" ")
 
-            os.chdir(outpath1)
-            outputfile = outpath1 + "/"  + "Subset_" + file_name
+                    else:
 
-            if os.path.isfile(outputfile):
-                print ("File: " + "Subset_" + file_name + " --> File already processed")
-            else:
+                        data = outpath1  + "/" + file_name
+                        out1 = outpath1 + "/" + "Subset_" + file_name
+                        
+                        box1 = outpath1 + "/" + str(m) + "/" + "Box1_" + file_name
+                        box2 = outpath1 + "/" + str(m) + "/" + "Box2_" + file_name
+                        
+                        DS = xr.open_dataset(data)
+                    
+                        DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+                        DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4')
+
+                        DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
+                        DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4')
+
+                        DSbbox = xr.merge([DSbbox1,DSbbox2])
+                        DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
+                        DS.close()
+
+                        os.remove(data)
+                        os.remove(box1)
+                        os.remove(box2)
+
+                        print("File: " + "Subset_" + file_name + " --> Subset completed")
+                        print(" ")
+
+
+        ftp.quit()
+
+
+
+    #############################
+    # NRT/MY MONTHLY BBOX + VAR #
+    #############################
+    elif typo == "NRT" and bbox == "YES" and Vs == "YES" and structure == "M" and DL == "NO" :
+
+        print(" ")
+        print("Connection to the FTP server...")
         
-                ftp.retrbinary('RETR' + " " + file_name, open(file_name, 'wb').write)
+        ftp = FTP('nrt.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
 
-                print("File: " + file_name + " --> Download completed")
+        print("Connection exstabilished and download files in progress..")
+        print(" ")
+        
+        for mon in months :
 
-                if Crossing == "NO":
+            a = mon.strftime('%Y')
+            m = mon.strftime('%m')
 
-                    data = outpath1 +  "/" + file_name
-                    out1 = outpath1 +  "/" + "SubsetBbox_" + file_name
-                    out2 = outpath1 +  "/" + "Subset_" + file_name
-                    
-                    DS = xr.open_dataset(data)
+            path = os.path.join(outpath, str(a))
+
+            if not os.path.exists(path):
+                os.mkdir(path)
                 
-                    DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
-                    DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
-                    DS.close()
+            outpath1 = outpath + str(a)
 
-                    DS1 = xr.open_dataset(out1)
+            if ID == "BACK":
+                look = mon.strftime(Toidentify+'%Y%m')
+            else:
+                look = mon.strftime('%Y%m'+ Toidentify)
 
-                    DSVar = DS1[variables]
-                    DSVar.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                    DS1.close()
+            ftp.cwd(pathfiles + str(a))
 
-                    os.remove(data)
-                    os.remove(out1)
+            filenames = ftp.nlst()
 
-                    print("File: " + "Subset_" + file_name + " --> Subset completed")
-                    print(" ")
-                
+            files = pd.Series(filenames)
+
+            for file_name in files[files.str.contains(look)]:
+
+                os.chdir(outpath1)
+                outputfile = outpath1 + "/"  + "Subset_" + file_name
+
+                if os.path.isfile(outputfile):
+                    print ("File: " + "Subset_" + file_name + " --> File already processed")
                 else:
-
-                    data = outpath1 +  "/" + file_name
-                    out1 = outpath1 +  "/" + "SubsetBbox_" + file_name
-                    out2 = outpath1 +  "/" + "Subset_" + file_name
-                    
-                    box1 = outpath1 + "/" + str(m) + "/" + "Box1_" + file_name
-                    box2 = outpath1 + "/" + str(m) + "/" + "Box2_" + file_name
-                    
-                    DS = xr.open_dataset(data)
-                
-                    DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
-                    DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4')
-
-                    DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
-                    DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4')
-
-                    DSbbox = xr.merge([DSbbox1,DSbbox2])
-                    DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
-                    DS.close()
-
-                    DS1 = xr.open_dataset(out1)
-
-                    DSVar = DS1[variables]
-                    DSVar.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                    DS1.close()
-
-                    os.remove(data)
-                    os.remove(out1)
-                    os.remove(box1)
-                    os.remove(box2)
-
-                    print("File: " + "Subset_" + file_name + " --> Subset completed")
-                    print(" ")
-
-    ftp.quit()
-
-##########
-
-elif typo == "MY" and bbox == "YES" and Vs == "YES" and structure == "M" and DL == "NO" :
-
-    print(" ")
-    print("Connection to the FTP server...")
-    
-    ftp = FTP('my.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
-
-    print("Connection exstabilished and download files in progress..")
-    print(" ")
-    
-    for mon in months :
-
-        a = mon.strftime('%Y')
-        m = mon.strftime('%m')
-
-        path = os.path.join(outpath, str(a))
-
-        if not os.path.exists(path):
-            os.mkdir(path)
             
-        outpath1 = outpath + str(a)
+                    ftp.retrbinary('RETR' + " " + file_name, open(file_name, 'wb').write)
 
-        if ID == "BACK":
-            look = mon.strftime(Toidentify+'%Y%m')
-        else:
-            look = mon.strftime('%Y%m'+ Toidentify)
+                    print("File: " + file_name + " --> Download completed")
 
-        ftp.cwd(pathfiles + str(a))
+                    if Crossing == "NO":
 
-        filenames = ftp.nlst()
+                        data = outpath1 +  "/" + file_name
+                        out1 = outpath1 +  "/" + "SubsetBbox_" + file_name
+                        out2 = outpath1 +  "/" + "Subset_" + file_name
+                        
+                        DS = xr.open_dataset(data)
+                    
+                        DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
+                        DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
+                        DS.close()
 
-        files = pd.Series(filenames)
+                        DS1 = xr.open_dataset(out1)
 
-        for file_name in files[files.str.contains(look)]:
+                        DSVar = DS1[variables]
+                        DSVar.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                        DS1.close()
 
-            os.chdir(outpath1)
-            outputfile = outpath1 + "/"  + "Subset_" + file_name
+                        os.remove(data)
+                        os.remove(out1)
 
-            if os.path.isfile(outputfile):
-                print ("File: " + "Subset_" + file_name + " --> File already processed")
-            else:
+                        print("File: " + "Subset_" + file_name + " --> Subset completed")
+                        print(" ")
+                    
+                    else:
+
+                        data = outpath1 +  "/" + file_name
+                        out1 = outpath1 +  "/" + "SubsetBbox_" + file_name
+                        out2 = outpath1 +  "/" + "Subset_" + file_name
+                        
+                        box1 = outpath1 + "/" + str(m) + "/" + "Box1_" + file_name
+                        box2 = outpath1 + "/" + str(m) + "/" + "Box2_" + file_name
+                        
+                        DS = xr.open_dataset(data)
+                    
+                        DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+                        DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4')
+
+                        DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
+                        DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4')
+
+                        DSbbox = xr.merge([DSbbox1,DSbbox2])
+                        DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
+                        DS.close()
+
+                        DS1 = xr.open_dataset(out1)
+
+                        DSVar = DS1[variables]
+                        DSVar.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                        DS1.close()
+
+                        os.remove(data)
+                        os.remove(out1)
+                        os.remove(box1)
+                        os.remove(box2)
+
+                        print("File: " + "Subset_" + file_name + " --> Subset completed")
+                        print(" ")
+
+        ftp.quit()
+
+    ##########
+
+    elif typo == "MY" and bbox == "YES" and Vs == "YES" and structure == "M" and DL == "NO" :
+
+        print(" ")
+        print("Connection to the FTP server...")
         
-                ftp.retrbinary('RETR' + " " + file_name, open(file_name, 'wb').write)
+        ftp = FTP('my.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
 
-                print("File: " + file_name + " --> Download completed")
+        print("Connection exstabilished and download files in progress..")
+        print(" ")
+        
+        for mon in months :
 
-                if Crossing == "NO":
+            a = mon.strftime('%Y')
+            m = mon.strftime('%m')
 
-                    data = outpath1 +  "/" + file_name
-                    out1 = outpath1 +  "/" + "SubsetBbox_" + file_name
-                    out2 = outpath1 +  "/" + "Subset_" + file_name
-                    
-                    DS = xr.open_dataset(data)
+            path = os.path.join(outpath, str(a))
+
+            if not os.path.exists(path):
+                os.mkdir(path)
                 
-                    DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
-                    DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
-                    DS.close()
+            outpath1 = outpath + str(a)
 
-                    DS1 = xr.open_dataset(out1)
+            if ID == "BACK":
+                look = mon.strftime(Toidentify+'%Y%m')
+            else:
+                look = mon.strftime('%Y%m'+ Toidentify)
 
-                    DSVar = DS1[variables]
-                    DSVar.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                    DS1.close()
+            ftp.cwd(pathfiles + str(a))
 
-                    os.remove(data)
-                    os.remove(out1)
+            filenames = ftp.nlst()
 
-                    print("File: " + "Subset_" + file_name + " --> Subset completed")
-                    print(" ")
-                
+            files = pd.Series(filenames)
+
+            for file_name in files[files.str.contains(look)]:
+
+                os.chdir(outpath1)
+                outputfile = outpath1 + "/"  + "Subset_" + file_name
+
+                if os.path.isfile(outputfile):
+                    print ("File: " + "Subset_" + file_name + " --> File already processed")
                 else:
-
-                    data = outpath1 +  "/" + file_name
-                    out1 = outpath1 +  "/" + "SubsetBbox_" + file_name
-                    out2 = outpath1 +  "/" + "Subset_" + file_name
-                    
-                    box1 = outpath1 + "/" + str(m) + "/" + "Box1_" + file_name
-                    box2 = outpath1 + "/" + str(m) + "/" + "Box2_" + file_name
-                    
-                    DS = xr.open_dataset(data)
-                
-                    DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
-                    DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4')
-
-                    DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
-                    DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4')
-
-                    DSbbox = xr.merge([DSbbox1,DSbbox2])
-                    DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
-                    DS.close()
-
-                    DS1 = xr.open_dataset(out1)
-
-                    DSVar = DS1[variables]
-                    DSVar.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                    DS1.close()
-
-                    os.remove(data)
-                    os.remove(out1)
-                    os.remove(box1)
-                    os.remove(box2)
-
-                    print("File: " + "Subset_" + file_name + " --> Subset completed")
-                    print(" ")
-
-    ftp.quit()
-
-
-#####################################
-# NRT/MY MONTHLY BBOX + DEPTH       #
-#####################################
-elif typo == "NRT" and bbox == "YES" and Vs == "NO" and structure == "M" and DL == "YES" :
-
-    print(" ")
-    print("Connection to the FTP server...")
-    
-    ftp = FTP('nrt.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
-
-    print("Connection exstabilished and download files in progress..")
-    print(" ")
-    
-    for mon in months :
-
-        a = mon.strftime('%Y')
-        m = mon.strftime('%m')
-
-        path = os.path.join(outpath, str(a))
-
-        if not os.path.exists(path):
-            os.mkdir(path)
             
-        outpath1 = outpath + str(a)
+                    ftp.retrbinary('RETR' + " " + file_name, open(file_name, 'wb').write)
 
-        if ID == "BACK":
-            look = mon.strftime(Toidentify+'%Y%m')
-        else:
-            look = mon.strftime('%Y%m'+ Toidentify)
+                    print("File: " + file_name + " --> Download completed")
 
-        ftp.cwd(pathfiles + str(a))
+                    if Crossing == "NO":
 
-        filenames = ftp.nlst()
+                        data = outpath1 +  "/" + file_name
+                        out1 = outpath1 +  "/" + "SubsetBbox_" + file_name
+                        out2 = outpath1 +  "/" + "Subset_" + file_name
+                        
+                        DS = xr.open_dataset(data)
+                    
+                        DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
+                        DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
+                        DS.close()
 
-        files = pd.Series(filenames)
+                        DS1 = xr.open_dataset(out1)
 
-        for file_name in files[files.str.contains(look)]:
+                        DSVar = DS1[variables]
+                        DSVar.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                        DS1.close()
 
-            os.chdir(outpath1)
-            outputfile = outpath1 + "/"  + "Subset_" + file_name
+                        os.remove(data)
+                        os.remove(out1)
 
-            if os.path.isfile(outputfile):
-                print ("File: " + "Subset_" + file_name + " --> File already processed")
-            else:
+                        print("File: " + "Subset_" + file_name + " --> Subset completed")
+                        print(" ")
+                    
+                    else:
+
+                        data = outpath1 +  "/" + file_name
+                        out1 = outpath1 +  "/" + "SubsetBbox_" + file_name
+                        out2 = outpath1 +  "/" + "Subset_" + file_name
+                        
+                        box1 = outpath1 + "/" + str(m) + "/" + "Box1_" + file_name
+                        box2 = outpath1 + "/" + str(m) + "/" + "Box2_" + file_name
+                        
+                        DS = xr.open_dataset(data)
+                    
+                        DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+                        DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4')
+
+                        DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
+                        DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4')
+
+                        DSbbox = xr.merge([DSbbox1,DSbbox2])
+                        DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
+                        DS.close()
+
+                        DS1 = xr.open_dataset(out1)
+
+                        DSVar = DS1[variables]
+                        DSVar.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                        DS1.close()
+
+                        os.remove(data)
+                        os.remove(out1)
+                        os.remove(box1)
+                        os.remove(box2)
+
+                        print("File: " + "Subset_" + file_name + " --> Subset completed")
+                        print(" ")
+
+        ftp.quit()
+
+
+    #####################################
+    # NRT/MY MONTHLY BBOX + DEPTH       #
+    #####################################
+    elif typo == "NRT" and bbox == "YES" and Vs == "NO" and structure == "M" and DL == "YES" :
+
+        print(" ")
+        print("Connection to the FTP server...")
         
-                ftp.retrbinary('RETR' + " " + file_name, open(file_name, 'wb').write)
+        ftp = FTP('nrt.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
 
-                print("File: " + file_name + " --> Download completed")
+        print("Connection exstabilished and download files in progress..")
+        print(" ")
+        
+        for mon in months :
 
-                if Crossing == "NO":
+            a = mon.strftime('%Y')
+            m = mon.strftime('%m')
 
-                    data = outpath1 +  "/" + file_name
-                    out1 = outpath1 +  "/" + "SubsetBbox_" + file_name
-                    out2 = outpath1 +  "/" + "Subset_" + file_name
-                    
-                    DS = xr.open_dataset(data)
+            path = os.path.join(outpath, str(a))
+
+            if not os.path.exists(path):
+                os.mkdir(path)
                 
-                    DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
-                    DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
-                    DS.close()
+            outpath1 = outpath + str(a)
 
-                    DS1 = xr.open_dataset(out1)
+            if ID == "BACK":
+                look = mon.strftime(Toidentify+'%Y%m')
+            else:
+                look = mon.strftime('%Y%m'+ Toidentify)
 
-                    if RangeD == "SINGLE" :
-                        DSdepth = DS1.sel(depth=int(depth), method="nearest")
-                        DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                        DS1.close()
-                    else:
-                        DSdepth = DS1.sel(depth=slice(float(d1),float(d2)))
-                        DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                        DS1.close()
+            ftp.cwd(pathfiles + str(a))
 
-                    os.remove(data)
-                    os.remove(out1)
+            filenames = ftp.nlst()
 
-                    print("File: " + "Subset_" + file_name + " --> Subset completed")
-                    print(" ")
-                
+            files = pd.Series(filenames)
+
+            for file_name in files[files.str.contains(look)]:
+
+                os.chdir(outpath1)
+                outputfile = outpath1 + "/"  + "Subset_" + file_name
+
+                if os.path.isfile(outputfile):
+                    print ("File: " + "Subset_" + file_name + " --> File already processed")
                 else:
-
-                    data = outpath1 +  "/" + file_name
-                    out1 = outpath1 +  "/" + "SubsetBbox_" + file_name
-                    out2 = outpath1 +  "/" + "Subset_" + file_name
-                    
-                    box1 = outpath1 + "/" + str(m) + "/" + "Box1_" + file_name
-                    box2 = outpath1 + "/" + str(m) + "/" + "Box2_" + file_name
-                    
-                    DS = xr.open_dataset(data)
-                
-                    DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
-                    DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4')
-
-                    DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
-                    DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4')
-
-                    DSbbox = xr.merge([DSbbox1,DSbbox2])
-                    DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
-                    DS.close()
-
-                    DS1 = xr.open_dataset(out1)
-
-                    if RangeD == "SINGLE" :
-                        DSdepth = DS1.sel(depth=int(depth), method="nearest")
-                        DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                        DS1.close()
-                    else:
-                        DSdepth = DS1.sel(depth=slice(float(d1),float(d2)))
-                        DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                        DS1.close()
-
-                    os.remove(data)
-                    os.remove(out1)
-                    os.remove(box1)
-                    os.remove(box2)
-
-                    print("File: " + "Subset_" + file_name + " --> Subset completed")
-                    print(" ")
-
-    ftp.quit()
-
-##########
-
-elif typo == "MY" and bbox == "YES" and Vs == "NO" and structure == "M" and DL == "YES" :
-
-    print(" ")
-    print("Connection to the FTP server...")
-    
-    ftp = FTP('my.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
-
-    print("Connection exstabilished and download files in progress..")
-    print(" ")
-    
-    for mon in months :
-
-        a = mon.strftime('%Y')
-        m = mon.strftime('%m')
-
-        path = os.path.join(outpath, str(a))
-
-        if not os.path.exists(path):
-            os.mkdir(path)
             
-        outpath1 = outpath + str(a)
+                    ftp.retrbinary('RETR' + " " + file_name, open(file_name, 'wb').write)
 
-        if ID == "BACK":
-            look = mon.strftime(Toidentify+'%Y%m')
-        else:
-            look = mon.strftime('%Y%m'+ Toidentify)
+                    print("File: " + file_name + " --> Download completed")
 
-        ftp.cwd(pathfiles + str(a))
+                    if Crossing == "NO":
 
-        filenames = ftp.nlst()
+                        data = outpath1 +  "/" + file_name
+                        out1 = outpath1 +  "/" + "SubsetBbox_" + file_name
+                        out2 = outpath1 +  "/" + "Subset_" + file_name
+                        
+                        DS = xr.open_dataset(data)
+                    
+                        DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
+                        DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
+                        DS.close()
 
-        files = pd.Series(filenames)
+                        DS1 = xr.open_dataset(out1)
 
-        for file_name in files[files.str.contains(look)]:
+                        if RangeD == "SINGLE" :
+                            DSdepth = DS1.sel(depth=int(depth), method="nearest")
+                            DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                            DS1.close()
+                        else:
+                            DSdepth = DS1.sel(depth=slice(float(d1),float(d2)))
+                            DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                            DS1.close()
 
-            os.chdir(outpath1)
-            outputfile = outpath1 + "/"  + "Subset_" + file_name
+                        os.remove(data)
+                        os.remove(out1)
 
-            if os.path.isfile(outputfile):
-                print ("File: " + "Subset_" + file_name + " --> File already processed")
-            else:
+                        print("File: " + "Subset_" + file_name + " --> Subset completed")
+                        print(" ")
+                    
+                    else:
+
+                        data = outpath1 +  "/" + file_name
+                        out1 = outpath1 +  "/" + "SubsetBbox_" + file_name
+                        out2 = outpath1 +  "/" + "Subset_" + file_name
+                        
+                        box1 = outpath1 + "/" + str(m) + "/" + "Box1_" + file_name
+                        box2 = outpath1 + "/" + str(m) + "/" + "Box2_" + file_name
+                        
+                        DS = xr.open_dataset(data)
+                    
+                        DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+                        DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4')
+
+                        DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
+                        DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4')
+
+                        DSbbox = xr.merge([DSbbox1,DSbbox2])
+                        DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
+                        DS.close()
+
+                        DS1 = xr.open_dataset(out1)
+
+                        if RangeD == "SINGLE" :
+                            DSdepth = DS1.sel(depth=int(depth), method="nearest")
+                            DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                            DS1.close()
+                        else:
+                            DSdepth = DS1.sel(depth=slice(float(d1),float(d2)))
+                            DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                            DS1.close()
+
+                        os.remove(data)
+                        os.remove(out1)
+                        os.remove(box1)
+                        os.remove(box2)
+
+                        print("File: " + "Subset_" + file_name + " --> Subset completed")
+                        print(" ")
+
+        ftp.quit()
+
+    ##########
+
+    elif typo == "MY" and bbox == "YES" and Vs == "NO" and structure == "M" and DL == "YES" :
+
+        print(" ")
+        print("Connection to the FTP server...")
         
-                ftp.retrbinary('RETR' + " " + file_name, open(file_name, 'wb').write)
+        ftp = FTP('my.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
 
-                print("File: " + file_name + " --> Download completed")
+        print("Connection exstabilished and download files in progress..")
+        print(" ")
+        
+        for mon in months :
 
-                if Crossing == "NO":
+            a = mon.strftime('%Y')
+            m = mon.strftime('%m')
 
-                    data = outpath1 +  "/" + file_name
-                    out1 = outpath1 +  "/" + "SubsetBbox_" + file_name
-                    out2 = outpath1 +  "/" + "Subset_" + file_name
-                    
-                    DS = xr.open_dataset(data)
+            path = os.path.join(outpath, str(a))
+
+            if not os.path.exists(path):
+                os.mkdir(path)
                 
-                    DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
-                    DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
-                    DS.close()
+            outpath1 = outpath + str(a)
 
-                    DS1 = xr.open_dataset(out1)
+            if ID == "BACK":
+                look = mon.strftime(Toidentify+'%Y%m')
+            else:
+                look = mon.strftime('%Y%m'+ Toidentify)
 
-                    if RangeD == "SINGLE" :
-                        DSdepth = DS1.sel(depth=int(depth), method="nearest")
-                        DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                        DS1.close()
-                    else:
-                        DSdepth = DS1.sel(depth=slice(float(d1),float(d2)))
-                        DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                        DS1.close()
+            ftp.cwd(pathfiles + str(a))
 
-                    os.remove(data)
-                    os.remove(out1)
+            filenames = ftp.nlst()
 
-                    print("File: " + "Subset_" + file_name + " --> Subset completed")
-                    print(" ")
+            files = pd.Series(filenames)
 
+            for file_name in files[files.str.contains(look)]:
+
+                os.chdir(outpath1)
+                outputfile = outpath1 + "/"  + "Subset_" + file_name
+
+                if os.path.isfile(outputfile):
+                    print ("File: " + "Subset_" + file_name + " --> File already processed")
                 else:
-
-                    data = outpath1 +  "/" + file_name
-                    out1 = outpath1 +  "/" + "SubsetBbox_" + file_name
-                    out2 = outpath1 +  "/" + "Subset_" + file_name
-                    
-                    box1 = outpath1 + "/" + str(m) + "/" + "Box1_" + file_name
-                    box2 = outpath1 + "/" + str(m) + "/" + "Box2_" + file_name
-                    
-                    DS = xr.open_dataset(data)
-                
-                    DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
-                    DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4')
-
-                    DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
-                    DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4')
-
-                    DSbbox = xr.merge([DSbbox1,DSbbox2])
-                    DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
-                    DS.close()
-
-                    DS1 = xr.open_dataset(out1)
-
-                    if RangeD == "SINGLE" :
-                        DSdepth = DS1.sel(depth=int(depth), method="nearest")
-                        DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                        DS1.close()
-                    else:
-                        DSdepth = DS1.sel(depth=slice(float(d1),float(d2)))
-                        DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                        DS1.close()
-
-                    os.remove(data)
-                    os.remove(out1)
-                    os.remove(box1)
-                    os.remove(box2)
-
-                    print("File: " + "Subset_" + file_name + " --> Subset completed")
-                    print(" ")
-
-
-    ftp.quit()
-
-
-
-
-#####################################
-# NRT/MY MONTHLY BBOX + VAR + DEPTH #
-#####################################
-elif typo == "NRT" and bbox == "YES" and Vs == "YES" and structure == "M" and DL == "YES" :
-
-    print(" ")
-    print("Connection to the FTP server...")
-    
-    ftp = FTP('nrt.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
-
-    print("Connection exstabilished and download files in progress..")
-    print(" ")
-    
-    for mon in months :
-
-        a = mon.strftime('%Y')
-        m = mon.strftime('%m')
-
-        path = os.path.join(outpath, str(a))
-
-        if not os.path.exists(path):
-            os.mkdir(path)
             
-        outpath1 = outpath + str(a)
+                    ftp.retrbinary('RETR' + " " + file_name, open(file_name, 'wb').write)
 
-        if ID == "BACK":
-            look = mon.strftime(Toidentify+'%Y%m')
-        else:
-            look = mon.strftime('%Y%m'+ Toidentify)
+                    print("File: " + file_name + " --> Download completed")
 
-        ftp.cwd(pathfiles + str(a))
+                    if Crossing == "NO":
 
-        filenames = ftp.nlst()
+                        data = outpath1 +  "/" + file_name
+                        out1 = outpath1 +  "/" + "SubsetBbox_" + file_name
+                        out2 = outpath1 +  "/" + "Subset_" + file_name
+                        
+                        DS = xr.open_dataset(data)
+                    
+                        DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
+                        DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
+                        DS.close()
 
-        files = pd.Series(filenames)
+                        DS1 = xr.open_dataset(out1)
 
-        for file_name in files[files.str.contains(look)]:
+                        if RangeD == "SINGLE" :
+                            DSdepth = DS1.sel(depth=int(depth), method="nearest")
+                            DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                            DS1.close()
+                        else:
+                            DSdepth = DS1.sel(depth=slice(float(d1),float(d2)))
+                            DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                            DS1.close()
 
-            os.chdir(outpath1)
-            outputfile = outpath1 + "/"  + "Subset_" + file_name
+                        os.remove(data)
+                        os.remove(out1)
 
-            if os.path.isfile(outputfile):
-                print ("File: " + "Subset_" + file_name + " --> File already processed")
-            else:
+                        print("File: " + "Subset_" + file_name + " --> Subset completed")
+                        print(" ")
+
+                    else:
+
+                        data = outpath1 +  "/" + file_name
+                        out1 = outpath1 +  "/" + "SubsetBbox_" + file_name
+                        out2 = outpath1 +  "/" + "Subset_" + file_name
+                        
+                        box1 = outpath1 + "/" + str(m) + "/" + "Box1_" + file_name
+                        box2 = outpath1 + "/" + str(m) + "/" + "Box2_" + file_name
+                        
+                        DS = xr.open_dataset(data)
+                    
+                        DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+                        DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4')
+
+                        DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
+                        DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4')
+
+                        DSbbox = xr.merge([DSbbox1,DSbbox2])
+                        DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
+                        DS.close()
+
+                        DS1 = xr.open_dataset(out1)
+
+                        if RangeD == "SINGLE" :
+                            DSdepth = DS1.sel(depth=int(depth), method="nearest")
+                            DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                            DS1.close()
+                        else:
+                            DSdepth = DS1.sel(depth=slice(float(d1),float(d2)))
+                            DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                            DS1.close()
+
+                        os.remove(data)
+                        os.remove(out1)
+                        os.remove(box1)
+                        os.remove(box2)
+
+                        print("File: " + "Subset_" + file_name + " --> Subset completed")
+                        print(" ")
+
+
+        ftp.quit()
+
+
+
+
+    #####################################
+    # NRT/MY MONTHLY BBOX + VAR + DEPTH #
+    #####################################
+    elif typo == "NRT" and bbox == "YES" and Vs == "YES" and structure == "M" and DL == "YES" :
+
+        print(" ")
+        print("Connection to the FTP server...")
         
-                ftp.retrbinary('RETR' + " " + file_name, open(file_name, 'wb').write)
+        ftp = FTP('nrt.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
 
-                print("File: " + file_name + " --> Download completed")
+        print("Connection exstabilished and download files in progress..")
+        print(" ")
+        
+        for mon in months :
 
-                if Crossing == "NO":
+            a = mon.strftime('%Y')
+            m = mon.strftime('%m')
 
-                    data = outpath1 +  "/" + file_name
-                    out1 = outpath1 +  "/" + "SubsetBbox_" + file_name
-                    out2 = outpath1 +  "/" + "SubsetDepth_" + file_name
-                    out3 = outpath1 +  "/" + "Subset_" + file_name
-                    
-                    DS = xr.open_dataset(data)
+            path = os.path.join(outpath, str(a))
+
+            if not os.path.exists(path):
+                os.mkdir(path)
                 
-                    DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
-                    DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
-                    DS.close()
+            outpath1 = outpath + str(a)
 
-                    DS1 = xr.open_dataset(out1)
+            if ID == "BACK":
+                look = mon.strftime(Toidentify+'%Y%m')
+            else:
+                look = mon.strftime('%Y%m'+ Toidentify)
 
-                    if RangeD == "SINGLE" :
-                        DSdepth = DS1.sel(depth=int(depth), method="nearest")
-                        DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                        DS1.close()
-                    else:
-                        DSdepth = DS1.sel(depth=slice(float(d1),float(d2)))
-                        DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                        DS1.close()
+            ftp.cwd(pathfiles + str(a))
 
-                    DS2 = xr.open_dataset(out2)
+            filenames = ftp.nlst()
 
-                    DS2Var = DS2[variables]
-                    DS2Var.to_netcdf(path=out3, mode='w', format= 'NETCDF4')
-                    DS2.close()
+            files = pd.Series(filenames)
 
-                    os.remove(data)
-                    os.remove(out1)
-                    os.remove(out2)
+            for file_name in files[files.str.contains(look)]:
 
-                    print("File: " + "Subset_" + file_name + " --> Subset completed")
-                    print(" ")
+                os.chdir(outpath1)
+                outputfile = outpath1 + "/"  + "Subset_" + file_name
 
+                if os.path.isfile(outputfile):
+                    print ("File: " + "Subset_" + file_name + " --> File already processed")
                 else:
-
-                    data = outpath1 +  "/" + file_name
-                    out1 = outpath1 +  "/" + "SubsetBbox_" + file_name
-                    out2 = outpath1 +  "/" + "SubsetDepth_" + file_name
-                    out3 = outpath1 +  "/" + "Subset_" + file_name
-                    
-                    box1 = outpath1 + "/" + str(m) + "/" + "Box1_" + file_name
-                    box2 = outpath1 + "/" + str(m) + "/" + "Box2_" + file_name
-                    
-                    DS = xr.open_dataset(data)
-                
-                    DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
-                    DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4')
-
-                    DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
-                    DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4')
-
-                    DSbbox = xr.merge([DSbbox1,DSbbox2])
-                    DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
-                    DS.close()
-
-                    DS1 = xr.open_dataset(out1)
-
-                    if RangeD == "SINGLE" :
-                        DSdepth = DS1.sel(depth=int(depth), method="nearest")
-                        DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                        DS1.close()
-                    else:
-                        DSdepth = DS1.sel(depth=slice(float(d1),float(d2)))
-                        DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                        DS1.close()
-
-                    DS2 = xr.open_dataset(out2)
-
-                    DS2Var = DS2[variables]
-                    DS2Var.to_netcdf(path=out3, mode='w', format= 'NETCDF4')
-                    DS2.close()
-
-                    os.remove(data)
-                    os.remove(out1)
-                    os.remove(out2)
-                    os.remove(box1)
-                    os.remove(box2)
-
-                    print("File: " + "Subset_" + file_name + " --> Subset completed")
-                    print(" ")
-
-    ftp.quit()
-
-########
-
-elif typo == "MY" and bbox == "YES" and Vs == "YES" and structure == "M" and DL == "YES":
-
-    print(" ")
-    print("Connection to the FTP server...")
-    
-    ftp = FTP('my.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
-
-    print("Connection exstabilished and download files in progress..")
-    print(" ")
-    
-    for mon in months :
-
-        a = mon.strftime('%Y')
-        m = mon.strftime('%m')
-
-        path = os.path.join(outpath, str(a))
-
-        if not os.path.exists(path):
-            os.mkdir(path)
             
-        outpath1 = outpath + str(a)
+                    ftp.retrbinary('RETR' + " " + file_name, open(file_name, 'wb').write)
 
-        if ID == "BACK":
-            look = mon.strftime(Toidentify+'%Y%m')
-        else:
-            look = mon.strftime('%Y%m'+ Toidentify)
+                    print("File: " + file_name + " --> Download completed")
 
-        ftp.cwd(pathfiles + str(a))
+                    if Crossing == "NO":
 
-        filenames = ftp.nlst()
+                        data = outpath1 +  "/" + file_name
+                        out1 = outpath1 +  "/" + "SubsetBbox_" + file_name
+                        out2 = outpath1 +  "/" + "SubsetDepth_" + file_name
+                        out3 = outpath1 +  "/" + "Subset_" + file_name
+                        
+                        DS = xr.open_dataset(data)
+                    
+                        DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
+                        DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
+                        DS.close()
 
-        files = pd.Series(filenames)
+                        DS1 = xr.open_dataset(out1)
 
-        for file_name in files[files.str.contains(look)]:
+                        if RangeD == "SINGLE" :
+                            DSdepth = DS1.sel(depth=int(depth), method="nearest")
+                            DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                            DS1.close()
+                        else:
+                            DSdepth = DS1.sel(depth=slice(float(d1),float(d2)))
+                            DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                            DS1.close()
 
-            os.chdir(outpath1)
-            outputfile = outpath1 + "/"  + "Subset_" + file_name
+                        DS2 = xr.open_dataset(out2)
 
-            if os.path.isfile(outputfile):
-                print ("File: " + "Subset_" + file_name + " --> File already processed")
-            else:
+                        DS2Var = DS2[variables]
+                        DS2Var.to_netcdf(path=out3, mode='w', format= 'NETCDF4')
+                        DS2.close()
+
+                        os.remove(data)
+                        os.remove(out1)
+                        os.remove(out2)
+
+                        print("File: " + "Subset_" + file_name + " --> Subset completed")
+                        print(" ")
+
+                    else:
+
+                        data = outpath1 +  "/" + file_name
+                        out1 = outpath1 +  "/" + "SubsetBbox_" + file_name
+                        out2 = outpath1 +  "/" + "SubsetDepth_" + file_name
+                        out3 = outpath1 +  "/" + "Subset_" + file_name
+                        
+                        box1 = outpath1 + "/" + str(m) + "/" + "Box1_" + file_name
+                        box2 = outpath1 + "/" + str(m) + "/" + "Box2_" + file_name
+                        
+                        DS = xr.open_dataset(data)
+                    
+                        DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+                        DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4')
+
+                        DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
+                        DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4')
+
+                        DSbbox = xr.merge([DSbbox1,DSbbox2])
+                        DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
+                        DS.close()
+
+                        DS1 = xr.open_dataset(out1)
+
+                        if RangeD == "SINGLE" :
+                            DSdepth = DS1.sel(depth=int(depth), method="nearest")
+                            DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                            DS1.close()
+                        else:
+                            DSdepth = DS1.sel(depth=slice(float(d1),float(d2)))
+                            DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                            DS1.close()
+
+                        DS2 = xr.open_dataset(out2)
+
+                        DS2Var = DS2[variables]
+                        DS2Var.to_netcdf(path=out3, mode='w', format= 'NETCDF4')
+                        DS2.close()
+
+                        os.remove(data)
+                        os.remove(out1)
+                        os.remove(out2)
+                        os.remove(box1)
+                        os.remove(box2)
+
+                        print("File: " + "Subset_" + file_name + " --> Subset completed")
+                        print(" ")
+
+        ftp.quit()
+
+    ########
+
+    elif typo == "MY" and bbox == "YES" and Vs == "YES" and structure == "M" and DL == "YES":
+
+        print(" ")
+        print("Connection to the FTP server...")
         
-                ftp.retrbinary('RETR' + " " + file_name, open(file_name, 'wb').write)
+        ftp = FTP('my.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
 
-                print("File: " + file_name + " --> Download completed")
+        print("Connection exstabilished and download files in progress..")
+        print(" ")
+        
+        for mon in months :
 
-                if Crossing == "NO":
+            a = mon.strftime('%Y')
+            m = mon.strftime('%m')
 
-                    data = outpath1 +  "/" + file_name
-                    out1 = outpath1 +  "/" + "SubsetBbox_" + file_name
-                    out2 = outpath1 +  "/" + "SubsetDepth_" + file_name
-                    out3 = outpath1 +  "/" + "Subset_" + file_name
-                    
-                    DS = xr.open_dataset(data)
+            path = os.path.join(outpath, str(a))
+
+            if not os.path.exists(path):
+                os.mkdir(path)
                 
-                    DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
-                    DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
-                    DS.close()
+            outpath1 = outpath + str(a)
 
-                    DS1 = xr.open_dataset(out1)
+            if ID == "BACK":
+                look = mon.strftime(Toidentify+'%Y%m')
+            else:
+                look = mon.strftime('%Y%m'+ Toidentify)
 
-                    if RangeD == "SINGLE" :
-                        DSdepth = DS1.sel(depth=int(depth), method="nearest")
-                        DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                        DS1.close()
-                    else:
-                        DSdepth = DS1.sel(depth=slice(float(d1),float(d2)))
-                        DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                        DS1.close()
+            ftp.cwd(pathfiles + str(a))
 
-                    DS2 = xr.open_dataset(out2)
+            filenames = ftp.nlst()
 
-                    DS2Var = DS2[variables]
-                    DS2Var.to_netcdf(path=out3, mode='w', format= 'NETCDF4')
-                    DS2.close()
+            files = pd.Series(filenames)
 
-                    os.remove(data)
-                    os.remove(out1)
-                    os.remove(out2)
+            for file_name in files[files.str.contains(look)]:
 
-                    print("File: " + "Subset_" + file_name + " --> Subset completed")
-                    print(" ")
+                os.chdir(outpath1)
+                outputfile = outpath1 + "/"  + "Subset_" + file_name
 
+                if os.path.isfile(outputfile):
+                    print ("File: " + "Subset_" + file_name + " --> File already processed")
                 else:
+            
+                    ftp.retrbinary('RETR' + " " + file_name, open(file_name, 'wb').write)
 
-                    data = outpath1 +  "/" + file_name
-                    out1 = outpath1 +  "/" + "SubsetBbox_" + file_name
-                    out2 = outpath1 +  "/" + "SubsetDepth_" + file_name
-                    out3 = outpath1 +  "/" + "Subset_" + file_name
+                    print("File: " + file_name + " --> Download completed")
+
+                    if Crossing == "NO":
+
+                        data = outpath1 +  "/" + file_name
+                        out1 = outpath1 +  "/" + "SubsetBbox_" + file_name
+                        out2 = outpath1 +  "/" + "SubsetDepth_" + file_name
+                        out3 = outpath1 +  "/" + "Subset_" + file_name
+                        
+                        DS = xr.open_dataset(data)
                     
-                    box1 = outpath1 + "/" + str(m) + "/" + "Box1_" + file_name
-                    box2 = outpath1 + "/" + str(m) + "/" + "Box2_" + file_name
-                    
-                    DS = xr.open_dataset(data)
-                
-                    DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
-                    DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4')
+                        DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
+                        DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
+                        DS.close()
 
-                    DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
-                    DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4')
+                        DS1 = xr.open_dataset(out1)
 
-                    DSbbox = xr.merge([DSbbox1,DSbbox2])
-                    DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
-                    DS.close()
+                        if RangeD == "SINGLE" :
+                            DSdepth = DS1.sel(depth=int(depth), method="nearest")
+                            DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                            DS1.close()
+                        else:
+                            DSdepth = DS1.sel(depth=slice(float(d1),float(d2)))
+                            DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                            DS1.close()
 
-                    DS1 = xr.open_dataset(out1)
+                        DS2 = xr.open_dataset(out2)
 
-                    if RangeD == "SINGLE" :
-                        DSdepth = DS1.sel(depth=int(depth), method="nearest")
-                        DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                        DS1.close()
+                        DS2Var = DS2[variables]
+                        DS2Var.to_netcdf(path=out3, mode='w', format= 'NETCDF4')
+                        DS2.close()
+
+                        os.remove(data)
+                        os.remove(out1)
+                        os.remove(out2)
+
+                        print("File: " + "Subset_" + file_name + " --> Subset completed")
+                        print(" ")
+
                     else:
-                        DSdepth = DS1.sel(depth=slice(float(d1),float(d2)))
-                        DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
-                        DS1.close()
 
-                    DS2 = xr.open_dataset(out2)
+                        data = outpath1 +  "/" + file_name
+                        out1 = outpath1 +  "/" + "SubsetBbox_" + file_name
+                        out2 = outpath1 +  "/" + "SubsetDepth_" + file_name
+                        out3 = outpath1 +  "/" + "Subset_" + file_name
+                        
+                        box1 = outpath1 + "/" + str(m) + "/" + "Box1_" + file_name
+                        box2 = outpath1 + "/" + str(m) + "/" + "Box2_" + file_name
+                        
+                        DS = xr.open_dataset(data)
+                    
+                        DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+                        DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4')
 
-                    DS2Var = DS2[variables]
-                    DS2Var.to_netcdf(path=out3, mode='w', format= 'NETCDF4')
-                    DS2.close()
+                        DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
+                        DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4')
 
-                    os.remove(data)
-                    os.remove(out1)
-                    os.remove(out2)
-                    os.remove(box1)
-                    os.remove(box2)
+                        DSbbox = xr.merge([DSbbox1,DSbbox2])
+                        DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4')
+                        DS.close()
 
-                    print("File: " + "Subset_" + file_name + " --> Subset completed")
-                    print(" ")
+                        DS1 = xr.open_dataset(out1)
 
-    ftp.quit()
+                        if RangeD == "SINGLE" :
+                            DSdepth = DS1.sel(depth=int(depth), method="nearest")
+                            DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                            DS1.close()
+                        else:
+                            DSdepth = DS1.sel(depth=slice(float(d1),float(d2)))
+                            DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4')
+                            DS1.close()
+
+                        DS2 = xr.open_dataset(out2)
+
+                        DS2Var = DS2[variables]
+                        DS2Var.to_netcdf(path=out3, mode='w', format= 'NETCDF4')
+                        DS2.close()
+
+                        os.remove(data)
+                        os.remove(out1)
+                        os.remove(out2)
+                        os.remove(box1)
+                        os.remove(box2)
+
+                        print("File: " + "Subset_" + file_name + " --> Subset completed")
+                        print(" ")
+
+        ftp.quit()
 
 
-#End Monthly dataset options
+    #End Monthly dataset options
 
 
 
@@ -2078,5 +2078,5 @@ elif typo == "MY" and bbox == "YES" and Vs == "YES" and structure == "M" and DL 
 
 
 
-else:
-    print(" Option not avaiable ")
+    else:
+        print(" Option not avaiable ")
