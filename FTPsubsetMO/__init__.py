@@ -162,6 +162,11 @@ n2 = lat2
 #Start Daily dataset options.....
 
 def FTPsub():
+
+    print("<FTPsubsetMO>  Copyright (C) <2019>  <Carmelo Sammarco>")
+    print("This program comes with ABSOLUTELY NO WARRANTY")
+    print("This is free software, and you are welcome to redistribute it under the GPLv3 conditions.")
+
     ###################################
     # NRT/MY DAILY BBOX               #
     ###################################
