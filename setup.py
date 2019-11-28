@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf8") as fh:
     long_description = fh.read()
 
 setup(name='FTPsubsetMO',
-      version='0.0.7',
+      version='0.0.8',
       description='Python module able to download a file from FTP and subset it using bounding box and variable',
       long_description=long_description,
       long_description_content_type='text/markdown',
