@@ -34,6 +34,7 @@
     "/Core/GLOBAL_REANALYSIS_BIO_001_029/global-reanalysis-bio-001-029-monthly/" : ["MY","M","BACK","mercatorfreebiorys2v4_global_mean_"],
 
     "/Core/GLOBAL_REANALYSIS_PHY_001_025/global-reanalysis-phy-001-025-monthly/" : ["MY","M","BACK","mercatorglorys2v4_gl4_mean_"],
+    "/Core/GLOBAL_REANALYSIS_PHY_001_025/dataset-global-reanalysis-phy-001-025-ran-fr-glorysv4-daily/" : ["MY","D","BACK","mercatorglorys2v4_gl4_mean_"],
 
     "/Core/GLOBAL_REANALYSIS_PHY_001_030/global-reanalysis-phy-001-030-daily/" : ["MY","D","BACK","mercatorglorys12v1_gl12_mean_"],
     "/Core/GLOBAL_REANALYSIS_PHY_001_030/global-reanalysis-phy-001-030-monthly/" : ["MY","M","BACK","mercatorglorys12v1_gl12_mean_"],
