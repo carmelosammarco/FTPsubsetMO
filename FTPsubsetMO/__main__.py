@@ -44,14 +44,15 @@ def main(args=None):
     
     window = Tk()
 
-    image = pkg_resources.resource_filename('FTPsubsetMO', 'Logo/LOGO.gif')
+    #image = pkg_resources.resource_filename('FTPsubsetMO', 'IMAGES/LOGO.gif')
     filejason =  pkg_resources.resource_filename('FTPsubsetMO', 'Database/CMEMS_Database.json')
-    photo = PhotoImage(file=image)
-    w = photo.width()
-    h = photo.height()
-    cv = Canvas(window, width=w, height=h)
-    cv.pack(side='top', fill='x')
-    cv.create_image(0,0, image=photo, anchor='nw') 
+    #photo = PhotoImage(file=image)
+    #w = photo.width()
+    #h = photo.height()
+    #cv = Canvas(window, width=w, height=h)
+    #cv = Canvas(window)
+    #cv.pack(side='top', fill='x')
+    #cv.create_image(0,0, image=photo, anchor='nw') 
 
     tab_control = ttk.Notebook(window)
     tab1 = ttk.Frame(tab_control)
@@ -59,7 +60,7 @@ def main(args=None):
     tab_control.add(tab1, text='FTPsubsetter')
     #tab_control.add(tab2, text='netCDF-Manipulation')
 
-    window.title("FTPsubsetter-by-Carmelo-Sammarco")
+    window.title("FTPsubsetMO-by_Carmelo_Sammarco")
 
     def FTPsub():
 
@@ -728,8 +729,7 @@ def main(args=None):
     ##
     Password = Label(tab1, text="Password")
     Password.grid(column=1, row=0)
-    #Pwd = Entry(tab1, width=13, show="*")
-    Pwd = Entry(tab1, width=13)
+    Pwd = Entry(tab1, width=13, show="*")
     Pwd.grid(column=1, row=1)
     ##
     space = Label(tab1, text="")
@@ -737,100 +737,100 @@ def main(args=None):
     space = Label(tab1, text="")
     space.grid(column=1, row=2)
     ##
-    FTPlink = Label(tab1, text="FTP-link")
+    FTPlink = Label(tab1, text="FTP-URL")
     FTPlink.grid(column=0, row=3)
     FTPlk = Entry(tab1, width=13)
     FTPlk.grid(column=1, row=3)
     ##
     space = Label(tab1, text="")
-    space.grid(column=0, row=4)
-    space = Label(tab1, text="")
     space.grid(column=1, row=4)
     ##
-    Datest = Label(tab1, text="Date start")
-    Datest.grid(column=0, row=5)
+    Datest = Label(tab1, text="From(YYYY-MM-DD)")
+    Datest.grid(column=0, row=6)
     Ds = Entry(tab1, width=13)
-    Ds.grid(column=1, row=5)
+    Ds.grid(column=1, row=6)
     ##
-    Daten = Label(tab1, text="Date end")
-    Daten.grid(column=0, row=6)
+    Daten = Label(tab1, text="To(YYYY-MM-DD)")
+    Daten.grid(column=0, row=7)
     De = Entry(tab1, width=13)
-    De.grid(column=1, row=6)
+    De.grid(column=1, row=7)
     ##
     space = Label(tab1, text="")
-    space.grid(column=0, row=7)
+    space.grid(column=0, row=8)
     space = Label(tab1, text="")
-    space.grid(column=1, row=7)
+    space.grid(column=1, row=8)
     ##
-    boundingb = Label(tab1, text="Geographic box")
-    boundingb.grid(column=0, row=8)
+    boundingb = Label(tab1, text="Bounding-box?(YES/NO)")
+    boundingb.grid(column=0, row=9)
     bb = Entry(tab1, width=13)
-    bb.grid(column=1, row=8)
+    bb.grid(column=1, row=9)
     ##
     longmin = Label(tab1, text="Long-min(W)")
-    longmin.grid(column=0, row=9)
+    longmin.grid(column=0, row=10)
     lomin = Entry(tab1, width=8)
-    lomin.grid(column=0, row=10)
+    lomin.grid(column=0, row=11)
     ##
     longmax = Label(tab1, text="Long-max(E)")
-    longmax.grid(column=1, row=9)
+    longmax.grid(column=1, row=10)
     lomax = Entry(tab1, width=8)
-    lomax.grid(column=1, row=10)
+    lomax.grid(column=1, row=11)
     ##
     latmin = Label(tab1, text="Lat-min(S)")
-    latmin.grid(column=2, row=9)
+    latmin.grid(column=0, row=12)
     lamin = Entry(tab1, width=8)
-    lamin.grid(column=2, row=10)
+    lamin.grid(column=0, row=13)
     ##
     latmax = Label(tab1, text="Lat-max(N)")
-    latmax.grid(column=3, row=9)
+    latmax.grid(column=1, row=12)
     lamax = Entry(tab1, width=8)
-    lamax.grid(column=3, row=10)
+    lamax.grid(column=1, row=13)
     ##
     space = Label(tab1, text="")
-    space.grid(column=0, row=11)
+    space.grid(column=0, row=14)
     space = Label(tab1, text="")
-    space.grid(column=1, row=11)
+    space.grid(column=1, row=14)
     ##
-    Varex = Label(tab1, text="Variables extraction")
-    Varex.grid(column=0, row=12)
+    Varex = Label(tab1, text="Variables?(YES/NO)")
+    Varex.grid(column=0, row=15)
     Vex = Entry(tab1, width=13)
-    Vex.grid(column=1, row=12)
+    Vex.grid(column=1, row=15)
+    VexY = Label(tab1, text="Variables('var1','var2'...)")
+    VexY.grid(column=0, row=16)
     Vexlist = Entry(tab1, width=13)
-    Vexlist.grid(column=2, row=12)
-    ##
-    space = Label(tab1, text="")
-    space.grid(column=0, row=13)
-    space = Label(tab1, text="")
-    space.grid(column=1, row=13)
-    ##
-    Depex = Label(tab1, text="Depths extraction")
-    Depex.grid(column=0, row=14)
-    Dex = Entry(tab1, width=13)
-    Dex.grid(column=1, row=14)
-    Dtype = Entry(tab1, width=13)
-    Dtype.grid(column=2, row=14)
-    ##
-    Singledepth = Label(tab1, text="Single depth")
-    Singledepth.grid(column=0, row=15)
-    sdepth = Entry(tab1, width=13)
-    sdepth.grid(column=1, row=15)
-    ##
-    Rangedepth = Label(tab1, text="Range depth")
-    Rangedepth.grid(column=0, row=16)
-    Rdepthmin = Entry(tab1, width=13)
-    Rdepthmin.grid(column=1, row=16)
-    Rdepthmax = Entry(tab1, width=13)
-    Rdepthmax.grid(column=2, row=16)
+    Vexlist.grid(column=1, row=16)
     ##
     space = Label(tab1, text="")
     space.grid(column=0, row=17)
     space = Label(tab1, text="")
     space.grid(column=1, row=17)
     ##
+    Depex = Label(tab1, text="Depths?(YES/NO | SINGLE/RANGE)")
+    Depex.grid(column=0, row=18)
+    Dex = Entry(tab1, width=13)
+    Dex.grid(column=1, row=18)
+    Dtype = Entry(tab1, width=13)
+    Dtype.grid(column=2, row=18)
+    ##
+    Singledepth = Label(tab1, text="Single-depth")
+    Singledepth.grid(column=0, row=19)
+    sdepth = Entry(tab1, width=13)
+    sdepth.grid(column=1, row=19)
+    ##
+    Rangedepth = Label(tab1, text="Range-depths(Min|Max)")
+    Rangedepth.grid(column=0, row=20)
+    Rdepthmin = Entry(tab1, width=13)
+    Rdepthmin.grid(column=1, row=20)
+    Rdepthmax = Entry(tab1, width=13)
+    Rdepthmax.grid(column=2, row=20)
+    ##
+    space = Label(tab1, text="")
+    space.grid(column=0, row=22)
+    space = Label(tab1, text="")
+    space.grid(column=1, row=22)
+    ##
     
-    btn1 = Button(tab1, text="Download", bg="green", command=FTPsub)
-    btn1.grid(column=0, row=18)
+    btn1 = Button(tab1, text="Download", bg="red", command=FTPsub)
+    btn1.grid(column=0, row=23)
     
 
     #################################################################
