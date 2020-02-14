@@ -18,7 +18,7 @@ The tool is in development so it can be possible find bugs, errors and imprecisi
 Python module able to download files over FTP protocol and then able to subset the files retrieved using time-range, bounding box, variable and Depth levels selection.
 
 <p align="center">
-  <img width="" height="380" src="DATA/FILE">
+   <img width="" height="" src="FTPsubsetMO/IMAGES/GUI.gif">
 </p>
 
 Together with this tool is distribuited a database which store all the information needed to download the files from each datasets (type of data-set (NRT/MY), time steps (DAILY/MONTLY) and other two parameters needed to correctly identify and select the files prior the download). The key value to retrive such information is the dataset path inside the FTP server. 

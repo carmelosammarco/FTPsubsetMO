@@ -44,7 +44,8 @@ def main(args=None):
     
     window = Tk()
 
-    image = pkg_resources.resource_filename('FTPsubsetMO', 'DATA/LOGO.gif')
+    image = pkg_resources.resource_filename('FTPsubsetMO', 'Logo/LOGO.gif')
+    filejason =  pkg_resources.resource_filename('FTPsubsetMO', 'Database/CMEMS_Database.json')
     photo = PhotoImage(file=image)
     w = photo.width()
     h = photo.height()
@@ -54,16 +55,11 @@ def main(args=None):
 
     tab_control = ttk.Notebook(window)
     tab1 = ttk.Frame(tab_control)
-    tab2 = ttk.Frame(tab_control)
+    #tab2 = ttk.Frame(tab_control)
     tab_control.add(tab1, text='FTPsubsetter')
-    tab_control.add(tab2, text='netCDF-Manipulation')
+    #tab_control.add(tab2, text='netCDF-Manipulation')
 
     window.title("FTPsubsetter-by-Carmelo-Sammarco")
-
-
-    #################
-    #FTP function to download
-    #################
 
     def FTPsub():
 
@@ -71,56 +67,58 @@ def main(args=None):
         # CMEMS LOGIN CREDENTIAL #
         ##########################
 
-        cmems_user = ""          
-
-        cmems_pass = ""         
+        cmems_user = User.get()         
+        cmems_pass = Pwd.get()
+        print(cmems_user)  
+        print(cmems_pass) 
 
         #########################
         # FTP SEARCH PARAMETERS #
         #########################
 
-        pathfiles = "/Core/GLOBAL_REANALYSIS_PHY_001_025/global-reanalysis-phy-001-025-monthly/"
+        pathfiles = FTPlk.get()
+        print(pathfiles)
 
         #########################
         # SELECTION TIME WINDOW #
         #########################
 
-        datastart = "2013-12-29"   
-        dataend = "2014-01-01"        
+        datastart = Ds.get()  
+        dataend = De.get()     
 
         ############################
         # Bounding box information #
         ############################
 
-        bbox = "YES"   #(YES/NO)
+        bbox = bb.get()  #(YES/NO)
 
-        lon1 = -170     #(WEST)
-        lon2 = -150    #EAST)
-        lat1 = -10     #(SOUTH)
-        lat2 = 10      #(NORTH)
+        lon1 = lomin.get()     #(WEST)
+        lon2 = lomax.get()     #EAST)
+        lat1 = lamin.get()     #(SOUTH)
+        lat2 = lamax.get()     #(NORTH)
 
         #######################
         # SELECTION VARIABLES #
         #######################
 
-        Vs = "YES"  #(YES/NO)
+        Vs = Vex.get()  #(YES/NO)
 
-        variables = ["u","v"]     
+        variables = [Vexlist.get()]     
 
         #####################
         # DEPTH INFORMATION #
         #####################
 
-        DL = "YES"            #(YES/NO)
+        DL = Dex.get()           #(YES/NO)
 
-        RangeD = "RANGE"    #(SINGLE/RANGE)
+        RangeD = Dtype.get()    #(SINGLE/RANGE)
 
         #For "SINGLE" DEPTH extraction
-        depth = 100          
+        depth = sdepth.get()          
 
         #For "RANGE" DEPTHs extraction
-        d1 = 100             
-        d2 = 200
+        d1 = Rdepthmin.get()            
+        d2 = Rdepthmax.get()
 
         #################
         # OUTPUT FOLDER #
@@ -133,28 +131,25 @@ def main(args=None):
         # Few important points  before the start of the options #
         #########################################################
 
-        ds = StringVar()
-        de = StringVar()
-        ysi = StringVar()
-        yef = StringVar()
-        g = StringVar()
-
-        filejason =  pkg_resources.resource_filename('FTPsubsetMO', 'DATA/CMEMS_Database.json')
-
         Database = {}
-
         with open (filejason, "r") as config_file:
             Database = json.load(config_file)
-            for key in Database.keys():  
+            for key in Database.keys(): 
                 if pathfiles in key:
+                    #print(pathfiles)
+                    
+                    listdic = Database.get(pathfiles) 
+                    #print(listdic)
 
-                    typo = Database.get(pathfiles)[0]  #(NRT/MY)
+                    typo = listdic[0] #(NRT/MY)
+                    structure = listdic[1]  #M(monthly)/D(daily)  
+                    ID = listdic[2]  #(BACK/FRONT)
+                    Toidentify = listdic[3]   #part of the fine name used to select the files   
 
-                    structure = Database.get(pathfiles)[1]  #M(monthly)/D(daily)  
-
-                    ID = Database.get(pathfiles)[2]  #(BACK/FRONT)
-
-                    Toidentify = Database.get(pathfiles)[3]   #part of the fine name used to select the files        
+                    #print(typo)
+                    #print(structure)
+                    #print(ID)
+                    #print(Toidentify)
 
         #########################
 
@@ -195,7 +190,6 @@ def main(args=None):
         ##########################################################################################################################################
         ##########################################################################################################################################
 
-
         #######################
         # MY DAILY BBOX + VAR #
         #######################
@@ -205,7 +199,7 @@ def main(args=None):
             print(" ")
             print("Connection to the FTP server...")
             
-            ftp = FTP('my.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
+            ftp = FTP('my.cmems-du.eu', user=User.get(), passwd=Pwd.get())
 
             print("Connection exstabilished and download files in progress..")
             print(" ")
@@ -727,187 +721,116 @@ def main(args=None):
     #GUI interface
     #######################
    
-    Username1 = Label(tab1, text="Username")
-    Username1.grid(column=0, row=0)
-    User1 = Entry(tab1, width=13)
-    User1.grid(column=0, row=1)
+    Username = Label(tab1, text="Username")
+    Username.grid(column=0, row=0)
+    User = Entry(tab1, width=13)
+    User.grid(column=0, row=1)
     ##
-    Password1 = Label(tab1, text="Password")
-    Password1.grid(column=1, row=0)
-    Pwd1 = Entry(tab1, width=13, show="*")
-    Pwd1.grid(column=1, row=1)
+    Password = Label(tab1, text="Password")
+    Password.grid(column=1, row=0)
+    #Pwd = Entry(tab1, width=13, show="*")
+    Pwd = Entry(tab1, width=13)
+    Pwd.grid(column=1, row=1)
     ##
-    space1 = Label(tab1, text="")
-    space1.grid(column=0, row=2)
-    space1 = Label(tab1, text="")
-    space1.grid(column=1, row=2)
+    space = Label(tab1, text="")
+    space.grid(column=0, row=2)
+    space = Label(tab1, text="")
+    space.grid(column=1, row=2)
     ##
-    Product1 = Label(tab1, text="Product")
-    Product1.grid(column=0, row=3)
-    Pd1 = Entry(tab1, width=13)
-    Pd1.grid(column=0, row=4)
+    FTPlink = Label(tab1, text="FTP-link")
+    FTPlink.grid(column=0, row=3)
+    FTPlk = Entry(tab1, width=13)
+    FTPlk.grid(column=1, row=3)
     ##
-    Dataset1 = Label(tab1, text="Dataset")
-    Dataset1.grid(column=1, row=3)
-    Ds1 = Entry(tab1, width=13)
-    Ds1.grid(column=1, row=4)
+    space = Label(tab1, text="")
+    space.grid(column=0, row=4)
+    space = Label(tab1, text="")
+    space.grid(column=1, row=4)
     ##
-    space1 = Label(tab1, text="")
-    space1.grid(column=0, row=5)
-    space1 = Label(tab1, text="")
-    space1.grid(column=1, row=5)
+    Datest = Label(tab1, text="Date start")
+    Datest.grid(column=0, row=5)
+    Ds = Entry(tab1, width=13)
+    Ds.grid(column=1, row=5)
     ##
-    longmin1 = Label(tab1, text="Long min")
-    longmin1.grid(column=0, row=6)
-    lomin1 = Entry(tab1, width=13)
-    lomin1.grid(column=0, row=7)
+    Daten = Label(tab1, text="Date end")
+    Daten.grid(column=0, row=6)
+    De = Entry(tab1, width=13)
+    De.grid(column=1, row=6)
     ##
-    longmax1 = Label(tab1, text="Long max")
-    longmax1.grid(column=1, row=6)
-    lomax1 = Entry(tab1, width=13)
-    lomax1.grid(column=1, row=7)
+    space = Label(tab1, text="")
+    space.grid(column=0, row=7)
+    space = Label(tab1, text="")
+    space.grid(column=1, row=7)
     ##
-    latmin1 = Label(tab1, text="Lat min")
-    latmin1.grid(column=0, row=8)
-    lamin1 = Entry(tab1, width=13)
-    lamin1.grid(column=0, row=9)
+    boundingb = Label(tab1, text="Geographic box")
+    boundingb.grid(column=0, row=8)
+    bb = Entry(tab1, width=13)
+    bb.grid(column=1, row=8)
     ##
-    latmax1 = Label(tab1, text="Lat max")
-    latmax1.grid(column=1, row=8)
-    lamax1 = Entry(tab1, width=13)
-    lamax1.grid(column=1, row=9)
+    longmin = Label(tab1, text="Long-min(W)")
+    longmin.grid(column=0, row=9)
+    lomin = Entry(tab1, width=8)
+    lomin.grid(column=0, row=10)
     ##
-    space1 = Label(tab1, text="")
-    space1.grid(column=0, row=10)
-    space1 = Label(tab1, text="")
-    space1.grid(column=1, row=10)
+    longmax = Label(tab1, text="Long-max(E)")
+    longmax.grid(column=1, row=9)
+    lomax = Entry(tab1, width=8)
+    lomax.grid(column=1, row=10)
     ##
-    depthmin1 = Label(tab1, text="Depth min")
-    depthmin1.grid(column=0, row=11)
-    dmin1 = Entry(tab1, width=13)
-    dmin1.grid(column=0, row=12)
+    latmin = Label(tab1, text="Lat-min(S)")
+    latmin.grid(column=2, row=9)
+    lamin = Entry(tab1, width=8)
+    lamin.grid(column=2, row=10)
     ##
-    depthmax1 = Label(tab1, text="Depth max")
-    depthmax1.grid(column=1, row=11)
-    dmax1 = Entry(tab1, width=13)
-    dmax1.grid(column=1, row=12)
+    latmax = Label(tab1, text="Lat-max(N)")
+    latmax.grid(column=3, row=9)
+    lamax = Entry(tab1, width=8)
+    lamax.grid(column=3, row=10)
     ##
-    space1 = Label(tab1, text=" ")
-    space1.grid(column=0, row=13)
-    space1 = Label(tab1, text="")
-    space1.grid(column=1, row=13)
+    space = Label(tab1, text="")
+    space.grid(column=0, row=11)
+    space = Label(tab1, text="")
+    space.grid(column=1, row=11)
     ##
-    stardate1 = Label(tab1, text="From date: YYYY-MM-DD")
-    stardate1.grid(column=0, row=14)
-    sd1 = Entry(tab1, width=13)
-    sd1.grid(column=0, row=15)
+    Varex = Label(tab1, text="Variables extraction")
+    Varex.grid(column=0, row=12)
+    Vex = Entry(tab1, width=13)
+    Vex.grid(column=1, row=12)
+    Vexlist = Entry(tab1, width=13)
+    Vexlist.grid(column=2, row=12)
     ##
-    enddate1 = Label(tab1, text="To date: YYYY-MM-DD")
-    enddate1.grid(column=1, row=14)
-    ed1 = Entry(tab1, width=13)
-    ed1.grid(column=1, row=15)
+    space = Label(tab1, text="")
+    space.grid(column=0, row=13)
+    space = Label(tab1, text="")
+    space.grid(column=1, row=13)
     ##
-    space1 = Label(tab1, text="")
-    space1.grid(column=0, row=16)
-    space1 = Label(tab1, text="")
-    space1.grid(column=1, row=16)
+    Depex = Label(tab1, text="Depths extraction")
+    Depex.grid(column=0, row=14)
+    Dex = Entry(tab1, width=13)
+    Dex.grid(column=1, row=14)
+    Dtype = Entry(tab1, width=13)
+    Dtype.grid(column=2, row=14)
     ##
-    hourdate1 = Label(tab1, text="From time: HH:MM:SS")
-    hourdate1.grid(column=0, row=17)
-    hhstartentry = Entry(tab1, width=13)
-    hhstartentry.grid(column=0, row=18)
+    Singledepth = Label(tab1, text="Single depth")
+    Singledepth.grid(column=0, row=15)
+    sdepth = Entry(tab1, width=13)
+    sdepth.grid(column=1, row=15)
     ##
-    houredate1 = Label(tab1, text="To time: HH:MM:SS")
-    houredate1.grid(column=1, row=17)
-    hhendentry = Entry(tab1, width=13)
-    hhendentry.grid(column=1, row=18)
+    Rangedepth = Label(tab1, text="Range depth")
+    Rangedepth.grid(column=0, row=16)
+    Rdepthmin = Entry(tab1, width=13)
+    Rdepthmin.grid(column=1, row=16)
+    Rdepthmax = Entry(tab1, width=13)
+    Rdepthmax.grid(column=2, row=16)
     ##
-    space1 = Label(tab1, text="")
-    space1.grid(column=0, row=19)
-    space1 = Label(tab1, text="")
-    space1.grid(column=1, row=19)
+    space = Label(tab1, text="")
+    space.grid(column=0, row=17)
+    space = Label(tab1, text="")
+    space.grid(column=1, row=17)
     ##
-    Variable1 = Label(tab1, text="Variable-1")
-    Variable1.grid(column=0, row=20)
-    ##
-    space1 = Label(tab1, text="")
-    space1.grid(column=0, row=21)
-    ##
-    Variable2 = Label(tab1, text="Variable-2")
-    Variable2.grid(column=0, row=22)
-    ##
-    space1 = Label(tab1, text="")
-    space1.grid(column=0, row=23)
-    ##
-    Variable3 = Label(tab1, text="Variable-3")
-    Variable3.grid(column=0, row=24)
-    ##
-    space1 = Label(tab1, text="")
-    space1.grid(column=0, row=25)
-
-    ##
-    V11 = Entry(tab1, width=13)
-    V11.grid(column=1, row=20)
-
-    V12 = Entry(tab1, width=13)
-    V12.grid(column=1, row=22)
-
-    V13 = Entry(tab1, width=13)
-    V13.grid(column=1, row=24)
-    ##
-    space1 = Label(tab1, text="")
-    space1.grid(column=1, row=25)
-    space1 = Label(tab1, text="")
-    space1.grid(column=0, row=25)
-    ##
-    filename1 = Label(tab1, text="File name")
-    filename1.grid(column=0, row=26)
-    fname1 = Entry(tab1, width=13)
-    fname1.grid(column=1, row=26)
-    ##
-    space1 = Label(tab1, text="")
-    space1.grid(column=0, row=27)
-    space1 = Label(tab1, text="")
-    space1.grid(column=1, row=27)
-    ##
-    space1 = Label(tab1, text="")
-    space1.grid(column=0, row=28)
-    space1 = Label(tab1, text="")
-    space1.grid(column=1, row=28)
-    #
-    btn1 = Button(tab1, text="Link-NRT", bg="green", command=FTPsub)
-    btn1.grid(column=1, row=29)
-    ##
-    btn1 = Button(tab1, text="Link-MY", bg="green", command=FTPsub)
-    btn1.grid(column=1, row=30)
-    ##
-    txt1 = scrolledtext.ScrolledText(tab1,width=45,height=10)
-    txt1.grid(column=1,row=31)
-    ##
-    Out1 = Button(tab1, text="Out-DIR", bg="yellow", command=FTPsub)
-    Out1.grid(column=0, row=31)
-    ##
-    btn1 = Button(tab1, text="Clean-link", bg="white", command=FTPsub)
-    btn1.grid(column=1, row=32)
-    ##
-    btn1 = Button(tab1, text="Download Single-file", bg="red", command=FTPsub)
-    btn1.grid(column=0, row=33)
-    ##
-    btn1 = Button(tab1, text="Download Montly", bg="red", command=FTPsub)
-    btn1.grid(column=0, row=34)
-    ###
-    btn1 = Button(tab1, text="Download Daily", bg="red", command=FTPsub)
-    btn1.grid(column=0, row=35)
-    ###
-    btn1 = Button(tab1, text="Download by Depths", bg="red", command=main)
-    btn1.grid(column=0, row=36)
-    ###
-    btn1 = Button(tab1, text="Download by Month&Depth", bg="red", command=main)
-    btn1.grid(column=0, row=37)
-    ###
-    btn1 = Button(tab1, text="Download by Years", bg="red", command=main)
-    btn1.grid(column=0, row=38)
-    ###
+    
+    btn1 = Button(tab1, text="Download", bg="green", command=FTPsub)
+    btn1.grid(column=0, row=18)
     
 
     #################################################################
