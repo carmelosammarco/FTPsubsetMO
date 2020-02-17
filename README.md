@@ -15,35 +15,15 @@ The tool is in development so it can be possible find bugs, errors and imprecisi
 
 ## Introduction:
 
-Python module able to download files over FTP protocol and then able to subset the files retrieved using time-range, bounding box, variable and Depth levels selection.
+Python software able to download files over FTP protocol and then able to subset the files retrieved by time-range, bounding box, variable and single/range Depth levels.
 
 <p align="center">
    <img width="400" height="" src="FTPsubsetMO/IMAGES/GUI.png">
 </p>
 
-Together with this tool is distribuited a database which store all the information needed to download the files from each datasets (type of data-set (NRT/MY), time steps (DAILY/MONTLY) and other two parameters needed to correctly identify and select the files prior the download). The key value to retrive such information is the dataset path inside the FTP server. 
+Together with this tool is distribuited a database which store all the information needed to download the files from each datasets (type of data-set (NRT/MY), time steps (DAILY/MONTLY) and other two parameters needed to correctly identify and select the files prior the download. The key value to retrive such information is the FTP URL of the targeted dataset. 
 
-This tool is in a very early stage so not all the download combinations are present. In any case they are easy to implement (also because the most complete and articulated scenario are already developed). The download cases used at the moment are:
-
-• Download and Subset by bounding box (crossing or not crossing scenario is detected automatically) and Variables
-
-• Download and Subset by bounding box (crossing or not crossing scenario is detected automatically), Variables and Depth (It is possible to select a nearest SINGLE_DEPTH/RANGE which are relative to a certain value set in the code). 
-
-The inputs requested by the GUI-interface are:
-
-1) FTP Link of the dataset (Our key value to extract from the data-base all the parameters needed to make the Tool works)
-
-2) CMEMS personal login credential
-
-3) Depths information parameter values (if interested in a single o range of depths or all depths)
-
-4) Variables name (if interested in extract a selection rather than all)
-
-5) Geographic bounding box (if interested to subset by geographic area)
-
-6) Time range
-
-After the download using the python module "ftplib" (The files will be downloaded in the same directory where the tool run) all the subsequent analyses are mainly performed with xarray (another python module), however below a full list of Python modules/libraries required:
+After the download using the python module "ftplib" (The files will be downloaded in the same directory where the tool run) all the subsequent analyses are mainly performed with xarray (another python module). Below the full list of dependencies required (which are installed automatically during the installation):
 
 - [x] xarray
 - [x] ftputil>=3.4
@@ -56,12 +36,31 @@ After the download using the python module "ftplib" (The files will be downloade
 - [x] h5py
 - [x] h5netcdf
 
+## What the user needs to input?
+
+1. CMEMS personal login credential
+
+2. FTP Link of the dataset (Our key value to extract from the data-base all the parameters needed to make the Tool works)
+
+3. Time range
+
+4. Geographic bounding box (if interested to subset by geographic area)
+
+5. Variables name (if interested in extract a selection rather than all)
+
+6. Depths information parameter values (if interested in a single o range of depths or all depths)
+
+
 ## Installation:
 
-Just type in the terminal/command-prompt ;
+Just type in the terminal/command-prompt:
 
+```
 pip install FTPsubsetMO
+```
 
 To run the tool just type on terminal/command-prompt:
 
+```
 FTPsubsetMO
+```
