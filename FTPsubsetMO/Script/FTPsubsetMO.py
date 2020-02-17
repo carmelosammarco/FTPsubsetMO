@@ -57,12 +57,12 @@ dataend = "####"
 # Bounding box information #
 ############################
 
-bbox = " "   #(YES/NO)
+bbox = "####"   #(YES/NO)
 
-lon1 =      #(WEST)
-lon2 =      #EAST)
-lat1 =      #(SOUTH)
-lat2 =      #(NORTH)
+lon1 = ####    #(WEST)
+lon2 = ####    #EAST)
+lat1 = ####    #(SOUTH)
+lat2 = ####    #(NORTH)
 
 #######################
 # SELECTION VARIABLES #
@@ -81,11 +81,11 @@ DL = "####"            #(YES/NO)
 RangeD = "####"    #(SINGLE/RANGE)
 
 #For "SINGLE" DEPTH extraction
-depth =           
+depth = ####         
 
 #For "RANGE" DEPTHs extraction
-d1 =             
-d2 = 
+d1 =  ####          
+d2 =  ####
 
 #################
 # OUTPUT FOLDER #

@@ -38,20 +38,20 @@ After the download using the python module "ftplib" (The files will be downloade
 
 ## What the user needs to input?
 
-1. CMEMS personal login credential
+1. **CMEMS personal login credential**
 
-2. FTP Link of the dataset (Our key value to extract from the data-base all the parameters needed to make the Tool works)
+2. **FTP Link of the dataset** (Our key value to extract from the data-base all the parameters needed to make the Tool works)
 
-3. Time range
+3. **Time range**
 
-4. Geographic bounding box (if interested to subset by geographic area)
+4. **Geographic bounding box** (if interested to subset by geographic area)
 
-5. Variables name (if interested in extract a selection rather than all)
+5. **Variables name** (if interested in extract a selection rather than all)
 
-6. Depths information parameter values (if interested in a single o range of depths or all depths)
+6. **Depths** information parameter values (if interested in a single o range of depths or all depths)
 
 
-## Installation:
+## Python module installation:
 
 Just type in the terminal/command-prompt:
 
@@ -59,8 +59,27 @@ Just type in the terminal/command-prompt:
 pip install FTPsubsetMO
 ```
 
-To run the tool just type on terminal/command-prompt:
+After that you can decide if use the GUI interface or exexute it by script which of course is going to allow the maximum customization. To use the GUI interface  just type on terminal/command-prompt:
 
 ```
 FTPsubsetMO
 ```
+
+After that just type the parameters needed. Finally just click on the red Download button to start the download/subsetting process.
+
+If more interested to use the module as a script  and then be able to be free in look/modify/customise the code please to:
+
+1. Open the Terminal/command_prompt in the location where you desire download the files or anyway have the script
+
+2. Activate your python environment and import the module:
+
+```
+from FTPsubsetMO import script
+```
+3. Run the function "script" as follow: 
+
+```
+script()
+```
+
+It will allow you to insert, in the path folder where you run the command, the files needed (which are CMEMS_Database.json and FTPsubsetMO.py) to run the subsetting process. The FTPsubsetMO.py is the only file that need to be modified based on your data needs. The script inputs are highlighted with **"####"**. 
