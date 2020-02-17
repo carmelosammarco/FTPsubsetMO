@@ -56,7 +56,7 @@ After the download which uses the python module "ftplib" (The files are download
 - Date start
 - Date end
 
-In the format YYYY-MM-DD also in the case of the MONTHLY dataset where DD can be set to any value.
+Date format as YYYY-MM-DD also in the case of the MONTHLY dataset where the term "DD" can be set to any value.
 
 
 4. **Geographic bounding box** (if interested to subset by geographic area)
