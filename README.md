@@ -74,7 +74,7 @@ Just type in the terminal/command-prompt:
 pip install FTPsubsetMO
 ```
 
-After that you are free to decide if you want to use the GUI interface or exexute it by script which of course as pros is going to allow the maximum customization but not very user friendly as cons. 
+After that you are free to decide if you want to use the GUI interface or exexute it as script. The latter will allow the maximum customization but as cons it is not very user friendly. 
 
 -----
 
@@ -84,7 +84,7 @@ After that you are free to decide if you want to use the GUI interface or exexut
 FTPsubsetMO
 ```
 
-After that just type on the pop upped screen the parameters asked. Finally just click on the red Download button to start the download/subsetting process.
+After that just type on the pop upped screen the parameters asked/required. Finally just click on the red download button to start the download/subsetting process.
 
 -----
 
@@ -103,4 +103,4 @@ from FTPsubsetMO import script
 script()
 ```
 
-The above function will allow you to add, in the path folder where you run the command, the files needed (which are CMEMS_Database.json and FTPsubsetMO.py) to run the subsetting process in a pure scripting way. "FTPsubsetMO.py" is the only file to modify and based on your data request needs. The script's inputs needed are highlighted with **####**. 
+The above function will allow you to add, in the path folder where you run the command, the files needed (which are CMEMS_Database.json and FTPsubsetMO.py) to run the subsetting process in a pure scripting way. "FTPsubsetMO.py" is the only file to modify based on your data request needs. The script's inputs are highlighted with **####**. 
