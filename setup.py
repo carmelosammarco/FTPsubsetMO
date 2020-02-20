@@ -18,7 +18,7 @@ setup(name='FTPsubsetMO',
 
       include_package_data=True,
       package_data={
-        'FTPsubsetMO' : ['Database/CMEMS_Database.json','IMAGES/LOGO.gif','IMAGES/GUI.gif','Script/CMEMS_Database.json','Script/FTPsubsetMO.py']
+        'FTPsubsetMO' : ['Database/CMEMS_Database.json','IMAGES/LOGO.gif','IMAGES/GUI.gif','Script/CMEMS_Database.json','Script/FTPsubsetMO.py','Database/datasets_MY.pdf']
 
       },
 

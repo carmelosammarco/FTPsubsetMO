@@ -13,7 +13,7 @@ Many thanks to visit this page and try this software.
 
 The tool is in development so it can be possible find bugs, errors and imprecisions. Please to report them if you find one.
 
-Also the Database is still not fully populated. I almost completed the MULTI-YEAR dataset and after I will populate the dataset with the NEAR-REAL-TIME.
+Also the Database is still not fully populated (still Missing NRT datasets). For more detailed information about the MULTI YEAR datasets please to look the  [MY_datasets](FTPsubsetMO/Database/datasets_MY.pdf) file.
 
 ## Introduction:
 
