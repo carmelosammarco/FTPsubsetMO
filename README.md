@@ -19,7 +19,7 @@ For more detailed information about the MULTI YEAR datasets please to look the [
 
 ## Introduction:
 
-Python software able to download files over FTP protocol and then able to subset the files retrieved by time-range, bounding box, variable and single/range Depth levels (below the GUI interface displayed on a Linux system).
+Python software able to download files over FTP protocol and subset the files retrieved by parameters as time-range, bounding box, variables and single/range Depth levels (below the GUI interface displayed on a Linux system).
 
 <p align="center">
    <img width="400" height="" src="FTPsubsetMO/IMAGES/GUI.png">
