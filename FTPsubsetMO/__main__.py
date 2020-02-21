@@ -128,6 +128,11 @@ def main(args=None):
         # Few important points  before the start of the options #
         #########################################################
 
+        typo = StringVar()
+        structure = StringVar()
+        ID = StringVar()
+        Toidentify = StringVar()
+
         Database = {}
         with open (filejason, "r") as config_file:
             Database = json.load(config_file)

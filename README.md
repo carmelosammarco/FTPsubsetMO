@@ -50,7 +50,7 @@ After the download which uses the python module "ftplib" (The files are download
 2. **FTP Link of the dataset** (Our key value to extract from the data-base all the parameters needed to make the Tool works) as example below:
 
 ```
-/Core/GLOBAL_REANALYSIS_PHY_001_025/global-reanalysis-phy-001-025-monthy/
+/Core/GLOBAL_REANALYSIS_PHY_001_025/global-reanalysis-phy-001-025-monthly/
 ```
 
 3. **Time range**
@@ -58,7 +58,7 @@ After the download which uses the python module "ftplib" (The files are download
 - Date start
 - Date end
 
-Date format as YYYY-MM-DD also in the case of the MONTHLY dataset where the term "DD" can be set to any value.
+Date format as YYYY-MM-DD also in the case of the MONTHLY dataset where the term "DD" can be set to any real value.
 
 
 4. **Geographic bounding box** (if interested to subset by geographic area)
