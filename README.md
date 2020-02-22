@@ -25,7 +25,7 @@ Python software able to download files over FTP protocol and subset the files re
    <img width="400" height="" src="FTPsubsetMO/IMAGES/GUI.png">
 </p>
 
-Together with this tool is distribuited a database which store all the information needed to download the files from each datasets (type of data-set (NRT/MY), time steps (DAILY/MONTLY) and other two parameters needed to correctly identify and select the files prior the download. The key value to retrive such information is the FTP URL of the targeted dataset. It was ideated and implemented by me to adress the download automatization. However I really push the Producers to uniform all the data_structure/file_names and Metadata info which are the basis for the progress.
+Together with this tool is distribuited a database which store all the information needed to download the files from each datasets (type of data-set (NRT/MY), time steps (DAILY/MONTLY) and other two parameters needed to correctly identify and select the files prior the download. The key value to retrive such information is the FTP URL of the targeted dataset. It was ideated and implemented by me to adress the download automatization. However I really push the Producers to uniform all the data_structure/file_names and Metadata info (which will make easier the database creation/updates).
 
 After the download which uses the python module "ftplib" (The files are downloaded in the same directory where the tool run) all the subsequent analyses are mainly performed with xarray (another python module). Below the full list of dependencies required (They are installed automatically during the installation if not avaiable in the python environment used):
 
