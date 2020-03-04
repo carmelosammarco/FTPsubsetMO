@@ -90,7 +90,7 @@ def main(args=None):
         bbox = bb.get()  #(YES/NO)
 
         lon1 = lomin.get()     #(WEST)
-        lon2 = lomax.get()     #EAST)
+        lon2 = lomax.get()     #(EAST)
         lat1 = lamin.get()     #(SOUTH)
         lat2 = lamax.get()     #(NORTH)
 
@@ -171,6 +171,25 @@ def main(args=None):
         days = pd.date_range(datastart, dataend, freq='D')
         months = pd.date_range(sdata, edata, freq='M')
 
+        SPECdatasets = ["/Core/OCEANCOLOUR_ARC_CHL_L4_REP_OBSERVATIONS_009_088/dataset-oc-arc-chl-multi_cci-l4-chl_1km_monthly-rep-v02/",
+                        "/Core/OCEANCOLOUR_ATL_CHL_L4_REP_OBSERVATIONS_009_091/dataset-oc-atl-chl-multi_cci-l4-chl_1km_monthly-rep-v02/",
+                        "/Core/OCEANCOLOUR_BS_CHL_L4_REP_OBSERVATIONS_009_079/dataset-oc-bs-chl-multi_cci-l4-chl_1km_monthly-rep-v02/",
+                        "/Core/OCEANCOLOUR_GLO_CHL_L4_REP_OBSERVATIONS_009_082/dataset-oc-glo-chl-multi-l4-gsm_100km_monthly-rep-v02/",
+                        "/Core/OCEANCOLOUR_GLO_CHL_L4_REP_OBSERVATIONS_009_082/dataset-oc-glo-chl-multi-l4-gsm_25km_monthly-rep-v02/",
+                        "/Core/OCEANCOLOUR_GLO_CHL_L4_REP_OBSERVATIONS_009_082/dataset-oc-glo-chl-multi-l4-gsm_4km_monthly-rep-v02/",
+                        "/Core/OCEANCOLOUR_GLO_CHL_L4_REP_OBSERVATIONS_009_093/dataset-oc-glo-chl-multi_cci-l4-chl_4km_monthly-rep-v02/",
+                        "/Core/OCEANCOLOUR_GLO_OPTICS_L4_REP_OBSERVATIONS_009_081/dataset-oc-glo-opt-multi-l4-bbp443_4km_monthly-rep-v02/",
+                        "/Core/OCEANCOLOUR_GLO_OPTICS_L4_REP_OBSERVATIONS_009_081/dataset-oc-glo-opt-multi-l4-cdm443_4km_monthly-rep-v02/",
+                        "/Core/OCEANCOLOUR_GLO_OPTICS_L4_REP_OBSERVATIONS_009_081/dataset-oc-glo-opt-multi-l4-kd490_4km_monthly-rep-v02/",
+                        "/Core/OCEANCOLOUR_GLO_OPTICS_L4_REP_OBSERVATIONS_009_081/dataset-oc-glo-opt-multi-l4-rrs412_4km_monthly-rep-v02/",
+                        "/Core/OCEANCOLOUR_GLO_OPTICS_L4_REP_OBSERVATIONS_009_081/dataset-oc-glo-opt-multi-l4-rrs443_4km_monthly-rep-v02/",
+                        "/Core/OCEANCOLOUR_GLO_OPTICS_L4_REP_OBSERVATIONS_009_081/dataset-oc-glo-opt-multi-l4-rrs490_4km_monthly-rep-v02/",
+                        "/Core/OCEANCOLOUR_GLO_OPTICS_L4_REP_OBSERVATIONS_009_081/dataset-oc-glo-opt-multi-l4-rrs555_4km_monthly-rep-v02/",
+                        "/Core/OCEANCOLOUR_GLO_OPTICS_L4_REP_OBSERVATIONS_009_081/dataset-oc-glo-opt-multi-l4-rrs670_4km_monthly-rep-v02/",
+                        "/Core/OCEANCOLOUR_GLO_OPTICS_L4_REP_OBSERVATIONS_009_081/dataset-oc-glo-opt-multi-l4-spm_4km_monthly-rep-v02/",
+                        "/Core/OCEANCOLOUR_GLO_OPTICS_L4_REP_OBSERVATIONS_009_081/dataset-oc-glo-opt-multi-l4-zsd_4km_monthly-rep-v02/",
+                        "/Core/OCEANCOLOUR_MED_CHL_L4_REP_OBSERVATIONS_009_078/dataset-oc-med-chl-multi_cci-l4-chl_1km_monthly-rep-v02/"]
+
         if lon1 > lon2:
             Crossing = "YES"
         else:
@@ -200,7 +219,7 @@ def main(args=None):
             print(" ")
             print("Connection to the FTP server...")
             
-            ftp = FTP('my.cmems-du.eu', user=User.get(), passwd=Pwd.get())
+            ftp = FTP('my.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
 
             print("Connection exstabilished and download files in progress..")
             print(" ")
@@ -255,8 +274,22 @@ def main(args=None):
                             out1 = outpath1 + "/" + str(m) + "/" + "SubsetBbox_" + file_name
                             
                             DS = xr.open_dataset(data)
+
+                            #DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
                         
-                            DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
+                            try:
+                                DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
+                            except ValueError:
+                                print("")
+                            try:
+                                DSbbox = DS.sel(x=slice(float(lon1),float(lon2)), y=slice(float(lat1),float(lat2)))
+                            except ValueError:
+                                print("")
+                            try:
+                                DSbbox = DS.sel(lon=slice(float(lon1),float(lon2)), lat=slice(float(lat1),float(lat2)))
+                            except ValueError:
+                                print("")
+
                             DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4', engine='h5netcdf')
                             DS.close()
 
@@ -275,10 +308,38 @@ def main(args=None):
                             
                             DS = xr.open_dataset(data)
                         
-                            DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+                            #DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+
+                            try:
+                                DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+                            except ValueError:
+                                print("")
+                            try:
+                                DSbbox1 = DS.sel(x=slice(float(w1),float(e1)), y=slice(float(s1),float(n1)))
+                            except ValueError:
+                                print("")
+                            try:
+                                DSbbox1 = DS.sel(lon=slice(float(w1),float(e1)), lat=slice(float(s1),float(n1)))
+                            except ValueError:
+                                print("")
+
                             DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4', engine='h5netcdf')
 
-                            DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
+                            #DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
+
+                            try:
+                                DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
+                            except ValueError:
+                                print("")
+                            try:
+                                DSbbox2 = DS.sel(x=slice(float(w2),float(e2)), y=slice(float(s2),float(n2)))
+                            except ValueError:
+                                print("")
+                            try:
+                                DSbbox2 = DS.sel(lon=slice(float(w2),float(e2)), lat=slice(float(s2),float(n2)))
+                            except ValueError:
+                                print("")
+
                             DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4', engine='h5netcdf')
 
                             DSbbox = xr.merge([DSbbox1,DSbbox2])
@@ -305,7 +366,7 @@ def main(args=None):
             print(" ")
             print("Connection to the FTP server...")
             
-            ftp = FTP('my.cmems-du.eu', user=User.get(), passwd=Pwd.get())
+            ftp = FTP('my.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
 
             print("Connection exstabilished and download files in progress..")
             print(" ")
@@ -362,7 +423,21 @@ def main(args=None):
                             
                             DS = xr.open_dataset(data)
                         
-                            DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
+                            #DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
+
+                            try:
+                                DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
+                            except ValueError:
+                                print("")
+                            try:
+                                DSbbox = DS.sel(x=slice(float(lon1),float(lon2)), y=slice(float(lat1),float(lat2)))
+                            except ValueError:
+                                print("")
+                            try:
+                                DSbbox = DS.sel(lon=slice(float(lon1),float(lon2)), lat=slice(float(lat1),float(lat2)))
+                            except ValueError:
+                                print("")
+
                             DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4', engine='h5netcdf')
                             DS.close()
 
@@ -389,16 +464,43 @@ def main(args=None):
                             
                             DS = xr.open_dataset(data)
                         
-                            DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+                            #DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+
+                            try:
+                                DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+                            except ValueError:
+                                print("")
+                            try:
+                                DSbbox1 = DS.sel(x=slice(float(w1),float(e1)), y=slice(float(s1),float(n1)))
+                            except ValueError:
+                                print("")
+                            try:
+                                DSbbox1 = DS.sel(lon=slice(float(w1),float(e1)), lat=slice(float(s1),float(n1)))
+                            except ValueError:
+                                print("")
+
                             DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4', engine='h5netcdf')
 
-                            DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
+                            #DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
+
+                            try:
+                                DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
+                            except ValueError:
+                                print("")
+                            try:
+                                DSbbox2 = DS.sel(x=slice(float(w2),float(e2)), y=slice(float(s2),float(n2)))
+                            except ValueError:
+                                print("")
+                            try:
+                                DSbbox2 = DS.sel(lon=slice(float(w2),float(e2)), lat=slice(float(s2),float(n2)))
+                            except ValueError:
+                                print("")
+
                             DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4', engine='h5netcdf')
 
                             DSbbox = xr.merge([DSbbox1,DSbbox2])
                             DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4', engine='h5netcdf')
                             DS.close()
-
 
                             DS1 = xr.open_dataset(out1)
 
@@ -484,7 +586,21 @@ def main(args=None):
                             
                             DS = xr.open_dataset(data)
                         
-                            DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
+                            #DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
+
+                            try:
+                                DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
+                            except ValueError:
+                                print("")
+                            try:
+                                DSbbox = DS.sel(x=slice(float(lon1),float(lon2)), y=slice(float(lat1),float(lat2)))
+                            except ValueError:
+                                print("")
+                            try:
+                                DSbbox = DS.sel(lon=slice(float(lon1),float(lon2)), lat=slice(float(lat1),float(lat2)))
+                            except ValueError:
+                                print("")
+
                             DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4', engine='h5netcdf')
                             DS.close()
 
@@ -524,10 +640,38 @@ def main(args=None):
                             
                             DS = xr.open_dataset(data)
                         
-                            DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+                            #DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+
+                            try:
+                                DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+                            except ValueError:
+                                print("")
+                            try:
+                                DSbbox1 = DS.sel(x=slice(float(w1),float(e1)), y=slice(float(s1),float(n1)))
+                            except ValueError:
+                                print("")
+                            try:
+                                DSbbox1 = DS.sel(lon=slice(float(w1),float(e1)), lat=slice(float(s1),float(n1)))
+                            except ValueError:
+                                print("")
+
                             DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4', engine='h5netcdf')
 
-                            DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
+                            #DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
+
+                            try:
+                                DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
+                            except ValueError:
+                                print("")
+                            try:
+                                DSbbox2 = DS.sel(x=slice(float(w2),float(e2)), y=slice(float(s2),float(n2)))
+                            except ValueError:
+                                print("")
+                            try:
+                                DSbbox2 = DS.sel(lon=slice(float(w2),float(e2)), lat=slice(float(s2),float(n2)))
+                            except ValueError:
+                                print("")
+
                             DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4', engine='h5netcdf')
 
                             DSbbox = xr.merge([DSbbox1,DSbbox2])
@@ -586,6 +730,7 @@ def main(args=None):
 
                 a = mon.strftime('%Y')
                 m = mon.strftime('%m')
+                lastd = mon.strftime('%d')
 
                 path = os.path.join(outpath, str(a))
 
@@ -596,7 +741,11 @@ def main(args=None):
 
                 if ID == "BACK":
                     look = mon.strftime(Toidentify+'%Y%m')
-                else:
+
+                elif pathfiles in SPECdatasets:
+                    look = mon.strftime('%Y%m'+'01_m_'+'%Y%m%d' + Toidentify)
+
+                else: #FRONT
                     look = mon.strftime('%Y%m'+ Toidentify)
 
                 ftp.cwd(pathfiles + str(a))
@@ -624,7 +773,22 @@ def main(args=None):
                             
                             DS = xr.open_dataset(data)
                         
-                            DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
+                            #DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
+
+                            try:
+                                DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
+                            except ValueError:
+                                print("")
+                            try:
+                                DSbbox = DS.sel(x=slice(float(lon1),float(lon2)), y=slice(float(lat1),float(lat2)))
+                            except ValueError:
+                                print("")
+                            try:
+                                DSbbox = DS.sel(lon=slice(float(lon1),float(lon2)), lat=slice(float(lat1),float(lat2)))
+                            except ValueError:
+                                print("")
+
+
                             DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4', engine='h5netcdf')
                             DS.close()
 
@@ -644,10 +808,38 @@ def main(args=None):
                             
                             DS = xr.open_dataset(data)
                         
-                            DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+                            #DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+
+                            try:
+                                DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+                            except ValueError:
+                                print("")
+                            try:
+                                DSbbox1 = DS.sel(x=slice(float(w1),float(e1)), y=slice(float(s1),float(n1)))
+                            except ValueError:
+                                print("")
+                            try:
+                                DSbbox1 = DS.sel(lon=slice(float(w1),float(e1)), lat=slice(float(s1),float(n1)))
+                            except ValueError:
+                                print("")
+                            
                             DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4', engine='h5netcdf')
 
-                            DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
+                            #DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
+
+                            try:
+                                DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
+                            except ValueError:
+                                print("")
+                            try:
+                                DSbbox2 = DS.sel(x=slice(float(w2),float(e2)), y=slice(float(s2),float(n2)))
+                            except ValueError:
+                                print("")
+                            try:
+                                DSbbox2 = DS.sel(lon=slice(float(w2),float(e2)), lat=slice(float(s2),float(n2)))
+                            except ValueError:
+                                print("")
+
                             DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4', engine='h5netcdf')
 
                             DSbbox = xr.merge([DSbbox1,DSbbox2])
@@ -683,6 +875,7 @@ def main(args=None):
 
                 a = mon.strftime('%Y')
                 m = mon.strftime('%m')
+                lastd = mon.strftime('%d')
 
                 path = os.path.join(outpath, str(a))
 
@@ -693,7 +886,11 @@ def main(args=None):
 
                 if ID == "BACK":
                     look = mon.strftime(Toidentify+'%Y%m')
-                else:
+
+                elif pathfiles in SPECdatasets:
+                    look = mon.strftime('%Y%m'+'01_m_'+'%Y%m%d' + Toidentify)
+
+                else: #FRONT
                     look = mon.strftime('%Y%m'+ Toidentify)
 
                 ftp.cwd(pathfiles + str(a))
@@ -722,7 +919,21 @@ def main(args=None):
                             
                             DS = xr.open_dataset(data)
                         
-                            DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
+                            #DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
+
+                            try:
+                                DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
+                            except ValueError:
+                                print("")
+                            try:
+                                DSbbox = DS.sel(x=slice(float(lon1),float(lon2)), y=slice(float(lat1),float(lat2)))
+                            except ValueError:
+                                print("")
+                            try:
+                                DSbbox = DS.sel(lon=slice(float(lon1),float(lon2)), lat=slice(float(lat1),float(lat2)))
+                            except ValueError:
+                                print("")
+
                             DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4', engine='h5netcdf')
                             DS.close()
 
@@ -749,10 +960,38 @@ def main(args=None):
                             
                             DS = xr.open_dataset(data)
                         
-                            DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+                            #DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+
+                            try:
+                                DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+                            except ValueError:
+                                print("")
+                            try:
+                                DSbbox1 = DS.sel(x=slice(float(w1),float(e1)), y=slice(float(s1),float(n1)))
+                            except ValueError:
+                                print("")
+                            try:
+                                DSbbox1 = DS.sel(lon=slice(float(w1),float(e1)), lat=slice(float(s1),float(n1)))
+                            except ValueError:
+                                print("")
+
                             DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4', engine='h5netcdf')
 
-                            DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
+                            #DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
+
+                            try:
+                                DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
+                            except ValueError:
+                                print("")
+                            try:
+                                DSbbox2 = DS.sel(x=slice(float(w2),float(e2)), y=slice(float(s2),float(n2)))
+                            except ValueError:
+                                print("")
+                            try:
+                                DSbbox2 = DS.sel(lon=slice(float(w2),float(e2)), lat=slice(float(s2),float(n2)))
+                            except ValueError:
+                                print("")
+
                             DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4', engine='h5netcdf')
 
                             DSbbox = xr.merge([DSbbox1,DSbbox2])
@@ -796,6 +1035,7 @@ def main(args=None):
 
                 a = mon.strftime('%Y')
                 m = mon.strftime('%m')
+                lastd = mon.strftime('%d')
 
                 path = os.path.join(outpath, str(a))
 
@@ -807,7 +1047,11 @@ def main(args=None):
 
                 if ID == "BACK":
                     look = mon.strftime(Toidentify+'%Y%m')
-                else:
+
+                elif pathfiles in SPECdatasets:
+                    look = mon.strftime('%Y%m'+'01_m_'+'%Y%m%d' + Toidentify)
+
+                else: #FRONT
                     look = mon.strftime('%Y%m'+ Toidentify)
 
                 ftp.cwd(pathfiles + str(a))
@@ -838,7 +1082,21 @@ def main(args=None):
                             
                             DS = xr.open_dataset(data)
                         
-                            DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
+                            #DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
+
+                            try:
+                                DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
+                            except ValueError:
+                                print("")
+                            try:
+                                DSbbox = DS.sel(x=slice(float(lon1),float(lon2)), y=slice(float(lat1),float(lat2)))
+                            except ValueError:
+                                print("")
+                            try:
+                                DSbbox = DS.sel(lon=slice(float(lon1),float(lon2)), lat=slice(float(lat1),float(lat2)))
+                            except ValueError:
+                                print("")
+
                             DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4', engine='h5netcdf')
                             DS.close()
 
@@ -878,10 +1136,38 @@ def main(args=None):
                             
                             DS = xr.open_dataset(data)
                         
-                            DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+                            #DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+
+                            try:
+                                DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+                            except ValueError:
+                                print("")
+                            try:
+                                DSbbox1 = DS.sel(x=slice(float(w1),float(e1)), y=slice(float(s1),float(n1)))
+                            except ValueError:
+                                print("")
+                            try:
+                                DSbbox1 = DS.sel(lon=slice(float(w1),float(e1)), lat=slice(float(s1),float(n1)))
+                            except ValueError:
+                                print("")
+
                             DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4', engine='h5netcdf')
 
-                            DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
+                            #DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
+
+                            try:
+                                DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
+                            except ValueError:
+                                print("")
+                            try:
+                                DSbbox2 = DS.sel(x=slice(float(w2),float(e2)), y=slice(float(s2),float(n2)))
+                            except ValueError:
+                                print("")
+                            try:
+                                DSbbox2 = DS.sel(lon=slice(float(w2),float(e2)), lat=slice(float(s2),float(n2)))
+                            except ValueError:
+                                print("")
+
                             DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4', engine='h5netcdf')
 
                             DSbbox = xr.merge([DSbbox1,DSbbox2])
@@ -919,7 +1205,7 @@ def main(args=None):
        
        
         else:
-            print("test version")
+            print("PROCESS COMPLETED")
 
 
 

@@ -105,4 +105,4 @@ from FTPsubsetMO import script
 script()
 ```
 
-The above function will allow you to add, in the path folder where you run the command, the files needed (which are CMEMS_Database.json and FTPsubsetMO.py) to run the subsetting process in a pure scripting way. "FTPsubsetMO.py" is the only file to modify based on your data request needs. The script's inputs are highlighted with **####**. 
+The above function will allow you to add, in the path folder where you run the command, the files needed (which are CMEMS_Database.json and FTPsubsetMO.py) to run the subsetting process in a pure scripting way. "FTPsubsetMO.py" is the only file to modify based on your data request needs. The script's inputs are highlighted with **""**. More information can be found as form of comments in FTPsubsetMO.py script.

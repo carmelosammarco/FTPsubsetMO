@@ -53,10 +53,10 @@
 
     "/Core/IBI_REANALYSIS_WAV_005_006/dataset-ibi-reanalysis-wav-005-006-hourly/" : ["MY","D","BACK","CMEMS_v4r1_IBI_WAV_MY_PdE_01hsn_"],
 
-    "/Core/MEDSEA_REANALYSIS_BIO_006_008/sv03-med-ogs-bio-rean-m/" : ["MY","M","FRONT","_mm-OGS--BIOL-MedBFM1-MED-b"],
-    "/Core/MEDSEA_REANALYSIS_BIO_006_008/sv03-med-ogs-car-rean-m/" : ["MY","M","FRONT","_mm-OGS--CARB-MedBFM1-MED-b"],
-    "/Core/MEDSEA_REANALYSIS_BIO_006_008/sv03-med-ogs-nut-rean-mm/" : ["MY","M","FRONT","_mm-OGS--NUTR-MedBFM1-MED-b"],
-    "/Core/MEDSEA_REANALYSIS_BIO_006_008/sv03-med-ogs-pft-rean-m/" : ["MY","M","FRONT","_mm-OGS--PFTC-MedBFM1-MED-b"],
+    "/Core/MEDSEA_REANALYSIS_BIO_006_008/sv03-med-ogs-bio-rean-m/" : ["MY","M","FRONT","01_mm-OGS--BIOL-MedBFM1-MED-b"],
+    "/Core/MEDSEA_REANALYSIS_BIO_006_008/sv03-med-ogs-car-rean-m/" : ["MY","M","FRONT","01_mm-OGS--CARB-MedBFM1-MED-b"],
+    "/Core/MEDSEA_REANALYSIS_BIO_006_008/sv03-med-ogs-nut-rean-mm/" : ["MY","M","FRONT","01_mm-OGS--NUTR-MedBFM1-MED-b"],
+    "/Core/MEDSEA_REANALYSIS_BIO_006_008/sv03-med-ogs-pft-rean-m/" : ["MY","M","FRONT","01_mm-OGS--PFTC-MedBFM1-MED-b"],
 
     "/Core/MEDSEA_REANALYSIS_PHYS_006_004/sv03-med-ingv-cur-rean-d/" : ["MY","D","FRONT","_dm-INGV--RFVL-MFSs4b3-MED-b"],
     "/Core/MEDSEA_REANALYSIS_PHYS_006_004/sv03-med-ingv-cur-rean-m/" : ["MY","D","FRONT","_mm-INGV--RFVL-MFSs4b3-MED-b"],
@@ -97,22 +97,22 @@
     "/Core/NORTHWESTSHELF_REANALYSIS_BIO_004_011/MetO-NWS-BIO-mm-PHYT/" : ["MY","M","BACK","metoffice_foam1_amm7_NWS_PHYT_mm"],
     "/Core/NORTHWESTSHELF_REANALYSIS_BIO_004_011/MetO-NWS-BIO-mm-PPRD/" : ["MY","M","BACK","metoffice_foam1_amm7_NWS_PPRD_mm"],
 
-    "/Core/NORTHWESTSHELF_REANALYSIS_BIO_004_009/MetO-NWS-PHY-dm-BED/" : ["MY","D","BACK","metoffice_foam1_amm7_NWS_BED_dm"],
-    "/Core/NORTHWESTSHELF_REANALYSIS_BIO_004_009/MetO-NWS-PHY-dm-CUR/" : ["MY","D","BACK","metoffice_foam1_amm7_NWS_CUR_dm"],
-    "/Core/NORTHWESTSHELF_REANALYSIS_BIO_004_009/MetO-NWS-PHY-dm-MLD/" : ["MY","D","BACK","metoffice_foam1_amm7_NWS_MLD_dm"],
-    "/Core/NORTHWESTSHELF_REANALYSIS_BIO_004_009/MetO-NWS-PHY-dm-SAL/" : ["MY","D","BACK","metoffice_foam1_amm7_NWS_SAL_dm"],
-    "/Core/NORTHWESTSHELF_REANALYSIS_BIO_004_009/MetO-NWS-PHY-dm-SSH/" : ["MY","D","BACK","metoffice_foam1_amm7_NWS_SSH_dm"],
-    "/Core/NORTHWESTSHELF_REANALYSIS_BIO_004_009/MetO-NWS-PHY-dm-TEM/" : ["MY","D","BACK","metoffice_foam1_amm7_NWS_TEM_dm"],
-    "/Core/NORTHWESTSHELF_REANALYSIS_BIO_004_009/MetO-NWS-PHY-mm-BED/" : ["MY","M","BACK","metoffice_foam1_amm7_NWS_BED_mm"],
-    "/Core/NORTHWESTSHELF_REANALYSIS_BIO_004_009/MetO-NWS-PHY-mm-CUR/" : ["MY","M","BACK","metoffice_foam1_amm7_NWS_CUR_mm"],
-    "/Core/NORTHWESTSHELF_REANALYSIS_BIO_004_009/MetO-NWS-PHY-mm-MLD/" : ["MY","M","BACK","metoffice_foam1_amm7_NWS_MLD_mm"],
-    "/Core/NORTHWESTSHELF_REANALYSIS_BIO_004_009/MetO-NWS-PHY-mm-SAL/" : ["MY","M","BACK","metoffice_foam1_amm7_NWS_SAL_mm"],
-    "/Core/NORTHWESTSHELF_REANALYSIS_BIO_004_009/MetO-NWS-PHY-mm-SSH/" : ["MY","M","BACK","metoffice_foam1_amm7_NWS_SSH_mm"],
-    "/Core/NORTHWESTSHELF_REANALYSIS_BIO_004_009/MetO-NWS-PHY-mm-TEM/" : ["MY","M","BACK","metoffice_foam1_amm7_NWS_TEM_mm"],
+    "/Core/NORTHWESTSHELF_REANALYSIS_PHY_004_009/MetO-NWS-PHY-dm-BED/" : ["MY","D","BACK","metoffice_foam1_amm7_NWS_BED_dm"],
+    "/Core/NORTHWESTSHELF_REANALYSIS_PHY_004_009/MetO-NWS-PHY-dm-CUR/" : ["MY","D","BACK","metoffice_foam1_amm7_NWS_CUR_dm"],
+    "/Core/NORTHWESTSHELF_REANALYSIS_PHY_004_009/MetO-NWS-PHY-dm-MLD/" : ["MY","D","BACK","metoffice_foam1_amm7_NWS_MLD_dm"],
+    "/Core/NORTHWESTSHELF_REANALYSIS_PHY_004_009/MetO-NWS-PHY-dm-SAL/" : ["MY","D","BACK","metoffice_foam1_amm7_NWS_SAL_dm"],
+    "/Core/NORTHWESTSHELF_REANALYSIS_PHY_004_009/MetO-NWS-PHY-dm-SSH/" : ["MY","D","BACK","metoffice_foam1_amm7_NWS_SSH_dm"],
+    "/Core/NORTHWESTSHELF_REANALYSIS_PHY_004_009/MetO-NWS-PHY-dm-TEM/" : ["MY","D","BACK","metoffice_foam1_amm7_NWS_TEM_dm"],
+    "/Core/NORTHWESTSHELF_REANALYSIS_PHY_004_009/MetO-NWS-PHY-mm-BED/" : ["MY","M","BACK","metoffice_foam1_amm7_NWS_BED_mm"],
+    "/Core/NORTHWESTSHELF_REANALYSIS_PHY_004_009/MetO-NWS-PHY-mm-CUR/" : ["MY","M","BACK","metoffice_foam1_amm7_NWS_CUR_mm"],
+    "/Core/NORTHWESTSHELF_REANALYSIS_PHY_004_009/MetO-NWS-PHY-mm-MLD/" : ["MY","M","BACK","metoffice_foam1_amm7_NWS_MLD_mm"],
+    "/Core/NORTHWESTSHELF_REANALYSIS_PHY_004_009/MetO-NWS-PHY-mm-SAL/" : ["MY","M","BACK","metoffice_foam1_amm7_NWS_SAL_mm"],
+    "/Core/NORTHWESTSHELF_REANALYSIS_PHY_004_009/MetO-NWS-PHY-mm-SSH/" : ["MY","M","BACK","metoffice_foam1_amm7_NWS_SSH_mm"],
+    "/Core/NORTHWESTSHELF_REANALYSIS_PHY_004_009/MetO-NWS-PHY-mm-TEM/" : ["MY","M","BACK","metoffice_foam1_amm7_NWS_TEM_mm"],
 
     "/Core/OCEANCOLOUR_ARC_CHL_L3_REP_OBSERVATIONS_009_069/dataset-oc-arc-chl-multi_cci-l3-chl_1km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_PML-L3-CHL-oc5ci_MULTI_1KM-ARC-REP-v"],
 
-    "/Core/OCEANCOLOUR_ARC_CHL_L4_REP_OBSERVATIONS_009_088/dataset-oc-arc-chl-multi_cci-l4-chl_1km_monthly-rep-v02/" : ["MY","M","FRONT","-OC_PML-L4-CHL-oc5ci_MULTI_1KM-ARC-REP-v"],
+    "/Core/OCEANCOLOUR_ARC_CHL_L4_REP_OBSERVATIONS_009_088/dataset-oc-arc-chl-multi_cci-l4-chl_1km_monthly-rep-v02/" : ["MY","M","SPEC","-OC_PML-L4-CHL-oc5ci_MULTI_1KM-ARC-REP-v"],
 
     "/Core/OCEANCOLOUR_ARC_OPTICS_L3_REP_OBSERVATIONS_009_068/dataset-oc-arc-opt-multi_cci-l3-rrs412_1km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_PML-L3-RRS412-nasa_MULTI_1KM-ARC-REP-v"],
     "/Core/OCEANCOLOUR_ARC_OPTICS_L3_REP_OBSERVATIONS_009_068/dataset-oc-arc-opt-multi_cci-l3-rrs443_1km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_PML-L3-RRS443-nasa_MULTI_1KM-ARC-REP-v"],
@@ -123,70 +123,126 @@
 
     "/Core/OCEANCOLOUR_ATL_CHL_L3_REP_OBSERVATIONS_009_067/dataset-oc-atl-chl-multi_cci-l3-chl_1km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_PML-L3-CHL-oc5ci_MULTI_1KM-ATL-REP-v"],
 
-    "/Core/OCEANCOLOUR_ATL_CHL_L4_REP_OBSERVATIONS_009_091/dataset-oc-atl-chl-multi_cci-l4-chl_1km_monthly-rep-v02/" : ["MY","M","FRONT","-OC_PML-L4-CHL-oc5ci_MULTI_1KM-ATL-REP-v"],
+    "/Core/OCEANCOLOUR_ATL_CHL_L4_REP_OBSERVATIONS_009_091/dataset-oc-atl-chl-multi_cci-l4-chl_1km_monthly-rep-v02/" : ["MY","M","SPEC","-OC_PML-L4-CHL-oc5ci_MULTI_1KM-ATL-REP-v"],
 
-    "/Core/OCEANCOLOUR_ATL_CHL_L4_REP_OBSERVATIONS_009_098/dataset-oc-atl-chl-multi-l4-oi_1km_daily-rep-v02/" : ["MY","D","FRONT","_d-ACRI-L4-CHL-MULTI_1KM-ATL-REP-v"]
+    "/Core/OCEANCOLOUR_ATL_CHL_L4_REP_OBSERVATIONS_009_098/dataset-oc-atl-chl-multi-l4-oi_1km_daily-rep-v02/" : ["MY","D","FRONT","_d-ACRI-L4-CHL-MULTI_1KM-ATL-REP-v"],
 
+    "/Core/OCEANCOLOUR_ATL_OPTICS_L3_REP_OBSERVATIONS_009_066/dataset-oc-atl-opt-multi_cci-l3-rrs412_1km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_PML-L3-RRS412-nasa_MULTI_1KM-ATL-REP-v"],
+    "/Core/OCEANCOLOUR_ATL_OPTICS_L3_REP_OBSERVATIONS_009_066/dataset-oc-atl-opt-multi_cci-l3-rrs443_1km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_PML-L3-RRS443-nasa_MULTI_1KM-ATL-REP-v"],
+    "/Core/OCEANCOLOUR_ATL_OPTICS_L3_REP_OBSERVATIONS_009_066/dataset-oc-atl-opt-multi_cci-l3-rrs490_1km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_PML-L3-RRS490-nasa_MULTI_1KM-ATL-REP-v"],
+    "/Core/OCEANCOLOUR_ATL_OPTICS_L3_REP_OBSERVATIONS_009_066/dataset-oc-atl-opt-multi_cci-l3-rrs510_1km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_PML-L3-RRS510-nasa_MULTI_1KM-ATL-REP-v"],
+    "/Core/OCEANCOLOUR_ATL_OPTICS_L3_REP_OBSERVATIONS_009_066/dataset-oc-atl-opt-multi_cci-l3-rrs555_1km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_PML-L3-RRS555-nasa_MULTI_1KM-ATL-REP-v"],
+    "/Core/OCEANCOLOUR_ATL_OPTICS_L3_REP_OBSERVATIONS_009_066/dataset-oc-atl-opt-multi_cci-l3-rrs670_1km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_PML-L3-RRS670-nasa_MULTI_1KM-ATL-REP-v"],
 
+    "/Core/OCEANCOLOUR_BAL_CHL_L3_REP_OBSERVATIONS_009_080/dataset-oc-bal-chl-multi_cci-l3-chl_1km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_CNR-L3-CHL-BalAlg_SAM_1KM-BAL-REP-v"],
 
+    "/Core/OCEANCOLOUR_BAL_OPTICS_L3_REP_OBSERVATIONS_009_097/dataset-oc-bal-opt-multi_cci-l3-kd490_1km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_CNR-L3-KD490-BalAlg_SAM_1KM-BAL-REP-v"],
+    "/Core/OCEANCOLOUR_BAL_OPTICS_L3_REP_OBSERVATIONS_009_097/dataset-oc-bal-opt-multi_cci-l3-rrs412_1km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_CNR-L3-RRS412-BalAlg_SAM_1KM-BAL-REP-v"],
+    "/Core/OCEANCOLOUR_BAL_OPTICS_L3_REP_OBSERVATIONS_009_097/dataset-oc-bal-opt-multi_cci-l3-rrs443_1km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_CNR-L3-RRS443-BalAlg_SAM_1KM-BAL-REP-v"],
+    "/Core/OCEANCOLOUR_BAL_OPTICS_L3_REP_OBSERVATIONS_009_097/dataset-oc-bal-opt-multi_cci-l3-rrs490_1km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_CNR-L3-RRS490-BalAlg_SAM_1KM-BAL-REP-v"],
+    "/Core/OCEANCOLOUR_BAL_OPTICS_L3_REP_OBSERVATIONS_009_097/dataset-oc-bal-opt-multi_cci-l3-rrs510_1km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_CNR-L3-RRS510-BalAlg_SAM_1KM-BAL-REP-v"],
+    "/Core/OCEANCOLOUR_BAL_OPTICS_L3_REP_OBSERVATIONS_009_097/dataset-oc-bal-opt-multi_cci-l3-rrs555_1km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_CNR-L3-RRS555-BalAlg_SAM_1KM-BAL-REP-v"],
+    "/Core/OCEANCOLOUR_BAL_OPTICS_L3_REP_OBSERVATIONS_009_097/dataset-oc-bal-opt-multi_cci-l3-rrs670_1km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_CNR-L3-RRS670-BalAlg_SAM_1KM-BAL-REP-v"],
 
+    "/Core/OCEANCOLOUR_BS_CHL_L3_REP_OBSERVATIONS_009_071/dataset-oc-bs-chl-multi_cci-l3-chl_1km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_CNR-L3-CHL-BSAlg_SAM_1KM-BS-REP-v"],
 
+    "/Core/OCEANCOLOUR_BS_CHL_L4_REP_OBSERVATIONS_009_079/dataset-oc-bs-chl-multi_cci-l4-chl_1km_monthly-rep-v02/" : ["MY","M","SPEC","-OC_CNR-L4-CHL-BSAlg_SAM_1KM-BS-REP-v"],
 
+    "/Core/OCEANCOLOUR_BS_OPTICS_L3_REP_OBSERVATIONS_009_096/dataset-oc-bs-opt-multi_cci-l3-kd490_1km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_CNR-L3-KD490-BSAlg_SAM_1KM-BS-REP-v"],
+    "/Core/OCEANCOLOUR_BS_OPTICS_L3_REP_OBSERVATIONS_009_096/dataset-oc-bs-opt-multi_cci-l3-rrs412_1km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_CNR-L3-RRS412-BSAlg_SAM_1KM-BS-REP-v"],
+    "/Core/OCEANCOLOUR_BS_OPTICS_L3_REP_OBSERVATIONS_009_096/dataset-oc-bs-opt-multi_cci-l3-rrs443_1km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_CNR-L3-RRS443-BSAlg_SAM_1KM-BS-REP-v"],
+    "/Core/OCEANCOLOUR_BS_OPTICS_L3_REP_OBSERVATIONS_009_096/dataset-oc-bs-opt-multi_cci-l3-rrs490_1km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_CNR-L3-RRS490-BSAlg_SAM_1KM-BS-REP-v"],
+    "/Core/OCEANCOLOUR_BS_OPTICS_L3_REP_OBSERVATIONS_009_096/dataset-oc-bs-opt-multi_cci-l3-rrs510_1km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_CNR-L3-RRS510-BSAlg_SAM_1KM-BS-REP-v"],
+    "/Core/OCEANCOLOUR_BS_OPTICS_L3_REP_OBSERVATIONS_009_096/dataset-oc-bs-opt-multi_cci-l3-rrs555_1km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_CNR-L3-RRS555-BSAlg_SAM_1KM-BS-REP-v"],
+    "/Core/OCEANCOLOUR_BS_OPTICS_L3_REP_OBSERVATIONS_009_096/dataset-oc-bs-opt-multi_cci-l3-rrs670_1km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_CNR-L3-RRS670-BSAlg_SAM_1KM-BS-REP-v"],
 
+    "/Core/OCEANCOLOUR_GLO_CHL_L3_REP_OBSERVATIONS_009_065/dataset-oc-glo-chl-multi_cci-l3-chl_4km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_PML-L3-CHL-occci_MULTI_4KM-GLO-REP-v"],
 
+    "/Core/OCEANCOLOUR_GLO_CHL_L3_REP_OBSERVATIONS_009_085/dataset-oc-glo-chl-multi-l3-gsm_100km_daily-rep-v02/" : ["MY","D","FRONT","_d-ACRI-L3-CHL-MULTI_100KM-GLO-REP-v"],
+    "/Core/OCEANCOLOUR_GLO_CHL_L3_REP_OBSERVATIONS_009_085/dataset-oc-glo-chl-multi-l3-gsm_25km_daily-rep-v02/" : ["MY","D","FRONT","_d-ACRI-L3-CHL-MULTI_25KM-GLO-REP-v"],
+    "/Core/OCEANCOLOUR_GLO_CHL_L3_REP_OBSERVATIONS_009_085/dataset-oc-glo-chl-multi-l3-gsm_4km_daily-rep-v02/" : ["MY","D","FRONT","_d-ACRI-L3-CHL-MULTI_4KM-GLO-REP-v"],
 
+    "/Core/OCEANCOLOUR_GLO_CHL_L4_REP_OBSERVATIONS_009_082/dataset-oc-glo-chl-multi-l4-gsm_100km_monthly-rep-v02/" : ["MY","M","SPEC","-ACRI-L4-CHL-MULTI_100KM-GLO-REP-v"],
+    "/Core/OCEANCOLOUR_GLO_CHL_L4_REP_OBSERVATIONS_009_082/dataset-oc-glo-chl-multi-l4-gsm_25km_monthly-rep-v02/" : ["MY","M","SPEC","-ACRI-L4-CHL-MULTI_25KM-GLO-REP-v"],
+    "/Core/OCEANCOLOUR_GLO_CHL_L4_REP_OBSERVATIONS_009_082/dataset-oc-glo-chl-multi-l4-gsm_4km_monthly-rep-v02/" : ["MY","M","SPEC","-ACRI-L4-CHL-MULTI_4KM-GLO-REP-v"],
+    "/Core/OCEANCOLOUR_GLO_CHL_L4_REP_OBSERVATIONS_009_082/dataset-oc-glo-chl-multi-l4-oi_4km_daily-rep-v02/" : ["MY","D","FRONT","_d-ACRI-L4-CHL-MULTI_4KM-GLO-REP-v"],
 
+    "/Core/OCEANCOLOUR_GLO_CHL_L4_REP_OBSERVATIONS_009_093/dataset-oc-glo-chl-multi_cci-l4-chl_4km_monthly-rep-v02/" : ["MY","M","SPEC","-OC_PML-L4-CHL-occci_MULTI_4KM-GLO-REP-v"],
 
+    "/Core/OCEANCOLOUR_GLO_OPTICS_L3_REP_OBSERVATIONS_009_064/dataset-oc-glo-opt-multi_cci-l3-rrs412_4km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_PML-L3-RRS412-nasa_MULTI_4KM-GLO-REP-v"],
+    "/Core/OCEANCOLOUR_GLO_OPTICS_L3_REP_OBSERVATIONS_009_064/dataset-oc-glo-opt-multi_cci-l3-rrs443_4km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_PML-L3-RRS443-nasa_MULTI_4KM-GLO-REP-v"],
+    "/Core/OCEANCOLOUR_GLO_OPTICS_L3_REP_OBSERVATIONS_009_064/dataset-oc-glo-opt-multi_cci-l3-rrs490_4km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_PML-L3-RRS490-nasa_MULTI_4KM-GLO-REP-v"],
+    "/Core/OCEANCOLOUR_GLO_OPTICS_L3_REP_OBSERVATIONS_009_064/dataset-oc-glo-opt-multi_cci-l3-rrs510_4km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_PML-L3-RRS510-nasa_MULTI_4KM-GLO-REP-v"],
+    "/Core/OCEANCOLOUR_GLO_OPTICS_L3_REP_OBSERVATIONS_009_064/dataset-oc-glo-opt-multi_cci-l3-rrs555_4km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_PML-L3-RRS555-nasa_MULTI_4KM-GLO-REP-v"],
+    "/Core/OCEANCOLOUR_GLO_OPTICS_L3_REP_OBSERVATIONS_009_064/dataset-oc-glo-opt-multi_cci-l3-rrs670_4km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_PML-L3-RRS670-nasa_MULTI_4KM-GLO-REP-v"],
 
+    "/Core/OCEANCOLOUR_GLO_OPTICS_L3_REP_OBSERVATIONS_009_086/dataset-oc-glo-opt-multi-l3-bbp443_4km_daily-rep-v02/" : ["MY","D","FRONT","_d-ACRI-L3-BBP-GSM_MULTI_4KM-GLO-REP-v"],
+    "/Core/OCEANCOLOUR_GLO_OPTICS_L3_REP_OBSERVATIONS_009_086/dataset-oc-glo-opt-multi-l3-cdm443_4km_daily-rep-v02/" : ["MY","D","FRONT","_d-ACRI-L3-CDM-GSM_MULTI_4KM-GLO-REP-v"],
+    "/Core/OCEANCOLOUR_GLO_OPTICS_L3_REP_OBSERVATIONS_009_086/dataset-oc-glo-opt-multi-l3-kd490_4km_daily-rep-v02/" : ["MY","D","FRONT","_d-ACRI-L3-KD490-MULTI_4KM-GLO-REP-v"],
+    "/Core/OCEANCOLOUR_GLO_OPTICS_L3_REP_OBSERVATIONS_009_086/dataset-oc-glo-opt-multi-l3-rrs412_4km_daily-rep-v02/" : ["MY","D","FRONT","_d-ACRI-L3-RRS412-AV_MULTI_4KM-GLO-REP-v"],
+    "/Core/OCEANCOLOUR_GLO_OPTICS_L3_REP_OBSERVATIONS_009_086/dataset-oc-glo-opt-multi-l3-rrs443_4km_daily-rep-v02/" : ["MY","D","FRONT","_d-ACRI-L3-RRS443-AV_MULTI_4KM-GLO-REP-v"],
+    "/Core/OCEANCOLOUR_GLO_OPTICS_L3_REP_OBSERVATIONS_009_086/dataset-oc-glo-opt-multi-l3-rrs490_4km_daily-rep-v02/" : ["MY","D","FRONT","_d-ACRI-L3-RRS490-AV_MULTI_4KM-GLO-REP-v"],
+    "/Core/OCEANCOLOUR_GLO_OPTICS_L3_REP_OBSERVATIONS_009_086/dataset-oc-glo-opt-multi-l3-rrs555_4km_daily-rep-v02/" : ["MY","D","FRONT","_d-ACRI-L3-RRS555-AV_MULTI_4KM-GLO-REP-v"],
+    "/Core/OCEANCOLOUR_GLO_OPTICS_L3_REP_OBSERVATIONS_009_086/dataset-oc-glo-opt-multi-l3-rrs670_4km_daily-rep-v02/" : ["MY","D","FRONT","_d-ACRI-L3-RRS670-AV_MULTI_4KM-GLO-REP-v"],
+    "/Core/OCEANCOLOUR_GLO_OPTICS_L3_REP_OBSERVATIONS_009_086/dataset-oc-glo-opt-multi-l3-spm_4km_daily-rep-v02/" : ["MY","D","FRONT","_d-ACRI-L3-SPM-MULTI_4KM-GLO-REP-v"],
+    "/Core/OCEANCOLOUR_GLO_OPTICS_L3_REP_OBSERVATIONS_009_086/dataset-oc-glo-opt-multi-l3-zsd_4km_daily-rep-v02/" : ["MY","D","FRONT","_d-ACRI-L3-ZSD-MULTI_4KM-GLO-REP-v"],
 
+    "/Core/OCEANCOLOUR_GLO_OPTICS_L4_REP_OBSERVATIONS_009_081/dataset-oc-glo-opt-multi-l4-bbp443_4km_monthly-rep-v02/" : ["MY","M","SPEC","-ACRI-L4-BBP-GSM_MULTI_4KM-GLO-REP-v"],
+    "/Core/OCEANCOLOUR_GLO_OPTICS_L4_REP_OBSERVATIONS_009_081/dataset-oc-glo-opt-multi-l4-cdm443_4km_monthly-rep-v02/" : ["MY","M","SPEC","-ACRI-L4-CDM-GSM_MULTI_4KM-GLO-REP-v"],
+    "/Core/OCEANCOLOUR_GLO_OPTICS_L4_REP_OBSERVATIONS_009_081/dataset-oc-glo-opt-multi-l4-kd490_4km_monthly-rep-v02/" : ["MY","M","SPEC","-ACRI-L4-KD490-MULTI_4KM-GLO-REP-v"],
+    "/Core/OCEANCOLOUR_GLO_OPTICS_L4_REP_OBSERVATIONS_009_081/dataset-oc-glo-opt-multi-l4-rrs412_4km_monthly-rep-v02/" : ["MY","M","SPEC","-ACRI-L4-RRS412-AV_MULTI_4KM-GLO-REP-v"],
+    "/Core/OCEANCOLOUR_GLO_OPTICS_L4_REP_OBSERVATIONS_009_081/dataset-oc-glo-opt-multi-l4-rrs443_4km_monthly-rep-v02/" : ["MY","M","SPEC","-ACRI-L4-RRS443-AV_MULTI_4KM-GLO-REP-v"],
+    "/Core/OCEANCOLOUR_GLO_OPTICS_L4_REP_OBSERVATIONS_009_081/dataset-oc-glo-opt-multi-l4-rrs490_4km_monthly-rep-v02/" : ["MY","M","SPEC","-ACRI-L4-RRS490-AV_MULTI_4KM-GLO-REP-v"],
+    "/Core/OCEANCOLOUR_GLO_OPTICS_L4_REP_OBSERVATIONS_009_081/dataset-oc-glo-opt-multi-l4-rrs555_4km_monthly-rep-v02/" : ["MY","M","SPEC","-ACRI-L4-RRS555-AV_MULTI_4KM-GLO-REP-v"],
+    "/Core/OCEANCOLOUR_GLO_OPTICS_L4_REP_OBSERVATIONS_009_081/dataset-oc-glo-opt-multi-l4-rrs670_4km_monthly-rep-v02/" : ["MY","M","SPEC","-ACRI-L4-RRS670-AV_MULTI_4KM-GLO-REP-v"],
+    "/Core/OCEANCOLOUR_GLO_OPTICS_L4_REP_OBSERVATIONS_009_081/dataset-oc-glo-opt-multi-l4-spm_4km_monthly-rep-v02/" : ["MY","M","SPEC","-ACRI-L4-SPM-MULTI_4KM-GLO-REP-v"],
+    "/Core/OCEANCOLOUR_GLO_OPTICS_L4_REP_OBSERVATIONS_009_081/dataset-oc-glo-opt-multi-l4-zsd_4km_monthly-rep-v02/" : ["MY","M","SPEC","-ACRI-L4-ZSD-MULTI_4KM-GLO-REP-v"],
 
+    "/Core/OCEANCOLOUR_MED_CHL_L3_REP_OBSERVATIONS_009_073/dataset-oc-med-chl-multi_cci-l3-chl_1km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_CNR-L3-CHL-MedOC4AD4_SAM_1KM-MED-REP-v"],
+    "/Core/OCEANCOLOUR_MED_CHL_L3_REP_OBSERVATIONS_009_073/dataset-oc-med-pft-multi_cci-l3-pft_1km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_CNR-L3-PFT-SAM_1KM-MED-REP-v"],
 
+    "/Core/OCEANCOLOUR_MED_CHL_L4_REP_OBSERVATIONS_009_078/dataset-oc-med-chl-multi_cci-l4-chl_1km_monthly-rep-v02/" : ["MY","D","SPEC","-OC_CNR-L4-CHL-MedOC4AD4_SAM_1KM-MED-REP-v"],
 
+    "/Core/OCEANCOLOUR_MED_OPTICS_L3_REP_OBSERVATIONS_009_095/dataset-oc-med-opt-multi_cci-l3-kd490_1km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_CNR-L3-KD490-MedOC4AD4_SAM_1KM-MED-REP-v"],
+    "/Core/OCEANCOLOUR_MED_OPTICS_L3_REP_OBSERVATIONS_009_095/dataset-oc-med-opt-multi_cci-l3-rrs412_1km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_CNR-L3-RRS412-MedOC4AD4_SAM_1KM-MED-REP-v"],
+    "/Core/OCEANCOLOUR_MED_OPTICS_L3_REP_OBSERVATIONS_009_095/dataset-oc-med-opt-multi_cci-l3-rrs443_1km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_CNR-L3-RRS443-MedOC4AD4_SAM_1KM-MED-REP-v"],
+    "/Core/OCEANCOLOUR_MED_OPTICS_L3_REP_OBSERVATIONS_009_095/dataset-oc-med-opt-multi_cci-l3-rrs490_1km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_CNR-L3-RRS490-MedOC4AD4_SAM_1KM-MED-REP-v"],
+    "/Core/OCEANCOLOUR_MED_OPTICS_L3_REP_OBSERVATIONS_009_095/dataset-oc-med-opt-multi_cci-l3-rrs510_1km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_CNR-L3-RRS510-MedOC4AD4_SAM_1KM-MED-REP-v"],
+    "/Core/OCEANCOLOUR_MED_OPTICS_L3_REP_OBSERVATIONS_009_095/dataset-oc-med-opt-multi_cci-l3-rrs555_1km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_CNR-L3-RRS555-MedOC4AD4_SAM_1KM-MED-REP-v"],
+    "/Core/OCEANCOLOUR_MED_OPTICS_L3_REP_OBSERVATIONS_009_095/dataset-oc-med-opt-multi_cci-l3-rrs670_1km_daily-rep-v02/" : ["MY","D","FRONT","_d-OC_CNR-L3-RRS670-MedOC4AD4_SAM_1KM-MED-REP-v"],
 
+    "/Core/SST_ATL_SST_L4_REP_OBSERVATIONS_010_026/IFREMER-ATL-SST-L4-REP-OBS_FULL_TIME_SERIE/" : ["MY","D","FRONT","000000-IFR-L4_GHRSST-SSTfnd-ODYSSEA-ATL_004-v2.0-fv"],
 
+    "/Core/SST_BAL_SST_L4_REP_OBSERVATIONS_010_016/DMI-BAL-SST_REANALYSIS-OBS_FULL_TIME_SERIE/" : ["MY","D","FRONT","000000-DMI-L4_GHRSST-SSTfnd-DMI_OI_REP-NSEABALTIC-v02.0-fv"],
 
+    "/Core/SST_BS_SST_L4_REP_OBSERVATIONS_010_022/SST_BS_SST_L4_REP_OBSERVATIONS_010_022_a/" : ["MY","D","FRONT","000000-GOS-L4_GHRSST-SSTfnd-OISST_HR_REP-BLK-v02.0-fv"],
 
+    "/Core/SST_GLO_SST_L4_REP_OBSERVATIONS_010_011/METOFFICE-GLO-SST-L4-RAN-OBS-ANOM/" : ["MY","D","FRONT","-UKMO-L4LRfnd-GLOB-v01-fv02-OSTIARANanom"],
+    "/Core/SST_GLO_SST_L4_REP_OBSERVATIONS_010_011/METOFFICE-GLO-SST-L4-RAN-OBS-SST/" : ["MY","D","FRONT","-UKMO-L4HRfnd-GLOB-v01-fv02-OSTIARAN"],
+    "/Core/SST_GLO_SST_L4_REP_OBSERVATIONS_010_011/METOFFICE-GLO-SST-L4-RAN-OBS-SST-MON/" : ["MY","M","FRONT","-UKMO-L4LRfnd-GLOB-v01-fv02-OSTIARANmonthly"],
 
+    "/Core/SST_GLO_SST_L4_REP_OBSERVATIONS_010_024/ESACCI-GLO-SST-L4-REP-OBS-SST/" : ["MY","D","FRONT","120000-ESACCI-L4_GHRSST-SSTdepth-OSTIA-GLOB_CDR2.0-v02.0-fv"],
 
+    "/Core/SST_MED_SST_L4_REP_OBSERVATIONS_010_021/SST_MED_SST_L4_REP_OBSERVATIONS_010_021_a/" : ["MY","D","FRONT","000000-GOS-L4_GHRSST-SSTfnd-OISST_HR_REP-MED-v02.0-fv"],
 
+    "/Core/WIND_GLO_WIND_L3_REP_OBSERVATIONS_012_005/KNMI-GLO-WIND_L3-REP-OBS_ERS-1_SCAT_25_ASC/" : ["MY","D","BACK","GLO-WIND_L3-OBS_ERS1-SCAT_250_ASC_"],
+    "/Core/WIND_GLO_WIND_L3_REP_OBSERVATIONS_012_005/KNMI-GLO-WIND_L3-REP-OBS_ERS-1_SCAT_25_DES/" : ["MY","D","BACK","GLO-WIND_L3-OBS_ERS1-SCAT_250_DES_"],
+    "/Core/WIND_GLO_WIND_L3_REP_OBSERVATIONS_012_005/KNMI-GLO-WIND_L3-REP-OBS_ERS-2_SCAT_25_ASC/" : ["MY","D","BACK","GLO-WIND_L3-OBS_ERS2-SCAT_250_ASC_"],
+    "/Core/WIND_GLO_WIND_L3_REP_OBSERVATIONS_012_005/KNMI-GLO-WIND_L3-REP-OBS_ERS-2_SCAT_25_DES/" : ["MY","D","BACK","GLO-WIND_L3-OBS_ERS2-SCAT_250_DES_"],
+    "/Core/WIND_GLO_WIND_L3_REP_OBSERVATIONS_012_005/KNMI-GLO-WIND_L3-REP-OBS_METOP-A_ASCAT_12_ASC/" : ["MY","D","BACK","GLO-WIND_L3-OBS_METOP-A_ASCAT_12_ASC_"],
+    "/Core/WIND_GLO_WIND_L3_REP_OBSERVATIONS_012_005/KNMI-GLO-WIND_L3-REP-OBS_METOP-A_ASCAT_12_DES/" : ["MY","D","BACK","GLO-WIND_L3-OBS_METOP-A_ASCAT_12_DES_"],
+    "/Core/WIND_GLO_WIND_L3_REP_OBSERVATIONS_012_005/KNMI-GLO-WIND_L3-REP-OBS_METOP-A_ASCAT_25_ASC/" : ["MY","D","BACK","GLO-WIND_L3-OBS_METOP-A_ASCAT_25_ASC_"],
+    "/Core/WIND_GLO_WIND_L3_REP_OBSERVATIONS_012_005/KNMI-GLO-WIND_L3-REP-OBS_METOP-A_ASCAT_25_DES/" : ["MY","D","BACK","GLO-WIND_L3-OBS_METOP-A_ASCAT_25_DES_"],
+    "/Core/WIND_GLO_WIND_L3_REP_OBSERVATIONS_012_005/KNMI-GLO-WIND_L3-REP-OBS_OCEANSAT2_OSCAT_25_ASC/" : ["MY","D","BACK","GLO-WIND_L3-OBS_OCEANSAT2_OSCAT_25_ASC_"],
+    "/Core/WIND_GLO_WIND_L3_REP_OBSERVATIONS_012_005/KNMI-GLO-WIND_L3-REP-OBS_OCEANSAT2_OSCAT_25_DES/" : ["MY","D","BACK","GLO-WIND_L3-OBS_OCEANSAT2_OSCAT_25_DES_"],
+    "/Core/WIND_GLO_WIND_L3_REP_OBSERVATIONS_012_005/KNMI-GLO-WIND_L3-REP-OBS_OCEANSAT2_OSCAT_50_ASC/" : ["MY","D","BACK","GLO-WIND_L3-OBS_OCEANSAT2_OSCAT_50_ASC_"],
+    "/Core/WIND_GLO_WIND_L3_REP_OBSERVATIONS_012_005/KNMI-GLO-WIND_L3-REP-OBS_OCEANSAT2_OSCAT_50_DES/" : ["MY","D","BACK","GLO-WIND_L3-OBS_OCEANSAT2_OSCAT_50_DES_"],
+    "/Core/WIND_GLO_WIND_L3_REP_OBSERVATIONS_012_005/KNMI-GLO-WIND_L3-REP-OBS_QUIKSCAT_SEAWINDS_25_ASC/" : ["MY","D","BACK","GLO-WIND_L3-OBS_QUIKSCAT_SEAWINDS_25_ASC_"],
+    "/Core/WIND_GLO_WIND_L3_REP_OBSERVATIONS_012_005/KNMI-GLO-WIND_L3-REP-OBS_QUIKSCAT_SEAWINDS_25_DES/" : ["MY","D","BACK","GLO-WIND_L3-OBS_QUIKSCAT_SEAWINDS_25_DES_"],
+    "/Core/WIND_GLO_WIND_L3_REP_OBSERVATIONS_012_005/KNMI-GLO-WIND_L3-REP-OBS_QUIKSCAT_SEAWINDS_50_ASC/" : ["MY","D","BACK","GLO-WIND_L3-OBS_QUIKSCAT_SEAWINDS_50_ASC_"],
+    "/Core/WIND_GLO_WIND_L3_REP_OBSERVATIONS_012_005/KNMI-GLO-WIND_L3-REP-OBS_QUIKSCAT_SEAWINDS_50_DES/" : ["MY","D","BACK","GLO-WIND_L3-OBS_QUIKSCAT_SEAWINDS_50_DES_"],
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    "/Core/WIND_GLO_WIND_L4_REP_OBSERVATIONS_012_003/CERSAT-GLO-REP_WIND_L4-OBS_FULL_TIME_SERIE/" : ["MY","M","FRONT","_1mm-ifremer-L4-EWSB-wind_gridded-GLO-20110902152154NRT"]
 
 
 
