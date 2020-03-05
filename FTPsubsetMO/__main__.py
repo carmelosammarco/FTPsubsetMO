@@ -158,18 +158,12 @@ def main(args=None):
         ys, ms, ds = datastart.split('-')
         ye, me, de = dataend.split('-')
 
-        ysi=int(ys)
-        yei=int(ye)
-        yef = int(yei) + 1
-
-        sdata = ys + "-" + ms 
-        men =  int(me) 
-        mef = int(men) + 1  
-        #mef = int(men)
-        edata = str(ye) + "-" + str(mef)
+        sdata = ys + "-" + ms
+        edata = ye + "-" + me
 
         days = pd.date_range(datastart, dataend, freq='D')
-        months = pd.date_range(sdata, edata, freq='M')
+        months = pd.date_range(*(pd.to_datetime([sdata, edata]) + pd.offsets.MonthEnd()), freq='M')
+
 
         SPECdatasets = ["/Core/OCEANCOLOUR_ARC_CHL_L4_REP_OBSERVATIONS_009_088/dataset-oc-arc-chl-multi_cci-l4-chl_1km_monthly-rep-v02/",
                         "/Core/OCEANCOLOUR_ATL_CHL_L4_REP_OBSERVATIONS_009_091/dataset-oc-atl-chl-multi_cci-l4-chl_1km_monthly-rep-v02/",
