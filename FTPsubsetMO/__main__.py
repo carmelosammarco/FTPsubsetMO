@@ -1286,7 +1286,7 @@ def main(args=None):
     Varex.grid(column=0, row=15)
     Vex = Entry(tab1, width=13)
     Vex.grid(column=1, row=15)
-    VexY = Label(tab1, text="Variables('var1','var2'...)")
+    VexY = Label(tab1, text="Variables(''var1'',''var2''...)")
     VexY.grid(column=0, row=16)
     Vexlist = Entry(tab1, width=13)
     Vexlist.grid(column=1, row=16)
