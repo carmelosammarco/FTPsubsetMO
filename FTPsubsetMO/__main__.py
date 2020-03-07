@@ -42,24 +42,15 @@ from tkinter import scrolledtext
 def main(args=None):
     
     window = Tk()
+    
+    filejason =  pkg_resources.resource_filename('FTPsubsetMO', 'Database/CMEMS_Database.json')
 
     #image = pkg_resources.resource_filename('FTPsubsetMO', 'IMAGES/LOGO.gif')
-    filejason =  pkg_resources.resource_filename('FTPsubsetMO', 'Database/CMEMS_Database.json')
-    #photo = PhotoImage(file=image)
-    #w = photo.width()
-    #h = photo.height()
-    #cv = Canvas(window, width=w, height=h)
-    #cv = Canvas(window)
-    #cv.pack(side='top', fill='x')
-    #cv.create_image(0,0, image=photo, anchor='nw') 
-
-    tab_control = ttk.Notebook(window)
-    tab1 = ttk.Frame(tab_control)
-    #tab2 = ttk.Frame(tab_control)
-    tab_control.add(tab1, text='FTPsubsetter')
-    #tab_control.add(tab2, text='netCDF-Manipulation')
-
+    
     window.title("FTPsubsetMO-by_Carmelo_Sammarco")
+    window.geometry('500x600')
+
+    
 
     def FTPsub():
 
@@ -100,7 +91,8 @@ def main(args=None):
 
         Vs = Vex.get()  #(YES/NO)
 
-        variables = [Vexlist.get()]     
+        variables = Vexlist.get()
+        variableslist = variables.split(',')
 
         #####################
         # DEPTH INFORMATION #
@@ -120,8 +112,7 @@ def main(args=None):
         #################
         # OUTPUT FOLDER #
         #################
-
-        #outpath = str(os.getcwd()) + "/"  
+  
         outpath = str(os.getcwd())  
 
         #########################################################
@@ -147,11 +138,6 @@ def main(args=None):
                     structure = listdic[1]  #M(monthly)/D(daily)  
                     ID = listdic[2]  #(BACK/FRONT)
                     Toidentify = listdic[3]   #part of the fine name used to select the files   
-
-                    #print(typo)
-                    #print(structure)
-                    #print(ID)
-                    #print(Toidentify)
 
         #########################
 
@@ -242,7 +228,6 @@ def main(args=None):
                 else:
                     look = day.strftime('%Y%m%d'+ Toidentify)
                 
-                #ftp.cwd(pathfiles + str(a) + "/" + str(m))
                 ftp.cwd(pathfiles + str(a) + "/" + str(m))
 
                 filenames = ftp.nlst()
@@ -354,6 +339,79 @@ def main(args=None):
 
 
 
+        #VAR 
+        if typo == "MY" and bbox == "NO" and Vs == "YES" and structure == "D" and DL == "NO" :
+
+            print(" ")
+            print("Connection to the FTP server...")
+            
+            ftp = FTP('my.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
+
+            print("Connection exstabilished and download files in progress..")
+            print(" ")
+            
+            for day in days :
+
+                a = day.strftime('%Y')
+                m = day.strftime('%m')
+                g = day.strftime('%d')
+
+                path = os.path.join(outpath, str(a))
+
+                if not os.path.exists(path):
+                    os.mkdir(path)
+                    
+                #outpath1 = outpath +  str(a)
+                outpath1 = outpath + "/" + str(a)
+            
+                path2 = os.path.join(outpath1, str(m))
+
+                if not os.path.exists(path2):
+                    os.mkdir(path2)
+
+                if ID == "BACK":
+                    look = day.strftime(Toidentify+'%Y%m%d')
+                else:
+                    look = day.strftime('%Y%m%d'+ Toidentify)
+                
+                #ftp.cwd(pathfiles + str(a) + "/" + str(m))
+                ftp.cwd(pathfiles + str(a) + "/" + str(m))
+
+                filenames = ftp.nlst()
+
+                files = pd.Series(filenames)
+
+                for file_name in files[files.str.contains(look)]:
+
+                    os.chdir(outpath1 + "/" + str(m))
+                    outputfile = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
+
+                    if os.path.isfile(outputfile):
+                        print ("File: " + "Subset_" + file_name + " --> File already processed")
+
+                    else:
+                        ftp.retrbinary('RETR' + " " + file_name, open(file_name, 'wb').write)
+
+                        print("File: " + file_name + " --> Download completed")
+
+                        data = outpath1 + "/" + str(m) + "/" + file_name
+                        out1 = outpath1 + "/" + str(m) + "/" + "Subset_" + file_name
+                        
+                        DS = xr.open_dataset(data)
+
+                        DSVar = DS[variableslist]
+                        DSVar.to_netcdf(path=out1, mode='w', format= 'NETCDF4', engine='h5netcdf')
+                        DS.close()
+
+                        os.remove(data)
+
+                        print("File: " + "Subset_" + file_name + " --> Subset completed")
+                        print(" ")                    
+
+            ftp.quit()
+
+
+
         #BBOX + VAR 
         if typo == "MY" and bbox == "YES" and Vs == "YES" and structure == "D" and DL == "NO" :
 
@@ -437,7 +495,7 @@ def main(args=None):
 
                             DS1 = xr.open_dataset(out1)
 
-                            DS1Var = DS1[variables]
+                            DS1Var = DS1[variableslist]
                             DS1Var.to_netcdf(path=out2, mode='w', format= 'NETCDF4', engine='h5netcdf')
                             DS1.close()
 
@@ -498,7 +556,7 @@ def main(args=None):
 
                             DS1 = xr.open_dataset(out1)
 
-                            DS1Var = DS1[variables]
+                            DS1Var = DS1[variableslist]
                             DS1Var.to_netcdf(path=out2, mode='w', format= 'NETCDF4', engine='h5netcdf')
                             DS1.close()
 
@@ -611,7 +669,7 @@ def main(args=None):
 
                             DS2 = xr.open_dataset(out2)
 
-                            DS2Var = DS2[variables]
+                            DS2Var = DS2[variableslist]
                             DS2Var.to_netcdf(path=out3, mode='w', format= 'NETCDF4', engine='h5netcdf')
                             DS2.close()
 
@@ -685,7 +743,7 @@ def main(args=None):
 
                             DS2 = xr.open_dataset(out2)
 
-                            DS2Var = DS2[variables]
+                            DS2Var = DS2[variableslist]
                             DS2Var.to_netcdf(path=out3, mode='w', format= 'NETCDF4', engine='h5netcdf')
                             DS2.close()
 
@@ -852,6 +910,75 @@ def main(args=None):
 
             ftp.quit() 
 
+        
+        #VAR
+        elif typo == "MY" and bbox == "NO" and Vs == "YES" and structure == "M" and DL == "NO" :
+
+            print(" ")
+            print("Connection to the FTP server...")
+            
+            ftp = FTP('my.cmems-du.eu', user=cmems_user, passwd=cmems_pass)
+
+            print("Connection exstabilished and download files in progress..")
+            print(" ")
+            
+            for mon in months :
+
+                a = mon.strftime('%Y')
+                m = mon.strftime('%m')
+                lastd = mon.strftime('%d')
+
+                path = os.path.join(outpath, str(a))
+
+                if not os.path.exists(path):
+                    os.mkdir(path)
+                    
+                outpath1 = outpath + "/" + str(a)
+
+                if ID == "BACK":
+                    look = mon.strftime(Toidentify+'%Y%m')
+
+                elif pathfiles in SPECdatasets:
+                    look = mon.strftime('%Y%m'+'01_m_'+'%Y%m%d' + Toidentify)
+
+                else: #FRONT
+                    look = mon.strftime('%Y%m'+ Toidentify)
+
+                ftp.cwd(pathfiles + str(a))
+
+                filenames = ftp.nlst()
+
+                files = pd.Series(filenames)
+
+                for file_name in files[files.str.contains(look)]:
+
+                    os.chdir(outpath1)
+                    outputfile = outpath1 + "/"  + "Subset_" + file_name
+
+                    if os.path.isfile(outputfile):
+                        print ("File: " + "Subset_" + file_name + " --> File already processed")
+                    
+                    else:
+                        ftp.retrbinary('RETR' + " " + file_name, open(file_name, 'wb').write)
+                        print("File: " + file_name + " --> Download completed")
+
+                        data = outpath1 +  "/" + file_name
+                        out1 = outpath1 +  "/" + "Subset_" + file_name
+                        
+                        DS = xr.open_dataset(data)
+
+                        DSVar = DS[variableslist]
+                        DSVar.to_netcdf(path=out1, mode='w', format= 'NETCDF4', engine='h5netcdf')
+                        DS.close()
+
+                        os.remove(data)
+
+                        print("File: " + "Subset_" + file_name + " --> Subset completed")
+                        print(" ")
+                                                
+
+            ftp.quit() 
+        
 
 
         #BBOX + VAR
@@ -933,7 +1060,7 @@ def main(args=None):
 
                             DS1 = xr.open_dataset(out1)
 
-                            DSVar = DS1[variables]
+                            DSVar = DS1[variableslist]
                             DSVar.to_netcdf(path=out2, mode='w', format= 'NETCDF4', engine='h5netcdf')
                             DS1.close()
 
@@ -994,7 +1121,7 @@ def main(args=None):
 
                             DS1 = xr.open_dataset(out1)
 
-                            DSVar = DS1[variables]
+                            DSVar = DS1[variableslist]
                             DSVar.to_netcdf(path=out2, mode='w', format= 'NETCDF4', engine='h5netcdf')
                             DS1.close()
 
@@ -1107,7 +1234,7 @@ def main(args=None):
 
                             DS2 = xr.open_dataset(out2)
 
-                            DS2Var = DS2[variables]
+                            DS2Var = DS2[variableslist]
                             DS2Var.to_netcdf(path=out3, mode='w', format= 'NETCDF4', engine='h5netcdf')
                             DS2.close()
 
@@ -1181,7 +1308,7 @@ def main(args=None):
 
                             DS2 = xr.open_dataset(out2)
 
-                            DS2Var = DS2[variables]
+                            DS2Var = DS2[variableslist]
                             DS2Var.to_netcdf(path=out3, mode='w', format= 'NETCDF4', engine='h5netcdf')
                             DS2.close()
 
@@ -1208,120 +1335,118 @@ def main(args=None):
     #GUI interface
     #######################
    
-    Username = Label(tab1, text="Username")
+    Username = Label(window, text="Username")
     Username.grid(column=0, row=0)
-    User = Entry(tab1, width=13)
+    User = Entry(window, width=13)
     User.grid(column=0, row=1)
     ##
-    Password = Label(tab1, text="Password")
+    Password = Label(window, text="Password")
     Password.grid(column=1, row=0)
-    Pwd = Entry(tab1, width=13, show="*")
+    Pwd = Entry(window, width=13, show="*")
     Pwd.grid(column=1, row=1)
     ##
-    space = Label(tab1, text="")
+    space = Label(window, text="")
     space.grid(column=0, row=2)
-    space = Label(tab1, text="")
+    space = Label(window, text="")
     space.grid(column=1, row=2)
     ##
-    FTPlink = Label(tab1, text="FTP-URL")
+    FTPlink = Label(window, text="FTP-URL")
     FTPlink.grid(column=0, row=3)
-    FTPlk = Entry(tab1, width=13)
+    FTPlk = Entry(window, width=13)
     FTPlk.grid(column=1, row=3)
     ##
-    space = Label(tab1, text="")
+    space = Label(window, text="")
     space.grid(column=1, row=4)
     ##
-    Datest = Label(tab1, text="From(YYYY-MM-DD)")
+    Datest = Label(window, text="From(YYYY-MM-DD)")
     Datest.grid(column=0, row=6)
-    Ds = Entry(tab1, width=13)
+    Ds = Entry(window, width=13)
     Ds.grid(column=1, row=6)
     ##
-    Daten = Label(tab1, text="To(YYYY-MM-DD)")
+    Daten = Label(window, text="To(YYYY-MM-DD)")
     Daten.grid(column=0, row=7)
-    De = Entry(tab1, width=13)
+    De = Entry(window, width=13)
     De.grid(column=1, row=7)
     ##
-    space = Label(tab1, text="")
+    space = Label(window, text="")
     space.grid(column=0, row=8)
-    space = Label(tab1, text="")
+    space = Label(window, text="")
     space.grid(column=1, row=8)
     ##
-    boundingb = Label(tab1, text="Bounding-box?(YES/NO)")
+    boundingb = Label(window, text="Bounding-box?(YES/NO)")
     boundingb.grid(column=0, row=9)
-    bb = Entry(tab1, width=13)
+    bb = Entry(window, width=13)
     bb.grid(column=1, row=9)
     ##
-    longmin = Label(tab1, text="Long-min(W)")
+    longmin = Label(window, text="Long-min(W)")
     longmin.grid(column=0, row=10)
-    lomin = Entry(tab1, width=8)
+    lomin = Entry(window, width=8)
     lomin.grid(column=0, row=11)
     ##
-    longmax = Label(tab1, text="Long-max(E)")
+    longmax = Label(window, text="Long-max(E)")
     longmax.grid(column=1, row=10)
-    lomax = Entry(tab1, width=8)
+    lomax = Entry(window, width=8)
     lomax.grid(column=1, row=11)
     ##
-    latmin = Label(tab1, text="Lat-min(S)")
+    latmin = Label(window, text="Lat-min(S)")
     latmin.grid(column=0, row=12)
-    lamin = Entry(tab1, width=8)
+    lamin = Entry(window, width=8)
     lamin.grid(column=0, row=13)
     ##
-    latmax = Label(tab1, text="Lat-max(N)")
+    latmax = Label(window, text="Lat-max(N)")
     latmax.grid(column=1, row=12)
-    lamax = Entry(tab1, width=8)
+    lamax = Entry(window, width=8)
     lamax.grid(column=1, row=13)
     ##
-    space = Label(tab1, text="")
+    space = Label(window, text="")
     space.grid(column=0, row=14)
-    space = Label(tab1, text="")
+    space = Label(window, text="")
     space.grid(column=1, row=14)
     ##
-    Varex = Label(tab1, text="Variables?(YES/NO)")
+    Varex = Label(window, text="Variables?(YES/NO)")
     Varex.grid(column=0, row=15)
-    Vex = Entry(tab1, width=13)
+    Vex = Entry(window, width=13)
     Vex.grid(column=1, row=15)
-    VexY = Label(tab1, text="Variables(''var1'',''var2''...)")
+    VexY = Label(window, text="Variables(var1,var2,...)")
     VexY.grid(column=0, row=16)
-    Vexlist = Entry(tab1, width=13)
+    Vexlist = Entry(window, width=13)
     Vexlist.grid(column=1, row=16)
     ##
-    space = Label(tab1, text="")
+    space = Label(window, text="")
     space.grid(column=0, row=17)
-    space = Label(tab1, text="")
+    space = Label(window, text="")
     space.grid(column=1, row=17)
     ##
-    Depex = Label(tab1, text="Depths?(YES/NO | SINGLE/RANGE)")
+    Depex = Label(window, text="Depths?(YES/NO | SINGLE/RANGE)")
     Depex.grid(column=0, row=18)
-    Dex = Entry(tab1, width=13)
+    Dex = Entry(window, width=13)
     Dex.grid(column=1, row=18)
-    Dtype = Entry(tab1, width=13)
+    Dtype = Entry(window, width=13)
     Dtype.grid(column=2, row=18)
     ##
-    Singledepth = Label(tab1, text="Single-depth")
+    Singledepth = Label(window, text="Single-depth")
     Singledepth.grid(column=0, row=19)
-    sdepth = Entry(tab1, width=13)
+    sdepth = Entry(window, width=13)
     sdepth.grid(column=1, row=19)
     ##
-    Rangedepth = Label(tab1, text="Range-depths(Min|Max)")
+    Rangedepth = Label(window, text="Range-depths(Min|Max)")
     Rangedepth.grid(column=0, row=20)
-    Rdepthmin = Entry(tab1, width=13)
+    Rdepthmin = Entry(window, width=13)
     Rdepthmin.grid(column=1, row=20)
-    Rdepthmax = Entry(tab1, width=13)
+    Rdepthmax = Entry(window, width=13)
     Rdepthmax.grid(column=2, row=20)
     ##
-    space = Label(tab1, text="")
+    space = Label(window, text="")
     space.grid(column=0, row=22)
-    space = Label(tab1, text="")
+    space = Label(window, text="")
     space.grid(column=1, row=22)
     ##
     
-    btn1 = Button(tab1, text="Download", bg="red", command=FTPsub)
+    btn1 = Button(window, text="Download", bg="red", command=FTPsub)
     btn1.grid(column=0, row=23)
     
 
     #################################################################
-
-    tab_control.pack(expand=1, fill='both')
 
     window.mainloop()
 
