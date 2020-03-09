@@ -43,12 +43,28 @@ def main(args=None):
     
     window = Tk()
     
+    #image = pkg_resources.resource_filename('FTPsubsetMO', 'IMAGES/LOGO.gif')
     filejason =  pkg_resources.resource_filename('FTPsubsetMO', 'Database/CMEMS_Database.json')
 
-    #image = pkg_resources.resource_filename('FTPsubsetMO', 'IMAGES/LOGO.gif')
-    
     window.title("FTPsubsetMO-by_Carmelo_Sammarco")
     #window.geometry('500x600')
+    
+    Listvar = []
+    
+    def extract_var():
+        Database = {}
+        with open (filejason, "r") as config_file:
+            Database = json.load(config_file)
+            for key in Database.keys(): 
+                if FTPlk.get() in key:
+                    #print(pathfiles)
+                    listdic = Database.get(FTPlk.get()) 
+                    Listvar = listdic[4:]
+                    for variable in Listvar:
+                        lstbox.insert(END, variable)
+                        
+    def select():
+        select.selected_var = [lstbox.get(i) for i in lstbox.curselection()]
 
     
 
@@ -91,8 +107,7 @@ def main(args=None):
 
         Vs = Vex.get()  #(YES/NO)
 
-        variables = Vexlist.get()
-        variableslist = variables.split(',')
+        variables = select.selected_var 
 
         #####################
         # DEPTH INFORMATION #
@@ -399,7 +414,7 @@ def main(args=None):
                         
                         DS = xr.open_dataset(data)
 
-                        DSVar = DS[variableslist]
+                        DSVar = DS[variables]
                         DSVar.to_netcdf(path=out1, mode='w', format= 'NETCDF4', engine='h5netcdf')
                         DS.close()
 
@@ -495,7 +510,7 @@ def main(args=None):
 
                             DS1 = xr.open_dataset(out1)
 
-                            DS1Var = DS1[variableslist]
+                            DS1Var = DS1[variables]
                             DS1Var.to_netcdf(path=out2, mode='w', format= 'NETCDF4', engine='h5netcdf')
                             DS1.close()
 
@@ -556,7 +571,7 @@ def main(args=None):
 
                             DS1 = xr.open_dataset(out1)
 
-                            DS1Var = DS1[variableslist]
+                            DS1Var = DS1[variables]
                             DS1Var.to_netcdf(path=out2, mode='w', format= 'NETCDF4', engine='h5netcdf')
                             DS1.close()
 
@@ -669,7 +684,7 @@ def main(args=None):
 
                             DS2 = xr.open_dataset(out2)
 
-                            DS2Var = DS2[variableslist]
+                            DS2Var = DS2[variables]
                             DS2Var.to_netcdf(path=out3, mode='w', format= 'NETCDF4', engine='h5netcdf')
                             DS2.close()
 
@@ -743,7 +758,7 @@ def main(args=None):
 
                             DS2 = xr.open_dataset(out2)
 
-                            DS2Var = DS2[variableslist]
+                            DS2Var = DS2[variables]
                             DS2Var.to_netcdf(path=out3, mode='w', format= 'NETCDF4', engine='h5netcdf')
                             DS2.close()
 
@@ -967,7 +982,7 @@ def main(args=None):
                         
                         DS = xr.open_dataset(data)
 
-                        DSVar = DS[variableslist]
+                        DSVar = DS[variables]
                         DSVar.to_netcdf(path=out1, mode='w', format= 'NETCDF4', engine='h5netcdf')
                         DS.close()
 
@@ -1060,7 +1075,7 @@ def main(args=None):
 
                             DS1 = xr.open_dataset(out1)
 
-                            DSVar = DS1[variableslist]
+                            DSVar = DS1[variables]
                             DSVar.to_netcdf(path=out2, mode='w', format= 'NETCDF4', engine='h5netcdf')
                             DS1.close()
 
@@ -1121,7 +1136,7 @@ def main(args=None):
 
                             DS1 = xr.open_dataset(out1)
 
-                            DSVar = DS1[variableslist]
+                            DSVar = DS1[variables]
                             DSVar.to_netcdf(path=out2, mode='w', format= 'NETCDF4', engine='h5netcdf')
                             DS1.close()
 
@@ -1234,7 +1249,7 @@ def main(args=None):
 
                             DS2 = xr.open_dataset(out2)
 
-                            DS2Var = DS2[variableslist]
+                            DS2Var = DS2[variables]
                             DS2Var.to_netcdf(path=out3, mode='w', format= 'NETCDF4', engine='h5netcdf')
                             DS2.close()
 
@@ -1308,7 +1323,7 @@ def main(args=None):
 
                             DS2 = xr.open_dataset(out2)
 
-                            DS2Var = DS2[variableslist]
+                            DS2Var = DS2[variables]
                             DS2Var.to_netcdf(path=out3, mode='w', format= 'NETCDF4', engine='h5netcdf')
                             DS2.close()
 
@@ -1334,7 +1349,7 @@ def main(args=None):
     #######################
     #GUI interface
     #######################
-   
+
     Username = Label(window, text="Username")
     Username.grid(column=0, row=0)
     User = Entry(window, width=13)
@@ -1407,11 +1422,16 @@ def main(args=None):
     Varex.grid(column=0, row=15)
     Vex = Entry(window, width=13)
     Vex.grid(column=1, row=15)
-    VexY = Label(window, text="Variables(var1,var2,...)")
-    VexY.grid(column=0, row=16)
-    Vexlist = Entry(window, width=13)
-    Vexlist.grid(column=1, row=16)
-    ##
+
+    lstbox = Listbox(window, listvariable=Listvar, selectmode=MULTIPLE)
+    lstbox.grid(column=0, row=16)
+
+    exvar = Button(window,text="Show variables", bg="yellow", command=extract_var)
+    exvar.grid(column=1, row=16)
+
+    confirmvar = Button(window,text="Confirm selection", bg="green", command=select)
+    confirmvar.grid(column=2, row=16)
+
     space = Label(window, text="")
     space.grid(column=0, row=17)
     space = Label(window, text="")
@@ -1441,12 +1461,13 @@ def main(args=None):
     space = Label(window, text="")
     space.grid(column=1, row=22)
     ##
-    
+
     btn1 = Button(window, text="Download", bg="red", command=FTPsub)
     btn1.grid(column=0, row=23)
-    
+
 
     #################################################################
 
     window.mainloop()
+
 
