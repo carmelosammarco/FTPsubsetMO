@@ -48,7 +48,7 @@ def main(args=None):
     #image = pkg_resources.resource_filename('FTPsubsetMO', 'IMAGES/LOGO.gif')
     
     window.title("FTPsubsetMO-by_Carmelo_Sammarco")
-    window.geometry('500x600')
+    #window.geometry('500x600')
 
     
 
