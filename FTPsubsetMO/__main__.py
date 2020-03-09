@@ -1424,37 +1424,37 @@ def main(args=None):
     Vex.grid(column=1, row=15)
 
     lstbox = Listbox(window, listvariable=Listvar, selectmode=MULTIPLE)
-    lstbox.grid(column=0, row=16)
+    lstbox.grid(column=0, row=17)
 
-    exvar = Button(window,text="Show variables", bg="yellow", command=extract_var)
-    exvar.grid(column=1, row=16)
+    exvar = Button(window,text="Get-Variables", bg="yellow", command=extract_var)
+    exvar.grid(column=0, row=16)
 
-    confirmvar = Button(window,text="Confirm selection", bg="green", command=select)
-    confirmvar.grid(column=2, row=16)
+    confirmvar = Button(window,text="Set-Variables", bg="green", command=select)
+    confirmvar.grid(column=1, row=17)
 
     space = Label(window, text="")
-    space.grid(column=0, row=17)
+    space.grid(column=0, row=18)
     space = Label(window, text="")
-    space.grid(column=1, row=17)
+    space.grid(column=1, row=18)
     ##
     Depex = Label(window, text="Depths?(YES/NO | SINGLE/RANGE)")
-    Depex.grid(column=0, row=18)
+    Depex.grid(column=0, row=19)
     Dex = Entry(window, width=13)
-    Dex.grid(column=1, row=18)
+    Dex.grid(column=1, row=19)
     Dtype = Entry(window, width=13)
-    Dtype.grid(column=2, row=18)
+    Dtype.grid(column=2, row=19)
     ##
     Singledepth = Label(window, text="Single-depth")
-    Singledepth.grid(column=0, row=19)
+    Singledepth.grid(column=0, row=20)
     sdepth = Entry(window, width=13)
-    sdepth.grid(column=1, row=19)
+    sdepth.grid(column=1, row=20)
     ##
     Rangedepth = Label(window, text="Range-depths(Min|Max)")
-    Rangedepth.grid(column=0, row=20)
+    Rangedepth.grid(column=0, row=21)
     Rdepthmin = Entry(window, width=13)
-    Rdepthmin.grid(column=1, row=20)
+    Rdepthmin.grid(column=1, row=21)
     Rdepthmax = Entry(window, width=13)
-    Rdepthmax.grid(column=2, row=20)
+    Rdepthmax.grid(column=2, row=21)
     ##
     space = Label(window, text="")
     space.grid(column=0, row=22)
@@ -1464,6 +1464,11 @@ def main(args=None):
 
     btn1 = Button(window, text="Download", bg="red", command=FTPsub)
     btn1.grid(column=0, row=23)
+
+    space = Label(window, text="")
+    space.grid(column=0, row=24)
+    space = Label(window, text="")
+    space.grid(column=1, row=24)
 
 
     #################################################################
