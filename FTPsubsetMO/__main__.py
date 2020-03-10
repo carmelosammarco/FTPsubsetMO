@@ -37,6 +37,9 @@ from tkinter import filedialog
 from tkinter import messagebox
 from tkinter import ttk
 from tkinter import scrolledtext
+from tkinter import Scrollbar
+
+import platform
 
 
 def main(args=None):
@@ -47,7 +50,17 @@ def main(args=None):
     filejason =  pkg_resources.resource_filename('FTPsubsetMO', 'Database/CMEMS_Database.json')
 
     window.title("FTPsubsetMO-by_Carmelo_Sammarco")
-    #window.geometry('500x600')
+
+    OS = platform.system()
+
+    if OS=="Linux":
+        window.geometry('450x450')
+    elif OS=="Darwin":
+        window.geometry('500x680')
+    else:
+        window.geometry('500x680')
+
+
     
     Listvar = []
     
@@ -1423,12 +1436,22 @@ def main(args=None):
     Vex = Entry(window, width=13)
     Vex.grid(column=1, row=15)
 
-    lstbox = Listbox(window, listvariable=Listvar, selectmode=MULTIPLE)
-    lstbox.grid(column=0, row=17)
-
     exvar = Button(window,text="Get-Variables", bg="yellow", command=extract_var)
     exvar.grid(column=0, row=16)
+    
+    yscroll = Scrollbar(window, orient="vertical", )
+    lstbox = Listbox(window, listvariable=Listvar, selectmode=MULTIPLE, yscrollcommand=yscroll.set, height=5)
+    yscroll.config(command=lstbox.yview)
 
+    if OS=="Linux":
+        yscroll.place(x=25, y=285)
+    elif OS=="Darwin":
+        yscroll.place(x=8, y=417)
+    else:
+        yscroll.place(x=8, y=417)
+
+    lstbox.grid(column=0, row=17)
+    
     confirmvar = Button(window,text="Set-Variables", bg="green", command=select)
     confirmvar.grid(column=1, row=17)
 
@@ -1436,6 +1459,7 @@ def main(args=None):
     space.grid(column=0, row=18)
     space = Label(window, text="")
     space.grid(column=1, row=18)
+    
     ##
     Depex = Label(window, text="Depths?(YES/NO | SINGLE/RANGE)")
     Depex.grid(column=0, row=19)
