@@ -58,7 +58,7 @@ def main(args=None):
     elif OS=="Darwin":
         window.geometry('500x680')
     else:
-        window.geometry('500x680')
+        window.geometry('400x570')
 
 
     
@@ -1448,7 +1448,7 @@ def main(args=None):
     elif OS=="Darwin":
         yscroll.place(x=8, y=417)
     else:
-        yscroll.place(x=8, y=417)
+        yscroll.place(x=15, y=350)
 
     lstbox.grid(column=0, row=17)
     
