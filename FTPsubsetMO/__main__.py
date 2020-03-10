@@ -49,7 +49,7 @@ def main(args=None):
     #image = pkg_resources.resource_filename('FTPsubsetMO', 'IMAGES/LOGO.gif')
     filejason =  pkg_resources.resource_filename('FTPsubsetMO', 'Database/CMEMS_Database.json')
 
-    window.title("FTPsubsetMO-by_Carmelo_Sammarco")
+    window.title("FTPsubsetMO")
 
     OS = platform.system()
 
@@ -58,7 +58,7 @@ def main(args=None):
     elif OS=="Darwin":
         window.geometry('500x680')
     else:
-        window.geometry('400x570')
+        window.geometry('360x565')
 
 
     
