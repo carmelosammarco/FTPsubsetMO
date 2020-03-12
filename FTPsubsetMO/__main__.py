@@ -1208,9 +1208,21 @@ def main(args=None):
 
                             DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4', engine='h5netcdf')
 
-                            DSbbox = xr.concat([DSbbox1,DSbbox2], dim=concat)
-                            DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4', engine='h5netcdf')
                             DS.close()
+
+                            DSb1 = xr.open_dataset(box1)
+                            DSb2 = xr.open_dataset(box2)
+
+                            DSbbox = xr.concat([DSb1,DSb2], dim=concat)
+                            DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4', engine='h5netcdf')
+                            DSb1.close()
+                            DSb2.close()
+
+                            DS2 = xr.open_dataset(out1)
+
+                            DS2Var = DS2[variables]
+                            DS2Var.to_netcdf(path=out2, mode='w', format= 'NETCDF4', engine='h5netcdf')
+                            DS2.close()
 
                             os.remove(data)
                             os.remove(out1)
