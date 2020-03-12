@@ -172,6 +172,11 @@ def main(args=None):
 
         if lon1 > lon2:
             Crossing = "YES"
+        
+        elif lon2 > 180:
+            Crossing = "YES"
+            factor = float(lon2) - 180
+            lon2 = float(factor) - 180 
         else:
             Crossing = "NO"
 
@@ -253,8 +258,6 @@ def main(args=None):
                             out1 = outpath1 + "/" + str(m) + "/" + "SubsetBbox_" + file_name
                             
                             DS = xr.open_dataset(data)
-
-                            #DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
                         
                             try:
                                 DSbbox = DS.sel(longitude=slice(float(lon1),float(lon2)), latitude=slice(float(lat1),float(lat2)))
@@ -334,9 +337,16 @@ def main(args=None):
 
                             DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4', engine='h5netcdf')
 
-                            DSbbox = xr.concat([DSbbox1,DSbbox2], dim=concat)
-                            DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4', engine='h5netcdf')
                             DS.close()
+
+                            DSb1 = xr.open_dataset(box1)
+                            DSb2 = xr.open_dataset(box2)
+
+                            DSbbox = xr.concat([DSb1,DSb2], dim=concat)
+                            DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4', engine='h5netcdf')
+
+                            DSb1.close()
+                            DSb2.close()
 
                             os.remove(data)
                             os.remove(box1)
@@ -576,9 +586,16 @@ def main(args=None):
 
                             DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4', engine='h5netcdf')
 
-                            DSbbox = xr.concat([DSbbox1,DSbbox2], dim=concat)
-                            DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4', engine='h5netcdf')
                             DS.close()
+
+                            DSb1 = xr.open_dataset(box1)
+                            DSb2 = xr.open_dataset(box2)
+
+                            DSbbox = xr.concat([DSb1,DSb2], dim=concat)
+                            DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4', engine='h5netcdf')
+
+                            DSb1.close()
+                            DSb2.close()
 
                             DS1 = xr.open_dataset(out1)
 
@@ -692,6 +709,8 @@ def main(args=None):
                                 DSdepth = DS1.sel(depth=slice(float(d1),float(d2)))
                                 DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4', engine='h5netcdf')
                                 DS1.close()
+                            
+                            DS1.close()
 
                             DS2 = xr.open_dataset(out2)
 
@@ -765,9 +784,16 @@ def main(args=None):
 
                             DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4', engine='h5netcdf')
 
-                            DSbbox = xr.concat([DSbbox1,DSbbox2], dim=concat)
-                            DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4', engine='h5netcdf')
                             DS.close()
+
+                            DSb1 = xr.open_dataset(box1)
+                            DSb2 = xr.open_dataset(box2)
+
+                            DSbbox = xr.concat([DSb1,DSb2], dim=concat)
+                            DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4', engine='h5netcdf')
+
+                            DSb1.close()
+                            DSb2.close()
 
                             DS1 = xr.open_dataset(out1)
 
@@ -779,6 +805,8 @@ def main(args=None):
                                 DSdepth = DS1.sel(depth=slice(float(d1),float(d2)))
                                 DSdepth.to_netcdf(path=out2, mode='w', format= 'NETCDF4', engine='h5netcdf')
                                 DS1.close()
+                            
+                            DS1.close()
 
                             DS2 = xr.open_dataset(out2)
 
@@ -945,9 +973,16 @@ def main(args=None):
 
                             DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4', engine='h5netcdf')
 
-                            DSbbox = xr.concat([DSbbox1,DSbbox2], dim=concat)
-                            DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4', engine='h5netcdf')
                             DS.close()
+
+                            DSb1 = xr.open_dataset(box1)
+                            DSb2 = xr.open_dataset(box2)
+
+                            DSbbox = xr.concat([DSb1,DSb2], dim=concat)
+                            DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4', engine='h5netcdf')
+
+                            DSb1.close()
+                            DSb2.close()
 
                             os.remove(data)
                             os.remove(box1)
@@ -1179,13 +1214,20 @@ def main(args=None):
 
                             DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4', engine='h5netcdf')
 
-                            DSbbox = xr.concat([DSbbox1,DSbbox2], dim=concat)
-                            DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4', engine='h5netcdf')
                             DS.close()
+
+                            DSb1 = xr.open_dataset(box1)
+                            DSb2 = xr.open_dataset(box2)
+
+                            DSbbox = xr.concat([DSb1,DSb2], dim=concat)
+                            DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4', engine='h5netcdf')
+
+                            DSb1.close()
+                            DSb2.close()
 
                             DS1 = xr.open_dataset(out1)
 
-                            DS1Var = DS1[variables]
+                            DS1Var = DS1[variableslist]
                             DS1Var.to_netcdf(path=out2, mode='w', format= 'NETCDF4', engine='h5netcdf')
                             DS1.close()
 
@@ -1368,9 +1410,16 @@ def main(args=None):
 
                             DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4', engine='h5netcdf')
 
-                            DSbbox = xr.concat([DSbbox1,DSbbox2], dim=concat)
-                            DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4', engine='h5netcdf')
                             DS.close()
+
+                            DSb1 = xr.open_dataset(box1)
+                            DSb2 = xr.open_dataset(box2)
+
+                            DSbbox = xr.concat([DSb1,DSb2], dim=concat)
+                            DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4', engine='h5netcdf')
+
+                            DSb1.close()
+                            DSb2.close()
 
                             DS1 = xr.open_dataset(out1)
 
