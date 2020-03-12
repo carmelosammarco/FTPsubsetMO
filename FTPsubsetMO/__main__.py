@@ -1185,8 +1185,8 @@ def main(args=None):
 
                             DS1 = xr.open_dataset(out1)
 
-                            DSVar = DS1[variableslist]
-                            DSVar.to_netcdf(path=out2, mode='w', format= 'NETCDF4', engine='h5netcdf')
+                            DS1Var = DS1[variables]
+                            DS1Var.to_netcdf(path=out2, mode='w', format= 'NETCDF4', engine='h5netcdf')
                             DS1.close()
 
                             os.remove(data)
