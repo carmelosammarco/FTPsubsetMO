@@ -49,7 +49,7 @@ def main(args=None):
     #image = pkg_resources.resource_filename('FTPsubsetMO', 'IMAGES/LOGO.gif')
     filejason =  pkg_resources.resource_filename('FTPsubsetMO', 'Database/CMEMS_Database.json')
 
-    window.title("FTPsubsetMO")
+    window.title("FTPsubsetMO-by_Carmelo_Sammarco")
 
     OS = platform.system()
 
@@ -58,7 +58,7 @@ def main(args=None):
     elif OS=="Darwin":
         window.geometry('500x680')
     else:
-        window.geometry('360x565')
+        window.geometry('365x565')
 
 
     
@@ -314,42 +314,55 @@ def main(args=None):
                             box2 = outpath1 + "/" + str(m) + "/" + "Box2_" + file_name
                             
                             DS = xr.open_dataset(data)
-                        
-                            #DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
 
                             try:
-                                DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+                                DSbbox1 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
                             except ValueError:
                                 print("")
+                            else:
+                                concat = "longitude"  
+                                
                             try:
-                                DSbbox1 = DS.sel(x=slice(float(w1),float(e1)), y=slice(float(s1),float(n1)))
+                                DSbbox1 = DS.sel(x=slice(float(w2),float(e2)), y=slice(float(s2),float(n2)))
                             except ValueError:
                                 print("")
+                            else:
+                                concat = "x"  
+                                
                             try:
-                                DSbbox1 = DS.sel(lon=slice(float(w1),float(e1)), lat=slice(float(s1),float(n1)))
+                                DSbbox1 = DS.sel(lon=slice(float(w2),float(e2)), lat=slice(float(s2),float(n2)))
                             except ValueError:
                                 print("")
+                            else:
+                                concat = "lon"
 
                             DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4', engine='h5netcdf')
 
-                            #DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
 
                             try:
                                 DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
                             except ValueError:
                                 print("")
+                            else:
+                                concat = "longitude"   
+                                
                             try:
                                 DSbbox2 = DS.sel(x=slice(float(w2),float(e2)), y=slice(float(s2),float(n2)))
                             except ValueError:
                                 print("")
+                            else:
+                                concat = "x"  
+                                
                             try:
                                 DSbbox2 = DS.sel(lon=slice(float(w2),float(e2)), lat=slice(float(s2),float(n2)))
                             except ValueError:
                                 print("")
+                            else:
+                                concat = "lon"
 
                             DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4', engine='h5netcdf')
 
-                            DSbbox = xr.merge([DSbbox1,DSbbox2])
+                            DSbbox = xr.concat([DSbbox1,DSbbox2], dim=concat)
                             DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4', engine='h5netcdf')
                             DS.close()
 
@@ -543,42 +556,55 @@ def main(args=None):
                             box2 = outpath1 + "/" + str(m) + "/" + "Box2_" + file_name
                             
                             DS = xr.open_dataset(data)
-                        
-                            #DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
 
                             try:
-                                DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+                                DSbbox1 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
                             except ValueError:
                                 print("")
+                            else:
+                                concat = "longitude"  
+                                
                             try:
-                                DSbbox1 = DS.sel(x=slice(float(w1),float(e1)), y=slice(float(s1),float(n1)))
+                                DSbbox1 = DS.sel(x=slice(float(w2),float(e2)), y=slice(float(s2),float(n2)))
                             except ValueError:
                                 print("")
+                            else:
+                                concat = "x"  
+                                
                             try:
-                                DSbbox1 = DS.sel(lon=slice(float(w1),float(e1)), lat=slice(float(s1),float(n1)))
+                                DSbbox1 = DS.sel(lon=slice(float(w2),float(e2)), lat=slice(float(s2),float(n2)))
                             except ValueError:
                                 print("")
+                            else:
+                                concat = "lon"
 
                             DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4', engine='h5netcdf')
 
-                            #DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
 
                             try:
                                 DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
                             except ValueError:
                                 print("")
+                            else:
+                                concat = "longitude"   
+                                
                             try:
                                 DSbbox2 = DS.sel(x=slice(float(w2),float(e2)), y=slice(float(s2),float(n2)))
                             except ValueError:
                                 print("")
+                            else:
+                                concat = "x"  
+                                
                             try:
                                 DSbbox2 = DS.sel(lon=slice(float(w2),float(e2)), lat=slice(float(s2),float(n2)))
                             except ValueError:
                                 print("")
+                            else:
+                                concat = "lon"
 
                             DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4', engine='h5netcdf')
 
-                            DSbbox = xr.merge([DSbbox1,DSbbox2])
+                            DSbbox = xr.concat([DSbbox1,DSbbox2], dim=concat)
                             DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4', engine='h5netcdf')
                             DS.close()
 
@@ -719,42 +745,55 @@ def main(args=None):
                             box2 = outpath1 + "/" + str(m) + "/" + "Box2_" + file_name
                             
                             DS = xr.open_dataset(data)
-                        
-                            #DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
 
                             try:
-                                DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+                                DSbbox1 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
                             except ValueError:
                                 print("")
+                            else:
+                                concat = "longitude"  
+                                
                             try:
-                                DSbbox1 = DS.sel(x=slice(float(w1),float(e1)), y=slice(float(s1),float(n1)))
+                                DSbbox1 = DS.sel(x=slice(float(w2),float(e2)), y=slice(float(s2),float(n2)))
                             except ValueError:
                                 print("")
+                            else:
+                                concat = "x"  
+                                
                             try:
-                                DSbbox1 = DS.sel(lon=slice(float(w1),float(e1)), lat=slice(float(s1),float(n1)))
+                                DSbbox1 = DS.sel(lon=slice(float(w2),float(e2)), lat=slice(float(s2),float(n2)))
                             except ValueError:
                                 print("")
+                            else:
+                                concat = "lon"
 
                             DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4', engine='h5netcdf')
 
-                            #DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
 
                             try:
                                 DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
                             except ValueError:
                                 print("")
+                            else:
+                                concat = "longitude"   
+                                
                             try:
                                 DSbbox2 = DS.sel(x=slice(float(w2),float(e2)), y=slice(float(s2),float(n2)))
                             except ValueError:
                                 print("")
+                            else:
+                                concat = "x"  
+                                
                             try:
                                 DSbbox2 = DS.sel(lon=slice(float(w2),float(e2)), lat=slice(float(s2),float(n2)))
                             except ValueError:
                                 print("")
+                            else:
+                                concat = "lon"
 
                             DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4', engine='h5netcdf')
 
-                            DSbbox = xr.merge([DSbbox1,DSbbox2])
+                            DSbbox = xr.concat([DSbbox1,DSbbox2], dim=concat)
                             DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4', engine='h5netcdf')
                             DS.close()
 
@@ -887,42 +926,55 @@ def main(args=None):
                             box2 = outpath1 + "/" +  "Box2_" + file_name
                             
                             DS = xr.open_dataset(data)
-                        
-                            #DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
 
                             try:
-                                DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+                                DSbbox1 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
                             except ValueError:
                                 print("")
+                            else:
+                                concat = "longitude"  
+                                
                             try:
-                                DSbbox1 = DS.sel(x=slice(float(w1),float(e1)), y=slice(float(s1),float(n1)))
+                                DSbbox1 = DS.sel(x=slice(float(w2),float(e2)), y=slice(float(s2),float(n2)))
                             except ValueError:
                                 print("")
+                            else:
+                                concat = "x"  
+                                
                             try:
-                                DSbbox1 = DS.sel(lon=slice(float(w1),float(e1)), lat=slice(float(s1),float(n1)))
+                                DSbbox1 = DS.sel(lon=slice(float(w2),float(e2)), lat=slice(float(s2),float(n2)))
                             except ValueError:
                                 print("")
-                            
+                            else:
+                                concat = "lon"
+
                             DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4', engine='h5netcdf')
 
-                            #DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
 
                             try:
                                 DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
                             except ValueError:
                                 print("")
+                            else:
+                                concat = "longitude"   
+                                
                             try:
                                 DSbbox2 = DS.sel(x=slice(float(w2),float(e2)), y=slice(float(s2),float(n2)))
                             except ValueError:
                                 print("")
+                            else:
+                                concat = "x"  
+                                
                             try:
                                 DSbbox2 = DS.sel(lon=slice(float(w2),float(e2)), lat=slice(float(s2),float(n2)))
                             except ValueError:
                                 print("")
+                            else:
+                                concat = "lon"
 
                             DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4', engine='h5netcdf')
 
-                            DSbbox = xr.merge([DSbbox1,DSbbox2])
+                            DSbbox = xr.concat([DSbbox1,DSbbox2], dim=concat)
                             DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4', engine='h5netcdf')
                             DS.close()
 
@@ -1108,50 +1160,57 @@ def main(args=None):
                             box2 = outpath1 + "/" +  "Box2_" + file_name
                             
                             DS = xr.open_dataset(data)
-                        
-                            #DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
 
                             try:
-                                DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+                                DSbbox1 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
                             except ValueError:
                                 print("")
+                            else:
+                                concat = "longitude"  
+                                
                             try:
-                                DSbbox1 = DS.sel(x=slice(float(w1),float(e1)), y=slice(float(s1),float(n1)))
+                                DSbbox1 = DS.sel(x=slice(float(w2),float(e2)), y=slice(float(s2),float(n2)))
                             except ValueError:
                                 print("")
+                            else:
+                                concat = "x"  
+                                
                             try:
-                                DSbbox1 = DS.sel(lon=slice(float(w1),float(e1)), lat=slice(float(s1),float(n1)))
+                                DSbbox1 = DS.sel(lon=slice(float(w2),float(e2)), lat=slice(float(s2),float(n2)))
                             except ValueError:
                                 print("")
+                            else:
+                                concat = "lon"
 
                             DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4', engine='h5netcdf')
 
-                            #DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
 
                             try:
                                 DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
                             except ValueError:
                                 print("")
+                            else:
+                                concat = "longitude"   
+                                
                             try:
                                 DSbbox2 = DS.sel(x=slice(float(w2),float(e2)), y=slice(float(s2),float(n2)))
                             except ValueError:
                                 print("")
+                            else:
+                                concat = "x"  
+                                
                             try:
                                 DSbbox2 = DS.sel(lon=slice(float(w2),float(e2)), lat=slice(float(s2),float(n2)))
                             except ValueError:
                                 print("")
+                            else:
+                                concat = "lon"
 
                             DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4', engine='h5netcdf')
 
-                            DSbbox = xr.merge([DSbbox1,DSbbox2])
+                            DSbbox = xr.concat([DSbbox1,DSbbox2], dim=concat)
                             DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4', engine='h5netcdf')
                             DS.close()
-
-                            DS1 = xr.open_dataset(out1)
-
-                            DSVar = DS1[variables]
-                            DSVar.to_netcdf(path=out2, mode='w', format= 'NETCDF4', engine='h5netcdf')
-                            DS1.close()
 
                             os.remove(data)
                             os.remove(out1)
@@ -1284,42 +1343,55 @@ def main(args=None):
                             box2 = outpath1 + "/" + str(m) + "/" + "Box2_" + file_name
                             
                             DS = xr.open_dataset(data)
-                        
-                            #DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
 
                             try:
-                                DSbbox1 = DS.sel(longitude=slice(float(w1),float(e1)), latitude=slice(float(s1),float(n1)))
+                                DSbbox1 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
                             except ValueError:
                                 print("")
+                            else:
+                                concat = "longitude"  
+                                
                             try:
-                                DSbbox1 = DS.sel(x=slice(float(w1),float(e1)), y=slice(float(s1),float(n1)))
+                                DSbbox1 = DS.sel(x=slice(float(w2),float(e2)), y=slice(float(s2),float(n2)))
                             except ValueError:
                                 print("")
+                            else:
+                                concat = "x"  
+                                
                             try:
-                                DSbbox1 = DS.sel(lon=slice(float(w1),float(e1)), lat=slice(float(s1),float(n1)))
+                                DSbbox1 = DS.sel(lon=slice(float(w2),float(e2)), lat=slice(float(s2),float(n2)))
                             except ValueError:
                                 print("")
+                            else:
+                                concat = "lon"
 
                             DSbbox1.to_netcdf(path=box1, mode='w', format= 'NETCDF4', engine='h5netcdf')
 
-                            #DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
 
                             try:
                                 DSbbox2 = DS.sel(longitude=slice(float(w2),float(e2)), latitude=slice(float(s2),float(n2)))
                             except ValueError:
                                 print("")
+                            else:
+                                concat = "longitude"   
+                                
                             try:
                                 DSbbox2 = DS.sel(x=slice(float(w2),float(e2)), y=slice(float(s2),float(n2)))
                             except ValueError:
                                 print("")
+                            else:
+                                concat = "x"  
+                                
                             try:
                                 DSbbox2 = DS.sel(lon=slice(float(w2),float(e2)), lat=slice(float(s2),float(n2)))
                             except ValueError:
                                 print("")
+                            else:
+                                concat = "lon"
 
                             DSbbox2.to_netcdf(path=box2, mode='w', format= 'NETCDF4', engine='h5netcdf')
 
-                            DSbbox = xr.merge([DSbbox1,DSbbox2])
+                            DSbbox = xr.concat([DSbbox1,DSbbox2], dim=concat)
                             DSbbox.to_netcdf(path=out1, mode='w', format= 'NETCDF4', engine='h5netcdf')
                             DS.close()
 
