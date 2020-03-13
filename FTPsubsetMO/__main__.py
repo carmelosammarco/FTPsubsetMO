@@ -1336,8 +1336,9 @@ def main(args=None):
                             out2 = outpath1 +  "/" + "SubsetDepth_" + file_name
                             out3 = outpath1 +  "/" + "Subset_" + file_name
                             
-                            box1 = outpath1 + "/" + str(m) + "/" + "Box1_" + file_name
-                            box2 = outpath1 + "/" + str(m) + "/" + "Box2_" + file_name
+                            box1 = outpath1 +  "/" + "Box1_" + file_name
+                            box2 = outpath1 + "/" +  "Box2_" + file_name
+
                             
                             DS = xr.open_dataset(data)
                         
