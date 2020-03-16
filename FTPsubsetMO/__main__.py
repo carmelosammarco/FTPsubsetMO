@@ -153,6 +153,7 @@ def main(args=None):
         structure = StringVar()
         ID = StringVar()
         Toidentify = StringVar()
+        Pname = StringVar()
 
         Database = {}
         with open (filejason, "r") as config_file:
@@ -167,7 +168,8 @@ def main(args=None):
                     typo = listdic[0] #(NRT/MY)
                     structure = listdic[1]  #M(monthly)/D(daily)  
                     ID = listdic[2]  #(BACK/FRONT)
-                    Toidentify = listdic[3]   #part of the fine name used to select the files   
+                    Toidentify = listdic[3]   #part of the fine name used to select the files 
+                    Pname = pathfiles.split("/")[2]  
 
         #########################
 
@@ -259,18 +261,28 @@ def main(args=None):
                 m = day.strftime('%m')
                 g = day.strftime('%d')
 
-                path = os.path.join(outpath, str(a))
+                #########################
+
+                path0 = os.path.join(outpath, Pname)
+
+                if not os.path.exists(path0):
+                    os.mkdir(path0)
+
+                outpath0 = outpath + "/" + Pname
+
+                path = os.path.join(outpath0, str(a))
 
                 if not os.path.exists(path):
                     os.mkdir(path)
                     
-                #outpath1 = outpath +  str(a)
-                outpath1 = outpath + "/" + str(a)
+                outpath1 = outpath0 + "/" + str(a)
             
                 path2 = os.path.join(outpath1, str(m))
 
                 if not os.path.exists(path2):
                     os.mkdir(path2)
+
+                ###########################
 
                 if ID == "BACK":
                     look = day.strftime(Toidentify+'%Y%m%d')
@@ -396,6 +408,9 @@ def main(args=None):
                         else:
                             print(" Please to check the bounding box coordinates ")
 
+            os.chdir(outpath)
+
+
             ftp.quit()
 
 
@@ -417,18 +432,28 @@ def main(args=None):
                 m = day.strftime('%m')
                 g = day.strftime('%d')
 
-                path = os.path.join(outpath, str(a))
+                #########################
+
+                path0 = os.path.join(outpath, Pname)
+
+                if not os.path.exists(path0):
+                    os.mkdir(path0)
+
+                outpath0 = outpath + "/" + Pname
+
+                path = os.path.join(outpath0, str(a))
 
                 if not os.path.exists(path):
                     os.mkdir(path)
                     
-                #outpath1 = outpath +  str(a)
-                outpath1 = outpath + "/" + str(a)
+                outpath1 = outpath0 + "/" + str(a)
             
                 path2 = os.path.join(outpath1, str(m))
 
                 if not os.path.exists(path2):
                     os.mkdir(path2)
+
+                ###########################
 
                 if ID == "BACK":
                     look = day.strftime(Toidentify+'%Y%m%d')
@@ -467,7 +492,9 @@ def main(args=None):
                         os.remove(data)
 
                         print("File: " + "Subset_" + file_name + " --> Subset completed")
-                        print(" ")                    
+                        print(" ")  
+
+            os.chdir(outpath)
 
             ftp.quit()
 
@@ -490,18 +517,28 @@ def main(args=None):
                 m = day.strftime('%m')
                 g = day.strftime('%d')
 
-                path = os.path.join(outpath, str(a))
+                #########################
+
+                path0 = os.path.join(outpath, Pname)
+
+                if not os.path.exists(path0):
+                    os.mkdir(path0)
+
+                outpath0 = outpath + "/" + Pname
+
+                path = os.path.join(outpath0, str(a))
 
                 if not os.path.exists(path):
                     os.mkdir(path)
                     
-                #outpath1 = outpath +  str(a)
-                outpath1 = outpath + "/" + str(a)
+                outpath1 = outpath0 + "/" + str(a)
             
                 path2 = os.path.join(outpath1, str(m))
 
                 if not os.path.exists(path2):
                     os.mkdir(path2)
+
+                ###########################
 
                 if ID == "BACK":
                     look = day.strftime(Toidentify+'%Y%m%d')
@@ -646,6 +683,8 @@ def main(args=None):
                         else:
                             print(" Please to check the bounding box coordinates ")
 
+            os.chdir(outpath)
+
             ftp.quit()
 
 
@@ -667,18 +706,28 @@ def main(args=None):
                 m = day.strftime('%m')
                 g = day.strftime('%d')
 
-                path = os.path.join(outpath, str(a))
+                #########################
+
+                path0 = os.path.join(outpath, Pname)
+
+                if not os.path.exists(path0):
+                    os.mkdir(path0)
+
+                outpath0 = outpath + "/" + Pname
+
+                path = os.path.join(outpath0, str(a))
 
                 if not os.path.exists(path):
                     os.mkdir(path)
                     
-                #outpath1 = outpath +  str(a)
-                outpath1 = outpath + "/" + str(a)
+                outpath1 = outpath0 + "/" + str(a)
             
                 path2 = os.path.join(outpath1, str(m))
 
                 if not os.path.exists(path2):
                     os.mkdir(path2)
+
+                ###########################
 
                 if ID == "BACK":
                     look = day.strftime(Toidentify+'%Y%m%d')
@@ -845,6 +894,8 @@ def main(args=None):
 
                             print("File: " + "Subset_" + file_name + " --> Subset completed")
                             print(" ")
+            
+            os.chdir(outpath)
 
             ftp.quit()
 
@@ -874,12 +925,24 @@ def main(args=None):
                 m = mon.strftime('%m')
                 lastd = mon.strftime('%d')
 
-                path = os.path.join(outpath, str(a))
+                #################################
+
+                path0 = os.path.join(outpath, Pname)
+
+                if not os.path.exists(path0):
+                    os.mkdir(path0)
+
+                outpath0 = outpath + "/" + Pname
+
+                path = os.path.join(outpath0, str(a))
 
                 if not os.path.exists(path):
                     os.mkdir(path)
-                    
-                outpath1 = outpath + "/" + str(a)
+                   
+                outpath1 = outpath0 + "/" + str(a)
+
+                ####################################
+
 
                 if ID == "BACK":
                     look = mon.strftime(Toidentify+'%Y%m')
@@ -1011,6 +1074,8 @@ def main(args=None):
                         else:
                             print (" Please to check the bounding box coordinates ")
 
+            os.chdir(outpath)
+
             ftp.quit() 
 
         
@@ -1031,12 +1096,24 @@ def main(args=None):
                 m = mon.strftime('%m')
                 lastd = mon.strftime('%d')
 
-                path = os.path.join(outpath, str(a))
+                #################################
+
+                path0 = os.path.join(outpath, Pname)
+
+                if not os.path.exists(path0):
+                    os.mkdir(path0)
+
+                outpath0 = outpath + "/" + Pname
+
+                path = os.path.join(outpath0, str(a))
 
                 if not os.path.exists(path):
                     os.mkdir(path)
-                    
-                outpath1 = outpath + "/" + str(a)
+                   
+                outpath1 = outpath0 + "/" + str(a)
+
+                ####################################
+
 
                 if ID == "BACK":
                     look = mon.strftime(Toidentify+'%Y%m')
@@ -1078,7 +1155,8 @@ def main(args=None):
 
                         print("File: " + "Subset_" + file_name + " --> Subset completed")
                         print(" ")
-                                                
+
+            os.chdir(outpath)                                    
 
             ftp.quit() 
         
@@ -1101,12 +1179,23 @@ def main(args=None):
                 m = mon.strftime('%m')
                 lastd = mon.strftime('%d')
 
-                path = os.path.join(outpath, str(a))
+                #################################
+
+                path0 = os.path.join(outpath, Pname)
+
+                if not os.path.exists(path0):
+                    os.mkdir(path0)
+
+                outpath0 = outpath + "/" + Pname
+
+                path = os.path.join(outpath0, str(a))
 
                 if not os.path.exists(path):
                     os.mkdir(path)
-                    
-                outpath1 = outpath + "/" + str(a)
+                   
+                outpath1 = outpath0 + "/" + str(a)
+
+                ####################################
 
                 if ID == "BACK":
                     look = mon.strftime(Toidentify+'%Y%m')
@@ -1252,6 +1341,8 @@ def main(args=None):
                         else:
                             print (" Please to check the bounding box coordinates ")
 
+            os.chdir(outpath)
+
             ftp.quit() 
 
         
@@ -1274,13 +1365,24 @@ def main(args=None):
                 m = mon.strftime('%m')
                 lastd = mon.strftime('%d')
 
-                path = os.path.join(outpath, str(a))
+                #################################
+
+                path0 = os.path.join(outpath, Pname)
+
+                if not os.path.exists(path0):
+                    os.mkdir(path0)
+
+                outpath0 = outpath + "/" + Pname
+
+                path = os.path.join(outpath0, str(a))
 
                 if not os.path.exists(path):
                     os.mkdir(path)
-                    
-                #outpath1 = outpath +  str(a)
-                outpath1 = outpath + "/" + str(a)
+                   
+                outpath1 = outpath0 + "/" + str(a)
+
+                ####################################
+
 
                 if ID == "BACK":
                     look = mon.strftime(Toidentify+'%Y%m')
@@ -1449,6 +1551,9 @@ def main(args=None):
 
                             print("File: " + "Subset_" + file_name + " --> Subset completed")
                             print(" ")
+
+            os.chdir(outpath)
+
             ftp.quit()
 
        
