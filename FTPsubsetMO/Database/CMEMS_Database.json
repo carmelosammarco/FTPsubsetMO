@@ -1,3 +1,4 @@
 {
-    "/Core/GLOBAL_REANALYSIS_PHY_001_025/global-reanalysis-phy-001-025-monthly/" : ["MY","M","BACK","mercatorglorys2v4_gl4_mean_","temperature","salinity","u","v","ssh","mlp","bottomT","fice","hice","uice","vice"]
+
+    "/Core/BLKSEA_REANALYSIS_PHYS_007_004/sv04-bs-cmcc-cur-rean-m/" : ["MY","M","FRONT","01_m-CMCC--RFVL-BSe2r2-BS-b","1992-01-01","2018-11-01","27.32","41.96","40.86","46.8","LDY","vozocrtx","vomecrty"]
 }

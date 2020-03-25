@@ -74,7 +74,7 @@ def main(args=None):
                 if FTPlk.get() in key:
                     #print(pathfiles)
                     listdic = Database.get(FTPlk.get()) 
-                    Listvar = listdic[4:]
+                    Listvar = listdic[11:]
                     for variable in Listvar:
                         lstbox.insert(END, variable)
                         
@@ -154,6 +154,12 @@ def main(args=None):
         ID = StringVar()
         Toidentify = StringVar()
         Pname = StringVar()
+        di = StringVar() 
+        df = StringVar()
+        ccbbW = StringVar()
+        ccbbE = StringVar()
+        ccbbS = StringVar()
+        ccbbN = StringVar()
 
         Database = {}
         with open (filejason, "r") as config_file:
@@ -169,7 +175,13 @@ def main(args=None):
                     structure = listdic[1]  #M(monthly)/D(daily)  
                     ID = listdic[2]  #(BACK/FRONT)
                     Toidentify = listdic[3]   #part of the fine name used to select the files 
-                    Pname = pathfiles.split("/")[2]  
+                    Pname = pathfiles.split("/")[2]
+                    di = listdic[4] 
+                    df = listdic[5]
+                    ccbbW = listdic[6]
+                    ccbbE = listdic[7]
+                    ccbbS = listdic[8]
+                    ccbbN = listdic[9]
 
         #########################
 
