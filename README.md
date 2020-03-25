@@ -17,6 +17,55 @@ In the Database just the MY datasets are avaiable (still missing NRT datasets).
 
 For more detailed information about the MULTI YEAR datasets please to look the [MY_datasets](FTPsubsetMO/Database/datasets_MY.pdf) file.
 
+## Additional information:
+
+**CMEMS_Database.json implementations**
+
+Database Record from [Master-branch](https://github.com/carmelosammarco/FTPsubsetMO/blob/master/README.md):
+```
+"/Core/BLKSEA_REANALYSIS_PHYS_007_004/sv04-bs-cmcc-cur-rean-m/" : ["MY","M","FRONT","01_m-CMCC--RFVL-BSe2r2-BS-b"],
+```
+
+Record example fron this branch:
+```
+"/Core/BLKSEA_REANALYSIS_PHYS_007_004/sv04-bs-cmcc-cur-rean-m/" :
+ ["MY","M","FRONT","01_m-CMCC--RFVL-BSe2r2-BS-b",”1992-01-01”,”2018-11-01”, ”27.32”, “41.96”, “40.86”, “46.8”, “LDY”, “Variable1”, “Variable2”… ]
+ ```
+These modification will adress easily the warning for:
+
+- Bounding box limits (W-E-S-N)
+- Variables selection
+- Level Depths (LDY/LDN)
+- Date range validation
+
+
+**General code improvements to be done**
+
+- Follow the [PEP 8 style guide](https://www.python.org/dev/peps/pep-0008/)
+
+- More Verbosity to guide better the user
+
+**Warnings before the download:**
+
+- About Bounding box limits
+
+- About Date format
+
+- About level of Depths (If present or not)
+
+**Warning during download:**
+
+- Connection interrupted
+
+- No file available
+
+**Warning after download:**
+
+- Verify metadata homogeneity
+
+- Can be improved better after many tests and user feedbacks
+
+
 ## Introduction:
 
 Python software able to download files over FTP protocol and subset the files retrieved by parameters as time-range, bounding box, variables and single/range Depth levels (below the GUI interface displayed on a Linux system).
