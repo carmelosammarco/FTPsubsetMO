@@ -111,7 +111,7 @@ Date format as YYYY-MM-DD also in the case of the MONTHLY dataset where the term
 
 4. **Geographic bounding box** (if interested to subset by geographic area)
 
-5. **Variables name** (if interested in extract a selection rather than all)
+5. **Variables name** (It is possible to select the variables from a list using the "Get-Variables" button, to register the selection just click on "Set-Variables)
 
 6. **Depths** information parameter values (if interested in a SINGLE/RANGE  or all the depths)
 
