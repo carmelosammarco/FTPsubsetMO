@@ -28,8 +28,7 @@ Database Record from [Master-branch](https://github.com/carmelosammarco/FTPsubse
 
 Record example fron this branch:
 ```
-"/Core/BLKSEA_REANALYSIS_PHYS_007_004/sv04-bs-cmcc-cur-rean-m/" :
- ["MY","M","FRONT","01_m-CMCC--RFVL-BSe2r2-BS-b",”1992-01-01”,”2018-11-01”, ”27.32”, “41.96”, “40.86”, “46.8”, “LDY”, “Variable1”, “Variable2”… ]
+"/Core/BLKSEA_REANALYSIS_PHYS_007_004/sv04-bs-cmcc-cur-rean-m/" : ["MY","M","FRONT","01_m-CMCC--RFVL-BSe2r2-BS-b",”1992-01-01”,”2018-11-01”, ”27.32”, “41.96”, “40.86”, “46.8”, “LDY”, “Variable1”, “Variable2”… ]
  ```
 These modification will adress easily the warning for:
 
