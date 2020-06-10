@@ -1,5 +1,5 @@
 #####################################################################
-#Programm for Mercator Ocean by Carmelo Sammarco
+#Programm author: Carmelo Sammarco
 #####################################################################
 
 #< FTPsubsetMO - Python program to download from FTP and subset >
