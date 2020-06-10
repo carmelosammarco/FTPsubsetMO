@@ -44,8 +44,8 @@ After the download which uses the python module "ftplib" (The files are download
 
 1. **CMEMS personal login credential**
 
-- CMEMS Username
-- CMEMS Password
+- Username
+- Password
 
 2. **FTP Link of the dataset** (Our key value to extract from the data-base all the parameters needed to make the Tool works) as example below:
 
